@@ -1,0 +1,50 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+**/.venv/
+**/venv/
+
+# Data and large weights
+data/*
+!data/.gitkeep
+**/data/*
+!**/data/.gitkeep
+
+checkpoints/*.pth
+!checkpoints/.gitkeep
+**/checkpoints/*.pth
+!**/checkpoints/.gitkeep
+
+# TensorBoard logs
+runs/*
+!runs/.gitkeep
+**/runs/*
+!**/runs/.gitkeep
+
+# Experiment outputs
+outputs/figures/*.png
+!outputs/figures/.gitkeep
+**/outputs/figures/*.png
+!**/outputs/figures/.gitkeep
+
+outputs/reports/*.csv
+outputs/reports/*.json
+!outputs/reports/.gitkeep
+**/outputs/reports/*.csv
+**/outputs/reports/*.json
+!**/outputs/reports/.gitkeep
+
+# IDE and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
