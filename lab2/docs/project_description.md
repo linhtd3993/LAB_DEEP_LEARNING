@@ -9,222 +9,242 @@
 
 ## 2. Problem Statement
 
-### 2.1. Bai toan Tong quan
-Thuc hien bai toan phan loai anh da lop (Multi-class Image Classification) tren bo du lieu tieu chuan CIFAR-10.
-- Tong so mau: 60,000 anh mau RGB kich thuoc 32x32 pixel thuoc 10 lop doi tuong (airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck).
-- Phan chia du lieu doc lap:
-  - Tap Huan luyen (Train set): 40,000 anh.
-  - Tap Kiem dinh (Validation set): 10,000 anh (tach doc lap tu 50,000 anh goc, khong su dung de tinh gradient).
-  - Tap Kiem thu (Test set): 10,000 anh (chuan hoa doc lap, chi danh gia duy nhat mot lan sau khi hoan tat huan luyen).
+### 2.1. Bài toán Tổng quan
+Thực hiện bài toán phân loại ảnh đa lớp (Multi-class Image Classification) trên bộ dữ liệu tiêu chuẩn CIFAR-10.
+- Tổng số mẫu: 60,000 ảnh màu RGB kích thước 32x32 pixel thuộc 10 lớp đối tượng (`airplane`, `automobile`, `bird`, `cat`, `deer`, `dog`, `frog`, `horse`, `ship`, `truck`).
+- Phân chia dữ liệu độc lập:
+  - Tập Huấn luyện (Train set): 40,000 ảnh.
+  - Tập Kiểm định (Validation set): 10,000 ảnh (tách độc lập từ 50,000 ảnh gốc, không sử dụng để tính gradient).
+  - Tập Kiểm thử (Test set): 10,000 ảnh (chuẩn hóa độc lập, chỉ đánh giá duy nhất một lần sau khi hoàn tất huấn luyện).
 
-### 2.2. Van de Cot loi (Core Problem)
-Thiet lap mot pipeline thuc nghiem chuan hoa, mang tinh he thong de khao sat su danh doi (trade-off) giua:
-- Toc do hoi tu (Convergence Speed).
-- Chi phi tai nguyen tinh toan (Computational Cost): Tong tham so mo hinh, so tham so can huan luyen (trainable parameters), bo nho VRAM tieu thu, va thoi gian huan luyen tren moi epoch.
-- Do chinh xac phan loai (Top-1 Accuracy va Per-class Accuracy).
+### 2.2. Vấn đề Cốt lõi (Core Problem)
+Thiết lập một pipeline thực nghiệm chuẩn hóa, mang tính hệ thống để khảo sát sự đánh đổi (trade-off) giữa:
+- Tốc độ hội tụ (Convergence Speed).
+- Chi phí tài nguyên tính toán (Computational Cost): Tổng tham số mô hình, số tham số cần huấn luyện (trainable parameters), bộ nhớ VRAM tiêu thụ, và thời gian huấn luyện trên mỗi epoch.
+- Độ chính xác phân loại (Top-1 Accuracy và Per-class Accuracy).
 
-Thuc nghiem duoc thiet ke de so sanh 3 ho kien truc Convolutional Neural Network (CNN) tien huan luyen tren ImageNet-1K:
+```mermaid
+flowchart TD
+    MODELS["3 Họ Kiến trúc CNN<br/>• ResNet (ResNet-18, ResNet-50)<br/>• VGG (VGG-16 with BatchNorm)<br/>• DenseNet (DenseNet-121)"]
+    STRAT["2 Chiến lược Transfer Learning<br/>• Feature Extraction (freeze_all)<br/>• Fine-Tuning (unfreeze_last_block)"]
+    HYPER["Không gian Siêu tham số<br/>• Learning Rate (1e-2, 1e-3, 1e-4)<br/>• Batch Size (32, 64, 128)<br/>• Optimizer (AdamW vs SGD)"]
+    
+    MODELS & STRAT & HYPER --> PIPELINE["Training & Evaluation Pipeline<br/>(Mixed Precision AMP + Leak-Free CIFAR-10)"]
+    
+    PIPELINE --> TRADEOFF["Phân tích Đánh đổi (Trade-off Analysis)<br/>• Accuracy vs Trainable Parameters<br/>• Training Time vs Convergence Speed<br/>• VRAM Consumption vs Batch Size"]
+
+    classDef inStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef pipeStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef outStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+
+    class MODELS,STRAT,HYPER inStyle;
+    class PIPELINE pipeStyle;
+    class TRADEOFF outStyle;
+```
+
+Thực nghiệm được thiết kế để so sánh 3 họ kiến trúc Convolutional Neural Network (CNN) tiền huấn luyện trên ImageNet-1K:
 1. Residual Networks (ResNet): ResNet-18, ResNet-50.
-2. Visual Geometry Group (VGG): VGG-16 voi Batch Normalization (`vgg16_bn`).
+2. Visual Geometry Group (VGG): VGG-16 với Batch Normalization (`vgg16_bn`).
 3. Densely Connected Convolutional Networks (DenseNet): DenseNet-121.
 
-Khao sat duoi 2 chien luoc chuyen giao tri thuc (Transfer Learning Strategies):
-- **Feature Extraction (`freeze_all`)**: Dong bang toan bo cac tang trich xuat dac trung (backbone convolutional layers), chi khoi tao lai va huan luyen duy nhat tang phan loai cuoi (Classification Head).
-- **Fine-Tuning (`unfreeze_last_block`)**: Dong bang cac khoi tang dau, mo khoa co chon loc khoi tich chap cuoi cung (e.g., `layer4` cua ResNet, khoi dense/transition cuoi cua DenseNet, hoac cac tang conv cuoi cua VGG) ket hop cung tang phan loai moi de tinh chinh trong so phu hop voi tap du lieu dich.
+Khảo sát dưới 2 chiến lược chuyển giao tri thức (Transfer Learning Strategies):
+- **Feature Extraction (`freeze_all`)**: Đóng băng toàn bộ các tầng trích xuất đặc trưng (backbone convolutional layers), chỉ khởi tạo lại và huấn luyện duy nhất tầng phân loại cuối (Classification Head).
+- **Fine-Tuning (`unfreeze_last_block`)**: Đóng băng các khối tầng đầu, mở khóa có chọn lọc khối tích chập cuối cùng (ví dụ: `layer4` của ResNet, khối dense/transition cuối của DenseNet, hoặc các tầng conv cuối của VGG) kết hợp cùng tầng phân loại mới để tinh chỉnh trọng số phù hợp với tập dữ liệu đích.
 
-Dong thoi, he thong danh gia tac dong da chieu khi bien thien cac sieu tham so: Learning Rate ($10^{-2}, 10^{-3}, 10^{-4}$), Batch Size (32, 64, 128), Optimizer (SGD with Momentum vs. AdamW), va so luong Epochs.
+Đồng thời, hệ thống đánh giá tác động đa chiều khi biến thiên các siêu tham số: Learning Rate ($10^{-2}, 10^{-3}, 10^{-4}$), Batch Size (32, 64, 128), Optimizer (SGD with Momentum vs. AdamW), và số lượng Epochs.
 
 ---
 
 ## 3. Target User
 
-- Sinh vien nganh Khoa hoc Du lieu, Tri tue Nhan tao va Ky su Machine Learning / Deep Learning can mot bo khung (framework / template) thuc nghiem Transfer Learning tieu chuan cong nghiep.
-- Dac tinh cot loi dap ung cho nguoi dung:
-  - Tinh tai lap cao (High Reproducibility): Co dinh seed ngau nhien cho PyTorch, CuDNN, NumPy va Python built-in random.
-  - Ma nguon sach va lap trinh huong mo-dun (Clean, Modular Codebase): Tach biet ro rang giua Data Loader, Model Factory, Trainer, Evaluator va Visualizer.
-  - Tuong tac linh hoat qua Giao dien Dong lenh (CLI Driven): Cho phep cau hinh moi thu nghiem ma khong can sua truc tiep ma nguon.
+- Sinh viên ngành Khoa học Dữ liệu, Trí tuệ Nhân tạo và Kỹ sư Machine Learning / Deep Learning cần một bộ khung (framework / template) thực nghiệm Transfer Learning tiêu chuẩn công nghiệp.
+- Đặc tính cốt lõi đáp ứng cho người dùng:
+  - **Tính tái lập cao (High Reproducibility)**: Cố định seed ngẫu nhiên cho PyTorch, CuDNN, NumPy và Python built-in random.
+  - **Mã nguồn sạch và hướng mô-đun (Clean, Modular Codebase)**: Tách biệt rõ ràng giữa Data Loader, Model Factory, Trainer, Evaluator và Visualizer.
+  - **Tương tác linh hoạt qua Dòng lệnh (CLI Driven)**: Cho phép cấu hình mọi thực nghiệm mà không cần sửa trực tiếp mã nguồn.
 
 ---
 
 ## 4. Input & Output Specification
 
 ### 4.1. Input Specification
-1. **Dataset**: CIFAR-10 tu dong tai xuong va luu tru tai thu muc `data/` thong qua `torchvision.datasets.CIFAR10`.
+1. **Dataset**: CIFAR-10 tự động tải xuống và lưu trữ tại thư mục `data/` thông qua `torchvision.datasets.CIFAR10`.
 2. **CLI Parameters**:
-   - `--model`: Kien truc mo hinh (`resnet18`, `resnet50`, `vgg16_bn`, `densenet121`). Mac dinh: `resnet18`.
-   - `--strategy`: Chien luoc hoc chuyen giao (`freeze_all`, `unfreeze_last_block`). Mac dinh: `freeze_all`.
-   - `--lr`: Toc do hoc ban dau (Learning Rate). Mac dinh: `1e-3`.
-   - `--batch-size`: Kich thuoc mini-batch (tu dong thich ung voi phan cung). Mac dinh: `64`.
-   - `--epochs`: So luong chu ky huan luyen. Mac dinh: `15`.
-   - `--optimizer`: Thuat toan toi uu (`adamw`, `sgd`). Mac dinh: `adamw`.
-   - `--weight-decay`: He so dieu hoa L2. Mac dinh: `1e-4`.
-   - `--num-workers`: So luong luong doc du lieu song song cua DataLoader. Mac dinh thich ung: `4` (tren Linux).
-   - `--subset-ratio`: Ty le tap du lieu su dung de chay thu nghiem nhanh (0.0 < ratio <= 1.0). Mac dinh: `1.0`.
-   - `--dry-run`: Co kiem thu nhanh (chay 1 epoch tren tap du lieu nho) de xac thuc pipeline truoc khi huan luyen quy mo lon.
-   - `--seed`: Gia tri hat giong ngau nhien de tai lap ket qua. Mac dinh: `42`.
+   - `--model`: Kiến trúc mô hình (`resnet18`, `resnet50`, `vgg16_bn`, `densenet121`). Mặc định: `resnet18`.
+   - `--strategy`: Chiến lược học chuyển giao (`freeze_all`, `unfreeze_last_block`). Mặc định: `freeze_all`.
+   - `--lr`: Tốc độ học ban đầu (Learning Rate). Mặc định: `1e-3`.
+   - `--batch-size`: Kích thước mini-batch (tự động thích ứng với phần cứng). Mặc định: `64`.
+   - `--epochs`: Số lượng chu kỳ huấn luyện. Mặc định: `15`.
+   - `--optimizer`: Thuật toán tối ưu (`adamw`, `sgd`). Mặc định: `adamw`.
+   - `--weight-decay`: Hệ số điều hòa L2. Mặc định: `1e-4`.
+   - `--num-workers`: Số lượng luồng đọc dữ liệu song song của DataLoader. Mặc định: `4` (trên Linux).
+   - `--subset-ratio`: Tỷ lệ tập dữ liệu sử dụng để chạy thử nghiệm nhanh (0.0 < ratio <= 1.0). Mặc định: `1.0`.
+   - `--dry-run`: Cờ kiểm thử nhanh (chạy 1 epoch trên tập dữ liệu nhỏ) để xác thực pipeline trước khi huấn luyện quy mô lớn.
+   - `--seed`: Giá trị hạt giống ngẫu nhiên để tái lập kết quả. Mặc định: `42`.
 
 ### 4.2. Output Specification & Directory Layout
-Cau truc thu muc luu tru dau ra duoc phan bo thong minh, tach biet ro rang:
+Cấu trúc thư mục lưu trữ đầu ra được phân bổ thông minh, tách biệt rõ ràng:
 
-```
-LAB_DEEP_LEARNING/
-|-- data/                       # Du lieu tho va du lieu tai ve (CIFAR-10)
-|-- checkpoints/                # Trong so mo hinh tot nhat theo Validation Accuracy
-|   `-- best_<model>_<strategy>.pth
-|-- runs/                       # Nhat ky TensorBoard phuc vu giam sat truc quan
-|   `-- <timestamp>_<model>_<strategy>/
-|-- outputs/
-|   |-- figures/                # Do hoa danh gia chat luong cao (300 DPI)
-|   |   |-- training_history.png
-|   |   |-- class_accuracy.png
-|   |   `-- confusion_matrix.png
-|   `-- reports/                # Bang ket qua danh gia dang van ban va CSV
-|       |-- evaluation_metrics.json
-|       `-- per_class_report.csv
-|-- docs/                       # Tai lieu dac ta kien truc va huong dan su dung
-|   `-- project_description.md
-`-- src/                        # Ma nguon he thong duoc module hoa
+```mermaid
+flowchart LR
+    ROOT["LAB_DEEP_LEARNING/"]
+    
+    ROOT --> D_DATA["data/<br/>(CIFAR-10 Raw Data)"]
+    ROOT --> D_CKPT["checkpoints/<br/>(best_model.pth)"]
+    ROOT --> D_RUNS["runs/<br/>(TensorBoard Event Logs)"]
+    ROOT --> D_OUT["outputs/"]
+    
+    D_OUT --> FIG["figures/<br/>• training_history.png<br/>• class_accuracy.png<br/>• confusion_matrix.png"]
+    D_OUT --> REP["reports/<br/>• evaluation_metrics.json<br/>• per_class_report.csv"]
+
+    classDef rootStyle fill:#263238,stroke:#37474f,stroke-width:2px,color:#ffffff;
+    classDef dirStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef fileStyle fill:#fce4ec,stroke:#c2185b,stroke-width:1px,color:#880e4f;
+
+    class ROOT rootStyle;
+    class D_DATA,D_CKPT,D_RUNS,D_OUT dirStyle;
+    class FIG,REP fileStyle;
 ```
 
-Chi tiet cac tep tin dau ra:
-- **Model Checkpoint** (`checkpoints/best_<model>_<strategy>.pth`): Chua `model_state_dict`, `optimizer_state_dict`, `epoch`, `val_acc`, va cau hinh thuc nghiem.
-- **TensorBoard Event Logs** (`runs/`): Ghi nhan scalar theo tung step va epoch: `Loss/train`, `Loss/val`, `Accuracy/train`, `Accuracy/val`, `LearningRate`.
+Chi tiết các tệp tin đầu ra:
+- **Model Checkpoint** (`checkpoints/best_<model>_<strategy>.pth`): Chứa `model_state_dict`, `optimizer_state_dict`, `epoch`, `val_acc`, và cấu hình thực nghiệm.
+- **TensorBoard Event Logs** (`runs/`): Ghi nhận scalar theo từng step và epoch: `Loss/train`, `Loss/val`, `Accuracy/train`, `Accuracy/val`, `Learning_Rate`.
 - **Test Metrics Report**:
-  - `outputs/reports/evaluation_metrics.json`: Overall Test Loss, Overall Test Accuracy, Inference Latency per Image, Tong tham so va Trainable Parameters.
-  - `outputs/reports/per_class_report.csv`: Precision, Recall, F1-Score va Accuracy cho tung lop trong 10 lop doi tuong.
+  - `outputs/reports/evaluation_metrics.json`: Overall Test Loss, Overall Test Accuracy, Inference Latency per Image, Tổng tham số và Trainable Parameters.
+  - `outputs/reports/per_class_report.csv`: Precision, Recall, F1-Score và Accuracy cho từng lớp trong 10 lớp đối tượng.
 - **Figures (300 DPI PNG)**:
-  - `training_history.png`: Bieu do 2 cot the hien duong cong Loss va Accuracy giua Train va Validation qua tung epoch.
-  - `class_accuracy.png`: Bieu do cot so sanh do chinh xac giua 10 lop tren tap Test, danh dau nguong do chinh xac trung binh.
-  - `confusion_matrix.png`: Ma tran nham lan duoc chuan hoa (normalized heatmap) the hien ty le du doan dung va cac cap lop de bi nham lan.
+  - `training_history.png`: Biểu đồ 2 cột thể hiện đường cong Loss và Accuracy giữa Train và Validation qua từng epoch.
+  - `class_accuracy.png`: Biểu đồ cột so sánh độ chính xác giữa 10 lớp trên tập Test, đánh dấu ngưỡng độ chính xác trung bình.
+  - `confusion_matrix.png`: Ma trận nhầm lẫn được chuẩn hóa (normalized heatmap) thể hiện tỷ lệ dự đoán đúng và các cặp lớp dễ bị nhầm lẫn.
 
 ---
 
 ## 5. Core Features
 
-### 5.1. Model Architecture Inspection (Kham pha va Phan tich Kien truc)
-- Tu dong in cau truc toan bo mang va trich xuat phan bo tham so.
-- Tinh toan chinh xac:
-  - $N_{\text{total}}$: Tong so luong tham so cua mo hinh.
-  - $N_{\text{trainable}}$: So luong tham so dang bat `requires_grad=True`.
-  - $N_{\text{frozen}}$: So luong tham so bi dong bang (`requires_grad=False`).
-- Cung cap bang tong hop tham so truoc va sau khi ap dung chien luoc dong bang/mo khoa.
+### 5.1. Model Architecture Inspection (Khám phá và Phân tích Kiến trúc)
+- Tự động in cấu trúc toàn bộ mạng và trích xuất phân bổ tham số.
+- Tính toán chính xác:
+  - $N_{\text{total}}$: Tổng số lượng tham số của mô hình.
+  - $N_{\text{trainable}}$: Số lượng tham số đang bật `requires_grad=True`.
+  - $N_{\text{frozen}}$: Số lượng tham số bị đóng băng (`requires_grad=False`).
+- Cung cấp bảng tổng hợp tham số trước và sau khi áp dụng chiến lược đóng băng/mở khóa.
 
-### 5.2. Dynamic Model Adaptation (Bien doi Tuyen tinh va Thay the Head)
-- Su dung Torchvision Weights API hien dai (`weights=...`, khong dung `pretrained=True`).
-- Tich hop co che anh xa tu dong den Classification Head phu hop voi tung ho kien truc:
-  - **Ho ResNet**: Thay the lop Fully Connected tuyen tinh cuoi:
+### 5.2. Dynamic Model Adaptation (Biến đổi Tuyến tính và Thay thế Head)
+- Sử dụng Torchvision Weights API hiện đại (`weights=...Weights.DEFAULT`, loại bỏ `pretrained=True`).
+- Tích hợp cơ chế ánh xạ tự động đến Classification Head phù hợp với từng họ kiến trúc:
+  - **Họ ResNet**: Thay thế lớp Fully Connected tuyến tính cuối:
     ```python
     in_features = model.fc.in_features
     model.fc = nn.Linear(in_features, num_classes=10)
     ```
-  - **Ho VGG**: Thay the lop tuyen tinh cuoi trong bo classifier (`.classifier[6]`):
+  - **Họ VGG**: Thay thế lớp tuyến tính cuối trong bộ classifier (`.classifier[6]`):
     ```python
     in_features = model.classifier[6].in_features
     model.classifier[6] = nn.Linear(in_features, num_classes=10)
     ```
-  - **Ho DenseNet**: Thay the lop phan loai tuyen tinh (`.classifier`):
+  - **Họ DenseNet**: Thay thế lớp phân loại tuyến tính (`.classifier`):
     ```python
     in_features = model.classifier.in_features
     model.classifier = nn.Linear(in_features, num_classes=10)
     ```
 
-### 5.3. Flexible Weight Freezing Management (Quan ly Trong so Linh hoat)
-- Chien luoc `freeze_all`:
-  - Thiet lap `param.requires_grad = False` cho toan bo cac tham so thuoc backbone.
-  - Chi mo `requires_grad = True` cho Classification Head vua duoc thay the.
-- Chien luoc `unfreeze_last_block`:
-  - Dong bang cac khoi tang nhe ban dau de bao toan dac trung tong quat (canh, goc, van hoa).
-  - Mo khoa cac tham so thuoc khoi tich chap cuoi cung (`model.layer4` o ResNet, `model.features[24:]` o VGG-16, hoac `model.features.denseblock4` va `model.features.norm5` o DenseNet-121) cung Classification Head.
-- **Bo loc Optimizer chuan xac**: Chi dua cac tham so co `requires_grad=True` vao Optimizer de tiet kiem bo nho optimizer state va tranh tinh toan gradient du thua:
+### 5.3. Flexible Weight Freezing Management (Quản lý Trọng số Linh hoạt)
+- Chiến lược `freeze_all`:
+  - Thiết lập `param.requires_grad = False` cho toàn bộ các tham số thuộc backbone.
+  - Chỉ mở `requires_grad = True` cho Classification Head vừa được thay thế.
+- Chiến lược `unfreeze_last_block`:
+  - Đóng băng các khối tầng nhẹ ban đầu để bảo toàn đặc trưng tổng quát (cạnh, góc, vân hoa).
+  - Mở khóa các tham số thuộc khối tích chập cuối cùng (`model.layer4` ở ResNet, các tầng conv cuối ở VGG-16, hoặc `model.features.denseblock4` và `model.features.norm5` ở DenseNet-121) cùng Classification Head.
+- **Bộ lọc Optimizer chuẩn xác**: Chỉ đưa các tham số có `requires_grad=True` vào Optimizer để tiết kiệm bộ nhớ optimizer state và tránh tính toán gradient dư thừa:
   ```python
-  optimizer = optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr, weight_decay=args.weight_decay)
+  trainable_params = filter(lambda p: p.requires_grad, model.parameters())
+  optimizer = optim.AdamW(trainable_params, lr=args.lr, weight_decay=args.weight_decay)
   ```
 
-### 5.4. Leak-free Data Pipeline (Xu ly Du lieu Chuan xac va Chong Ro ri)
-- Su dung gia tri trung binh va do lech chuan chuan hoa cua tap du lieu ImageNet:
+### 5.4. Leak-free Data Pipeline (Xử lý Dữ liệu Chuẩn xác và Chống Rò rỉ)
+- Sử dụng giá trị trung bình và độ lệch chuẩn chuẩn hóa của tập dữ liệu ImageNet:
   - Mean: `[0.485, 0.456, 0.406]`
   - Standard Deviation: `[0.229, 0.224, 0.225]`
-- Dam bao tinh chat khong ro ri du lieu (Data Leakage Prevention):
-  - Tao 2 doi tuong Dataset doc lap tu `torchvision.datasets.CIFAR10`: Mot doi tuong gan tap bien doi huan luyen (`train_transforms`), mot doi tuong gan tap bien doi danh gia (`eval_transforms`).
-  - Chia tap Train/Validation thong qua phan tach chi so ngau nhien co dinh seed (`torch.utils.data.Subset`), giup tap Validation hoan toan khong bi anh huong boi cac phep bien doi ngau nhien (Data Augmentation).
-- Phep bien doi:
-  - Train: `Resize((224, 224))` -> `RandomCrop(224, padding=4, padding_mode='reflect')` -> `RandomHorizontalFlip(p=0.5)` -> `ToTensor()` -> `Normalize(mean, std)`.
+- Đảm bảo tính chất không rò rỉ dữ liệu (Data Leakage Prevention):
+  - Tạo 2 đối tượng Dataset độc lập từ `torchvision.datasets.CIFAR10`: Một đối tượng gắn tập biến đổi huấn luyện (`train_transforms`), một đối tượng gắn tập biến đổi đánh giá (`eval_transforms`).
+  - Chia tập Train/Validation thông qua phân tách chỉ số ngẫu nhiên cố định seed (`torch.utils.data.Subset`), giúp tập Validation hoàn toàn không bị ảnh hưởng bởi các phép biến đổi ngẫu nhiên (Data Augmentation).
+- Phép biến đổi:
+  - Train: `Resize((256, 256))` -> `RandomCrop((224, 224))` -> `RandomHorizontalFlip(p=0.5)` -> `ToTensor()` -> `Normalize(mean, std)`.
   - Validation/Test: `Resize((224, 224))` -> `ToTensor()` -> `Normalize(mean, std)`.
 
-### 5.5. Comprehensive Monitoring & Diagnostics (Giam sat va Chan doan Toan dien)
-- Theo doi thoi gian thuc tren TensorBoard (`SummaryWriter`).
-- Tinh toan thoi gian thuc thi trung binh moi epoch va throughput (samples/second).
-- Tinh toan ma tran nham lan day du (10x10) tren tap Test va phan tich cac cap nhan de gay loi (vi du: cat vs. dog, automobile vs. truck).
+### 5.5. Comprehensive Monitoring & Diagnostics (Giám sát và Chẩn đoán Toàn diện)
+- Theo dõi thời gian thực trên TensorBoard (`SummaryWriter`).
+- Tính toán thời gian thực thi trung bình mỗi epoch và throughput (samples/second).
+- Tính toán ma trận nhầm lẫn đầy đủ (10x10) trên tập Test và phân tích các cặp nhãn dễ gây lỗi (ví dụ: cat vs. dog, automobile vs. truck).
 
 ---
 
 ## 6. Technology Stack & Hardware Probing
 
 ### 6.1. Technology Stack
-- **Ngon ngu lap trinh**: Python 3.10+
-- **Deep Learning Framework**: PyTorch (>= 2.0), Torchvision (>= 0.15) voi modern Weights API.
-- **Xy ly So hoc va Danh gia**: NumPy, Scikit-learn (tinh confusion matrix, classification report).
-- **Truc quan hoa va Do hoa**: Matplotlib (>= 3.7), Seaborn (>= 0.12), TensorBoard.
-- **Tien ich Tien trinh**: tqdm.
+- **Ngôn ngữ lập trình**: Python 3.10+
+- **Deep Learning Framework**: PyTorch (>= 2.0), Torchvision (>= 0.15) với modern Weights API.
+- **Xử lý Số học và Đánh giá**: NumPy, Scikit-learn (tính confusion matrix, classification report).
+- **Trực quan hóa và Đồ họa**: Matplotlib (>= 3.7), Seaborn (>= 0.12), TensorBoard.
+- **Tiện ích Tiến trình**: tqdm.
 
-### 6.2. Thong so Phan cung Thuc te (Actual Hardware Probing Results)
-Ket qua kiem tra truc tiep tu he thong thuc thi:
-- **He dieu hanh**: Ubuntu Linux x86_64
+### 6.2. Thông số Phần cứng Thực tế (Actual Hardware Probing Results)
+Kết quả kiểm tra trực tiếp từ hệ thống thực thi:
+- **Hệ điều hành**: Ubuntu Linux x86_64
 - **CPU**: 13th Gen Intel(R) Core(TM) i7-13620H (10 physical cores: 6 Performance-cores + 4 Efficient-cores, 16 logic threads)
-- **Bo nho RAM He thong**: 14.82 GB (~16 GB)
-- **GPU Chuyen dung**: NVIDIA GeForce RTX 3050 Laptop GPU
-  - Dung luong VRAM: 6,144 MiB (6.0 GB VRAM)
+- **Bộ nhớ RAM Hệ thống**: 14.82 GB (~16 GB)
+- **GPU Chuyên dụng**: NVIDIA GeForce RTX 3050 Laptop GPU
+  - Dung lượng VRAM: 6,144 MiB (6.0 GB VRAM)
   - Driver Version: 595.99.02
-  - Ho tro CUDA Runtime: 12.x / 13.x
+  - Hỗ trợ CUDA Runtime: 12.x / 13.x
 
-### 6.3. Cau hinh De xuat Toi uu theo Phan cung (Hardware-Tailored Defaults)
-Dua tren thong so 6GB VRAM va CPU 16 threads, he thong thiet lap cac thong so mac dinh toi uu nhu sau:
+### 6.3. Cấu hình Đề xuất Tối ưu theo Phần cứng (Hardware-Tailored Defaults)
+Dựa trên thông số 6GB VRAM và CPU 16 threads, hệ thống thiết lập các thông số mặc định tối ưu như sau:
 
-| Thong so | Che do CUDA GPU (RTX 3050 6GB) | Che do CPU Fallback | Giai thich ky thuat |
+| Thông số | Chế độ CUDA GPU (RTX 3050 6GB) | Chế độ CPU Fallback | Giải thích kỹ thuật |
 | :--- | :--- | :--- | :--- |
-| **Thiet bi (`--device`)** | `cuda:0` | `cpu` | Tu dong nhan dien thong qua `torch.cuda.is_available()`. |
-| **Batch Size (`--batch-size`)** | `64` | `32` | 64 la muc an toan cao tren 6GB VRAM khi anh duoc upscale len 224x224 (tranh loi CUDA Out Of Memory doi voi VGG-16 va DenseNet-121). Voi ResNet-18 co the tang len 128. |
-| **Num Workers (`--num-workers`)** | `4` | `2` | Khai thac da luong cua CPU i7-13620H (16 threads) de doc du lieu, dong thoi tranh overhead do IPC giua cac worker. |
-| **Pin Memory (`--pin-memory`)** | `True` | `False` | Khoa trang bo nho may chu giup tang toc do truyen du lieu tu RAM len VRAM qua PCIe. |
-| **Mixed Precision (`--amp`)** | Khuyen nghi bat (`fp16`) | `False` | Su dung `torch.cuda.amp.autocast()` de tiet kiem 40% VRAM va tang toc do tinh toan tren Tensor Cores cua kien truc Ampere. |
-| **Danh sach Model ho tro** | `resnet18`, `resnet50`, `vgg16_bn`, `densenet121` | `resnet18` | Tren CPU khuyen nghi su dung kien truc nhe (`resnet18`) ket hop co `--subset-ratio 0.1` de kiem thu nhanh. |
+| **Thiết bị (`--device`)** | `cuda:0` | `cpu` | Tự động nhận diện thông qua `torch.cuda.is_available()`. |
+| **Batch Size (`--batch-size`)** | `64` | `32` | 64 là mức an toàn cao trên 6GB VRAM khi ảnh được upscale lên 224x224 (tránh lỗi CUDA Out Of Memory đối với VGG-16 và DenseNet-121). Với ResNet-18 có thể tăng lên 128. |
+| **Num Workers (`--num-workers`)** | `4` | `2` | Khai thác đa luồng của CPU i7-13620H (16 threads) để đọc dữ liệu, đồng thời tránh overhead do IPC giữa các worker. |
+| **Pin Memory (`--pin-memory`)** | `True` | `False` | Khóa trang bộ nhớ máy chủ giúp tăng tốc độ truyền dữ liệu từ RAM lên VRAM qua PCIe. |
+| **Mixed Precision (`--amp`)** | Khuyến nghị bật (`fp16`) | `False` | Sử dụng `torch.amp.autocast('cuda')` để tiết kiệm 40% VRAM và tăng tốc độ tính toán trên Tensor Cores của kiến trúc Ampere. |
+| **Danh sách Model hỗ trợ** | `resnet18`, `resnet50`, `vgg16_bn`, `densenet121` | `resnet18` | Trên CPU khuyến nghị sử dụng kiến trúc nhẹ (`resnet18`) kết hợp cờ `--subset-ratio 0.1` để kiểm thử nhanh. |
 
 ---
 
 ## 7. Evaluation Metrics & Experimental Protocol
 
-### 7.1. Tap Chi so Danh gia (Evaluation Metrics)
+### 7.1. Tập Chỉ số Đánh giá (Evaluation Metrics)
 1. **Cross-Entropy Loss**:
    $$L = -\frac{1}{N} \sum_{i=1}^{N} \log \left(\frac{e^{z_{i, y_i}}}{\sum_{j=1}^{C} e^{z_{i, j}}}\right)$$
-   Ghi nhan sau moi epoch tren ca tap Train va tap Validation.
+   Ghi nhận sau mỗi epoch trên cả tập Train và tập Validation.
 2. **Top-1 Overall Accuracy (%)**:
    $$\text{Accuracy} = \frac{\sum_{c=1}^{C} \text{TP}_c}{N_{\text{total}}} \times 100\%$$
 3. **Per-class Accuracy, Precision, Recall, F1-Score**:
    $$\text{Accuracy}_c = \frac{\text{TP}_c}{\text{TP}_c + \text{FN}_c} \times 100\%$$
-   The hien nang luc nhan dien rieng biet tren tung lop doi tuong.
+   Thể hiện năng lực nhận diện riêng biệt trên từng lớp đối tượng.
 4. **Normalized Confusion Matrix**:
    $$M_{i, j} = \frac{C_{i, j}}{\sum_{k} C_{i, k}}$$
-   Bieu thi xac suat mau thuoc lop thuc te $i$ duoc du doan la lop $j$.
+   Biểu thị xác suất mẫu thuộc lớp thực tế $i$ được dự đoán là lớp $j$.
 5. **Efficiency & Computational Overhead**:
-   - Thoi gian huan luyen moi epoch ($t_{\text{epoch}}$, tinh bang giay).
-   - Thoi gian suy dien trung binh moi anh tren tap Test ($t_{\text{inf}}$, tinh bang miligiay).
-   - So luong tham so huan luyen va kich thuoc checkpoint (.pth) tren o dia.
+   - Thời gian huấn luyện mỗi epoch ($t_{\text{epoch}}$, tính bằng giây).
+   - Thời gian suy diễn trung bình mỗi ảnh trên tập Test ($t_{\text{inf}}$, tính bằng miligiây).
+   - Số lượng tham số huấn luyện và kích thước checkpoint (.pth) trên ổ đĩa.
 
-### 7.2. Quy trinh Thuc nghiem Chuan (Standard Experimental Protocol)
-1. **Khoi tao va Tai lap (Initialization & Seeding)**:
-   - Thiet lap seed co dinh: `torch.manual_seed(42)`, `np.random.seed(42)`, `torch.backends.cudnn.deterministic = True`.
-2. **Nap va Bien doi Mo hinh (Model Loading & Adaptation)**:
-   - Su dung trong so mac dinh hien dai tu Torchvision (vi du: `models.ResNet18_Weights.DEFAULT`).
-   - Ap dung co che dong bang theo tham so `--strategy`.
-   - Thay the lop phan loai cuoi sang 10 lop dau ra.
-3. **Vong lap Huan luyen va Kiem dinh (Train/Val Loop)**:
-   - Moi epoch thuc hien huan luyen tren 40,000 anh Train.
-   - Danh gia ngay lap tuc tren 10,000 anh Validation.
-   - Ghi nhat ky vao TensorBoard.
-4. **Chon lua Checkpoint Tot nhat (Model Checkpointing)**:
-   - Theo doi Validation Accuracy. Chi luu de trong so vao `checkpoints/best_<model>_<strategy>.pth` khi Validation Accuracy dat ky luc moi (Early-saving policy).
-5. **Danh gia Cuoi cung tren Tap Kiem thu Doc lap (Final Independent Testing)**:
-   - Tai lai checkpoint tot nhat da luu.
-   - Thuc hien suy dien tren 10,000 anh Test chua tung xuat hien trong qua trinh huan luyen hoac chon mo hinh.
-   - Xuat toan bo bao cao (JSON, CSV) va 3 bieu do chuan xuat ban (300 DPI) vao thu muc `outputs/`.
-
+### 7.2. Quy trình Thực nghiệm Chuẩn (Standard Experimental Protocol)
+1. **Khởi tạo và Tái lập (Initialization & Seeding)**:
+   - Thiết lập seed cố định: `torch.manual_seed(42)`, `np.random.seed(42)`, `torch.backends.cudnn.deterministic = True`.
+2. **Nạp và Biến đổi Mô hình (Model Loading & Adaptation)**:
+   - Sử dụng trọng số mặc định hiện đại từ Torchvision (ví dụ: `models.ResNet18_Weights.DEFAULT`).
+   - Áp dụng cơ chế đóng băng theo tham số `--strategy`.
+   - Thay thế lớp phân loại cuối sang 10 lớp đầu ra.
+3. **Vòng lặp Huấn luyện và Kiểm định (Train/Val Loop)**:
+   - Mỗi epoch thực hiện huấn luyện trên 40,000 ảnh Train.
+   - Đánh giá ngay lập tức trên 10,000 ảnh Validation.
+   - Ghi nhật ký vào TensorBoard.
+4. **Chọn lựa Checkpoint Tốt nhất (Model Checkpointing)**:
+   - Theo dõi Validation Accuracy. Chỉ lưu đè trọng số vào `checkpoints/best_<model>_<strategy>.pth` khi Validation Accuracy đạt kỷ lục mới (Early-saving policy).
+5. **Đánh giá Cuối cùng trên Tập Kiểm thử Độc lập (Final Independent Testing)**:
+   - Tải lại checkpoint tốt nhất đã lưu.
+   - Thực hiện suy diễn trên 10,000 ảnh Test chưa từng xuất hiện trong quá trình huấn luyện hoặc chọn mô hình.
+   - Xuất toàn bộ báo cáo (JSON, CSV) và 3 biểu đồ chuẩn xuất bản (300 DPI) vào thư mục `outputs/`.

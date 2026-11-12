@@ -1,12 +1,12 @@
 # Standard Operating Procedure: 7-Step Development Workflow
 
-Quy trinh Phat trien Chuan (Standard Operating Procedure - SOP) cho du an **Practice 2: Hands-on practice with pre-trained neural network architectures**. Toan bo ma nguon duoc phat trien tu dau (from scratch) bat buoc phai tuan thu nghiem ngat chu trinh 7 buoc nay de dam bao tinh on dinh, chat luong ma nguon va tinh tai lap khoa hoc tren phan cung thuc te.
+Quy trình Phát triển Chuẩn (Standard Operating Procedure - SOP) cho dự án **Practice 2: Hands-on practice with pre-trained neural network architectures**. Toàn bộ mã nguồn được phát triển từ đầu (from scratch) bắt buộc phải tuân thủ nghiêm ngặt chu trình 7 bước này để đảm bảo tính ổn định, chất lượng mã nguồn và tính tái lập khoa học trên phần cứng thực tế.
 
 ---
 
 ## 1. Workflow Architecture & Lifecycle
 
-Moi module trong he thong (`config.py`, `dataset.py`, `model_factory.py`, `trainer.py`, `evaluate.py`, `main.py`) duoc xay dung va nghiem thu theo chu trinh phat trien lap (Iterative Lifecycle) gom 7 buoc tuan tu:
+Mỗi module trong hệ thống (`config.py`, `dataset.py`, `model_factory.py`, `trainer.py`, `evaluate.py`, `main.py`) được xây dựng và nghiệm thu theo chu trình phát triển lặp (Iterative Lifecycle) gồm 7 bước tuần tự:
 
 ```mermaid
 flowchart TD
@@ -17,120 +17,131 @@ flowchart TD
     S5 --> S6["Step 6: Refactor (Optimization & Regression Check)"]
     S6 -->|Regression Passed| S7["Step 7: Commit (Atomic Conventional Commit)"]
     S6 -.->|Regression Failed| S5
+
+    %% Bổ sung màu sắc theo 4 pha phát triển
+    classDef specStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef devStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+    classDef testStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef commitStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
+
+    class S1 specStyle;
+    class S2,S3 devStyle;
+    class S4,S5 testStyle;
+    class S6,S7 commitStyle;
 ```
 
-### Nguyen tac Cot loi:
-- **Zero Premature Training**: Tuyet doi khong khoi chay huan luyen toan bo du lieu (Full Training) khi module chua vuot qua buoc chay thu nhanh (Step 4: Smoke Run) va kiem thu toan hoc (Step 5: Verification).
-- **Mandatory Regression Gate**: Sau bat ky thao tac toi uu hoac lam sach ma nguon nao o buoc Refactor (Step 6), bat buoc phai chay lai toan bo bo kiem thu cua Step 5 truoc khi thuc hien Commit (Step 7).
+### Nguyên tắc Cốt lõi:
+- **Zero Premature Training**: Tuyệt đối không khởi chạy huấn luyện toàn bộ dữ liệu (Full Training) khi module chưa vượt qua bước chạy thử nhanh (Step 4: Smoke Run) và kiểm thử toán học (Step 5: Verification).
+- **Mandatory Regression Gate**: Sau bất kỳ thao tác tối ưu hoặc làm sạch mã nguồn nào ở bước Refactor (Step 6), bắt buộc phải chạy lại toàn bộ bộ kiểm thử của Step 5 trước khi thực hiện Commit (Step 7).
 
 ---
 
 ## 2. Detailed 7-Step Execution Protocol
 
-### Step 1: Describe (Dac ta Cap do Module)
-- **Objective**: Khoa chat pham vi thuc thi, dinh nghia kieu du lieu dau vao/dau ra va cac rang buoc ky thuat truoc khi viet code.
+### Step 1: Describe (Đặc tả Cấp độ Module)
+- **Objective**: Khóa chặt phạm vi thực thi, định nghĩa kiểu dữ liệu đầu vào/đầu ra và các ràng buộc kỹ thuật trước khi viết code.
 - **Action Items**:
-  - Doi chieu voi `docs/project_design.md` de xac dinh interface chuan: Ten ham, ten class, tham so truyen vao kem Python Type Hints va gia tri tra ve.
-  - Xac dinh ro cac truong hop bien (Edge Cases): Tap du lieu rong, kich thuoc batch khong chia het, thiet bi khong co GPU.
-  - Liet ke cac rang buoc phan cung can tuan thu: Gioi han VRAM 6GB, gioi han luong CPU 16 threads.
+  - Đối chiếu với `docs/project_design.md` để xác định interface chuẩn: Tên hàm, tên class, tham số truyền vào kèm Python Type Hints và giá trị trả về.
+  - Xác định rõ các trường hợp biên (Edge Cases): Tập dữ liệu rỗng, kích thước batch không chia hết, thiết bị không có GPU.
+  - Liệt kê các ràng buộc phần cứng cần tuân thủ: Giới hạn VRAM 6GB, giới hạn luồng CPU 16 threads.
 - **Exit Criteria**:
-  - Bang dac ta hoac prompt yeu cau co day du Function Signatures, Type Hints, va khong co diem mo ho ve logic.
+  - Bảng đặc tả hoặc prompt yêu cầu có đầy đủ Function Signatures, Type Hints, và không có điểm mơ hồ về logic.
 
 ---
 
-### Step 2: Generate (Sinh Code Doc lap theo Module)
-- **Objective**: Hien thuc hoa ma nguon cho duy nhat 1 module duoc chi dinh, khong phu thuoc cheo ngoai thiet ke.
+### Step 2: Generate (Sinh Code Độc lập theo Module)
+- **Objective**: Hiện thực hóa mã nguồn cho duy nhất 1 module được chỉ định, không phụ thuộc chéo ngoài thiết kế.
 - **Action Items**:
-  - Viet code tuan thu PEP8, 100% su dung Type Hints chuan (`from typing import Tuple, Dict, List, Optional, Any`).
-  - Dat ten bien, ham va class bang tieng Anh chuan danh tu/dong tu ky thuat.
-  - Chi su dung chu thich tieng Viet tai cac vi tri xu ly logic nghiep vu dac thu (vi du: ky thuat tach Dataset chong ro ri Data Augmentation, logic re nhanh thay the Classification Head).
-  - Khong them bat ky thu vien ngoai lai nao chua co trong `requirements.txt`.
+  - Viết code tuân thủ PEP8, 100% sử dụng Type Hints chuẩn (`from typing import Tuple, Dict, List, Optional, Any`).
+  - Đặt tên biến, hàm và class bằng tiếng Anh chuẩn danh từ/động từ kỹ thuật.
+  - Chỉ sử dụng chú thích tiếng Việt tại các vị trí xử lý logic nghiệp vụ đặc thù (ví dụ: kỹ thuật tách Dataset chống rò rỉ Data Augmentation, logic rẽ nhánh thay thế Classification Head).
+  - Không thêm bất kỳ thư viện ngoại lai nào chưa có trong `requirements.txt`.
 - **Exit Criteria**:
-  - File ma nguon duoc luu dung vi tri trong `src/`, khong co loi cu phap (SyntaxError) va import thanh cong.
+  - File mã nguồn được lưu đúng vị trí trong `src/`, không có lỗi cú pháp (SyntaxError) và import thành công.
 
 ---
 
-### Step 3: Review (Kiem duyet Tinh & Ra soat Logic PyTorch)
-- **Objective**: Phat hien som cac loi logic he thong, ranh gioi gradient va ro ri du lieu qua checklist kiem duyet.
+### Step 3: Review (Kiểm duyệt Tĩnh & Rà soát Logic PyTorch)
+- **Objective**: Phát hiện sớm các lỗi logic hệ thống, ranh giới gradient và rò rỉ dữ liệu qua checklist kiểm duyệt.
 - **Action Items**:
-  - Kiem tra checklist 5 diem bat buoc:
-    1. **Modern Weights API**: Da loai bo hoan toan `pretrained=True` va thay bang `weights=...Weights.DEFAULT` chua?
-    2. **Data Leakage Check**: Tap Validation co bi gan nham `train_transform` (chua `RandomCrop`, `RandomHorizontalFlip`) khong?
-    3. **Optimizer Scope Filter**: Da su dung `filter(lambda p: p.requires_grad, model.parameters())` chua, hay dang truyen toan bo tham so dong bang vao Optimizer?
-    4. **Model State & No-Grad**: Da dat `model.train()` trong vong lap huan luyen va `model.eval()` kem `torch.no_grad()` trong validation/testing chua?
-    5. **Device Consistency**: Model, `inputs` va `targets` da duoc day len cung mot `device` (`.to(device)`) chua?
+  - Kiểm tra checklist 5 điểm bắt buộc:
+    1. **Modern Weights API**: Đã loại bỏ hoàn toàn `pretrained=True` và thay bằng `weights=...Weights.DEFAULT` chưa?
+    2. **Data Leakage Check**: Tập Validation có bị gán nhầm `train_transform` (chứa `RandomCrop`, `RandomHorizontalFlip`) không?
+    3. **Optimizer Scope Filter**: Đã sử dụng `filter(lambda p: p.requires_grad, model.parameters())` chưa, hay đang truyền toàn bộ tham số đóng băng vào Optimizer?
+    4. **Model State & No-Grad**: Đã đặt `model.train()` trong vòng lặp huấn luyện và `model.eval()` kèm `torch.no_grad()` trong validation/testing chưa?
+    5. **Device Consistency**: Model, `inputs` và `targets` đã được đẩy lên cùng một `device` (`.to(device)`) chưa?
 - **Exit Criteria**:
-  - Ma nguon vuot qua tat ca 5 muc trong checklist kiem duyet ma khong co bat ky vi pham nao.
+  - Mã nguồn vượt qua tất cả 5 mục trong checklist kiểm duyệt mà không có bất kỳ vi phạm nào.
 
 ---
 
-### Step 4: Run (Chay Thu nghiem Nhanh - Smoke Run / Dry Run)
-- **Objective**: Kiem tra luong thuc thi tu dau den cuoi trong thoi gian duoi 10 giay, phat hien som loi bo nho va xung dot kich thuoc tensor.
+### Step 4: Run (Chạy Thử nghiệm Nhanh - Smoke Run / Dry Run)
+- **Objective**: Kiểm tra luồng thực thi từ đầu đến cuối trong thời gian dưới 10 giây, phát hiện sớm lỗi bộ nhớ và xung đột kích thước tensor.
 - **Action Items**:
-  - Voi `dataset.py`: Khoi tao dataloader voi tham so `dry_run=True` de chi lay vai chuc mau.
-  - Voi `model_factory.py`: Khoi tao model va chay forward mot dummy tensor `torch.randn(2, 3, 224, 224)`.
-  - Voi `trainer.py` va `main.py`: Chay flag `--dry-run` de thuc thi dung 1 batch train va 1 batch validation.
-  - Giam sat muc tieu thu VRAM bang `nvidia-smi` de xac nhan khong co hien tuong tran bo nho (CUDA OOM).
+  - Với `dataset.py`: Khởi tạo dataloader với tham số `dry_run=True` để chỉ lấy vài chục mẫu.
+  - Với `model_factory.py`: Khởi tạo model và chạy forward một dummy tensor `torch.randn(2, 3, 224, 224)`.
+  - Với `trainer.py` và `main.py`: Chạy cờ `--dry-run` để thực thi đúng 1 batch train và 1 batch validation.
+  - Giám sát mức tiêu thụ VRAM bằng `nvidia-smi` để xác nhận không có hiện tượng tràn bộ nhớ (CUDA OOM).
 - **Exit Criteria**:
-  - Lenh thuc thi chay het chu trinh, ket thuc voi Exit Code 0 ma khong quang ra Exception.
+  - Lệnh thực thi chạy hết chu trình, kết thúc với Exit Code 0 mà không quăng ra Exception.
 
 ---
 
-### Step 5: Test (Kiem thu Tu dong & Xac minh Toan hoc)
-- **Objective**: Dung cac phep tinh toan hoc va assertion de kiem chung tinh dung dan tuyet doi cua module.
+### Step 5: Test (Kiểm thử Tự động & Xác minh Toán học)
+- **Objective**: Dùng các phép tính toán học và assertion để kiểm chứng tính đúng đắn tuyệt đối của module.
 - **Action Items**:
-  - **Kiem thu Data Pipeline (`src/dataset.py`)**:
-    - Kiem tra batch shape: `images.shape == torch.Size([B, 3, 224, 224])`, `labels.shape == torch.Size([B])`.
-    - Kiem tra nhan: `torch.all((labels >= 0) & (labels <= 9)) == True`.
-    - Kiem tra tinh roi nhau (Disjointness): `set(train_indices).isdisjoint(set(val_indices)) == True`.
-  - **Kiem thu Model Factory (`src/model_factory.py`)**:
-    - Output logits shape phai la `(B, 10)`.
-    - Voi `freeze_all` tren ResNet-18: So tham so `requires_grad=True` phai bang chinh xac $512 \times 10 + 10 = 5,130$.
-    - Voi `unfreeze_last_block` tren ResNet-18: So tham so `requires_grad=True` phai lon hon 5,130 va nho hon 11,181,642 (tong tham so).
-  - **Kiem thu Huan luyen & Sanity Check Toan hoc (`src/trainer.py`)**:
-    - Loss khoi tao (Initial Loss Check): Batch dau tien chua qua cap nhat trong so phai co Cross-Entropy Loss xap xi $-\ln(1/10) \approx 2.3025$ (sai so chap nhan trong khoang $[2.1, 2.6]$).
-    - Single Batch Overfit Test: Huan luyen mo hinh tren duy nhat 1 batch trong 10-20 buoc; xac nhan Loss giam manh ve gan 0 de chung minh backpropagation va optimizer hoat dong dung.
-  - **Kiem thu Danh gia & Visualizer (`src/evaluate.py`)**:
-    - Kiem tra su ton tai va dung luong cua 3 file anh tai `outputs/figures/`: `training_history.png`, `class_accuracy.png`, `confusion_matrix.png` (> 0 bytes).
+  - **Kiểm thử Data Pipeline (`src/dataset.py`)**:
+    - Kiểm tra batch shape: `images.shape == torch.Size([B, 3, 224, 224])`, `labels.shape == torch.Size([B])`.
+    - Kiểm tra nhãn: `torch.all((labels >= 0) & (labels <= 9)) == True`.
+    - Kiểm tra tính rời nhau (Disjointness): `set(train_indices).isdisjoint(set(val_indices)) == True`.
+  - **Kiểm thử Model Factory (`src/model_factory.py`)**:
+    - Output logits shape phải là `(B, 10)`.
+    - Với `freeze_all` trên ResNet-18: Số tham số `requires_grad=True` phải bằng chính xác $512 \times 10 + 10 = 5,130$.
+    - Với `unfreeze_last_block` trên ResNet-18: Số tham số `requires_grad=True` phải lớn hơn 5,130 và nhỏ hơn 11,181,642 (tổng tham số).
+  - **Kiểm thử Huấn luyện & Sanity Check Toán học (`src/trainer.py`)**:
+    - Loss khởi tạo (Initial Loss Check): Batch đầu tiên chưa qua cập nhật trọng số phải có Cross-Entropy Loss xấp xỉ $-\ln(1/10) \approx 2.3025$ (sai số chấp nhận trong khoảng $[1.8, 3.2]$).
+    - Single Batch Overfit Test: Huấn luyện mô hình trên duy nhất 1 batch trong 50 bước; xác nhận Loss giảm trên 50% để chứng minh backpropagation và optimizer hoạt động đúng.
+  - **Kiểm thử Đánh giá & Visualizer (`src/evaluate.py`)**:
+    - Kiểm tra sự tồn tại và dung lượng của 3 file ảnh tại `outputs/figures/`: `training_history.png`, `class_accuracy.png`, `confusion_matrix.png` (> 0 bytes).
 - **Exit Criteria**:
-  - Toan bo cac bieu thuc assertion deu tra ve `True`.
+  - Toàn bộ các biểu thức assertion đều trả về `True`.
 
 ---
 
-### Step 6: Refactor (Lam sach, Toi uu hoa & Kiem tra Hoi quy)
-- **Objective**: Nang cao chat luong ma nguon, loai bo doan ma thua ma khong lam thay doi hanh vi cua he thong.
+### Step 6: Refactor (Làm sạch, Tối ưu hóa & Kiểm tra Hồi quy)
+- **Objective**: Nâng cao chất lượng mã nguồn, loại bỏ đoạn mã thừa mà không làm thay đổi hành vi của hệ thống.
 - **Action Items**:
-  - Xoa bo cac dong `print()` debug tam thoi, chuyen sang dung logging hoac TensorBoard summary.
-  - Ap dung nguyen tac DRY (Don't Repeat Yourself): Gom cac doan ma trung lap ve ham tien ich dung chung.
-  - Toi uu DataLoader: Dam bao `pin_memory=True` khi dung GPU va `num_workers=4` tren CPU i7-13620H.
-  - **Bat buoc chay Regression Check**: Chay lai toan bo cac lenh kiem thu tai Step 5 de dam bao viec don dep khong tao ra loi ngam (regression bugs).
+  - Xóa bỏ các dòng `print()` debug tạm thời, chuyển sang dùng logging hoặc TensorBoard summary.
+  - Áp dụng nguyên tắc DRY (Don't Repeat Yourself): Gom các đoạn mã trùng lặp về hàm tiện ích dùng chung.
+  - Tối ưu DataLoader: Đảm bảo `pin_memory=True` khi dùng GPU và `num_workers=4` trên CPU i7-13620H.
+  - **Bắt buộc chạy Regression Check**: Chạy lại toàn bộ các lệnh kiểm thử tại Step 5 để đảm bảo việc dọn dẹp không tạo ra lỗi ngầm (regression bugs).
 - **Exit Criteria**:
-  - Ma nguon sach se, khong con bien thua, va toan bo test tai Step 5 van pass 100%.
+  - Mã nguồn sạch sẽ, không còn biến thừa, và toàn bộ test tại Step 5 vẫn pass 100%.
 
 ---
 
-### Step 7: Commit (Quan ly Phien ban Chuan Git)
-- **Objective**: Dong goi thanh qua vao Git repository voi thong diep ro rang, mang tinh nguyen tu (Atomic Commit).
+### Step 7: Commit (Quản lý Phiên bản Chuẩn Git)
+- **Objective**: Đóng gói thành quả vào Git repository với thông điệp rõ ràng, mang tính nguyên tử (Atomic Commit).
 - **Action Items**:
-  - Su dung tieu chuan Conventional Commits theo mau: `<type>(<scope>): <subject>`.
-    - `feat`: Them tinh nang hoac module moi.
-    - `test`: Them hoac cap nhat test script.
-    - `refactor`: Lam sach hoac toi uu ma nguon.
-    - `docs`: Cap nhat tai lieu.
-    - `fix`: Sua loi logic hoac runtime.
-  - Chi add cac file lien quan truc tiep den Milestone hien tai, khong add file du lieu lon hoac checkpoint nang.
+  - Sử dụng tiêu chuẩn Conventional Commits theo mẫu: `<type>(<scope>): <subject>`.
+    - `feat`: Thêm tính năng hoặc module mới.
+    - `test`: Thêm hoặc cập nhật test script.
+    - `refactor`: Làm sạch hoặc tối ưu mã nguồn.
+    - `docs`: Cập nhật tài liệu.
+    - `fix`: Sửa lỗi logic hoặc runtime.
+  - Chỉ add các file liên quan trực tiếp đến Milestone hiện tại, không add file dữ liệu lớn hoặc checkpoint nặng.
 - **Exit Criteria**:
-  - `git status` sach se, commit duoc ghi nhan tren nhanh `lab2`.
+  - `git status` sạch sẽ, commit được ghi nhận trên nhánh `lab2`.
 
 ---
 
 ## 3. Milestone Execution Matrix
 
-Bang anh xa quy trinh 7 buoc cho 4 Milestones thuc te cua du an kem cau lenh xac minh cu the:
+Bảng ánh xạ quy trình 7 bước cho 4 Milestones thực tế của dự án kèm câu lệnh xác minh cụ thể:
 
-| Milestone | Pham vi Module | Cau lenh Smoke Run & Test (Step 4 & Step 5) | Mau Commit Message de xuat (Step 7) |
+| Milestone | Phạm vi Module | Câu lệnh Smoke Run & Test (Step 4 & Step 5) | Mẫu Commit Message đề xuất (Step 7) |
 | :--- | :--- | :--- | :--- |
 | **Milestone 1: Config & Data Pipeline** | `src/config.py`<br>`src/dataset.py` | `python3 -c "from src.dataset import get_cifar10_dataloaders; tr, va, te = get_cifar10_dataloaders('data', dry_run=True); b = next(iter(tr)); assert b[0].shape == (64, 3, 224, 224); assert b[1].shape == (64,); print('M1 Verified Successfully')"` | `feat(data): implement leak-free CIFAR-10 data pipeline with adaptive configuration` |
 | **Milestone 2: Model Factory & Inspection** | `src/model_factory.py` | `python3 -c "from src.model_factory import build_model, count_parameters; m = build_model('resnet18', 'freeze_all'); c = count_parameters(m); assert c['trainable'] == 5130; m2 = build_model('resnet18', 'unfreeze_last_block'); c2 = count_parameters(m2); assert c2['trainable'] > 5130; print('M2 Verified Successfully')"` | `feat(models): implement dynamic model factory with modern weights API and freezing strategies` |
-| **Milestone 3: Training Engine & TensorBoard** | `src/trainer.py`<br>`main.py` (Draft) | `python3 main.py --model resnet18 --dry-run` | `feat(trainer): implement training loop with mixed precision, TensorBoard logging and checkpointing` |
-| **Milestone 4: Evaluation, Visualization & CLI** | `src/evaluate.py`<br>`main.py` (Full) | `python3 main.py --model resnet18 --strategy freeze_all --epochs 1 --subset-ratio 0.05` | `feat(eval): implement test evaluation, per-class metrics reporting and 300 DPI visualizations` |
+| **Milestone 3: Training Engine & TensorBoard** | `src/trainer.py` | `python3 -m unittest tests/test_trainer.py -v` | `feat(trainer): implement training engine with AMP, TensorBoard logging and best-checkpoint saving` |
+| **Milestone 4: Evaluation, Visualization & CLI** | `src/evaluate.py`<br>`main.py` | `python3 main.py --model resnet18 --strategy freeze_all --epochs 1 --dry-run` | `feat(eval-cli): implement independent test evaluation, 300 DPI visualizations and unified CLI entry point` |

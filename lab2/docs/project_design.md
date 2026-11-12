@@ -2,9 +2,9 @@
 
 ## 1. System Architecture
 
-He thong duoc thiet ke theo mo hinh Modular va Clean Architecture, toi uu hoa cho quy trinh thuc nghiem Deep Learning. Cac thanh phan tuong tac mot chieu, phan tach ro rang giua quan ly cau hinh, nap du lieu, tao dung mo hinh, dong co huan luyen va danh gia truc quan.
+Hệ thống được thiết kế theo mô hình Modular và Clean Architecture, tối ưu hóa cho quy trình thực nghiệm Deep Learning. Các thành phần tương tác một chiều, phân tách rõ ràng giữa quản lý cấu hình, nạp dữ liệu, tạo dựng mô hình, động cơ huấn luyện và đánh giá trực quan.
 
-### 1.1. So do Kien truc Tong quan
+### 1.1. Sơ đồ Kiến trúc Tổng quan
 
 ```mermaid
 flowchart TD
@@ -17,164 +17,194 @@ flowchart TD
     TRAIN --> CKPT["Model Checkpointing (checkpoints/)"]
     CKPT --> EVAL["Independent Evaluator & Visualizer (src/evaluate.py)"]
     EVAL --> OUT["Reports & Figures (outputs/)"]
+
+    %% Bổ sung màu sắc trực quan theo vai trò chức năng
+    classDef cliStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef coreStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+    classDef engineStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef outStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f;
+
+    class CLI,CFG cliStyle;
+    class DATA,MODEL coreStyle;
+    class TRAIN,EVAL engineStyle;
+    class TB,CKPT,OUT outStyle;
 ```
 
-### 1.2. Nguyen tac Tuong tac giua cac Thanh phan
-- **Don huong (One-way Dependency)**: Cac module cap thap khong phu thuoc nguoc vao module cap cao. `main.py` dieu phoi toan bo luong cong viec thong qua cac interface chuan.
-- **Tach biet Trang thai (Stateless Factories)**: `dataset.py` va `model_factory.py` hoat dong nhu cac ham khoi tao doc lap, khong luu tru trang thai huan luyen toan cuc.
-- **Quan ly Tap trung (Single Source of Truth)**: Moi tham so mac dinh, sieu tham so phan cung va duong dan deu do `config.py` quan ly.
+### 1.2. Nguyên tắc Tương tác giữa các Thành phần
+- **Đơn hướng (One-way Dependency)**: Các module cấp thấp không phụ thuộc ngược vào module cấp cao. `main.py` điều phối toàn bộ luồng công việc thông qua các interface chuẩn.
+- **Tách biệt Trạng thái (Stateless Factories)**: `dataset.py` và `model_factory.py` hoạt động như các hàm khởi tạo độc lập, không lưu trữ trạng thái huấn luyện toàn cục.
+- **Quản lý Tập trung (Single Source of Truth)**: Mọi tham số mặc định, siêu tham số phần cứng và đường dẫn đều do `config.py` quản lý.
 
 ---
 
 ## 2. Module Breakdown
 
-He thong bao gom 6 module chinh duoc to chuc gon gang trong thu muc `src/` va file thuc thi `main.py` tai thu muc goc:
+Hệ thống bao gồm 6 module chính được tổ chức gọn gàng trong thư mục `src/` và file thực thi `main.py` tại thư mục gốc:
 
 ### 2.1. `src/config.py` (Central Configuration & Environment Probing)
-- **Nhiem vu**: Quan ly tap trung toan bo hang so, duong dan thu muc va tu dong phat hien phan cung.
-- **Noi dung chi tiet**:
-  - Hang so ImageNet: `IMAGENET_MEAN = [0.485, 0.456, 0.406]`, `IMAGENET_STD = [0.229, 0.224, 0.225]`.
-  - Danh sach 10 lop CIFAR-10 theo thu tu chuan: `['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']`.
-  - Duong dan tuyet doi/tuong doi den cac thu muc lam viec: `data/`, `checkpoints/`, `runs/`, `outputs/figures/`, `outputs/reports/`.
-  - Ham `get_device()`: Tu dong phat hien `cuda` (uu tien so 1), `mps` (tren macOS), hoac `cpu` (fallback).
-  - Tich hop thong so do luong phan cung thuc te: Cai dat gia tri mac dinh `batch_size=64`, `num_workers=4`, `pin_memory=True` khi phat hien GPU NVIDIA (RTX 3050 6GB) va CPU da loi.
+- **Nhiệm vụ**: Quản lý tập trung toàn bộ hằng số, đường dẫn thư mục và tự động phát hiện phần cứng.
+- **Nội dung chi tiết**:
+  - Hằng số ImageNet: `IMAGENET_MEAN = [0.485, 0.456, 0.406]`, `IMAGENET_STD = [0.229, 0.224, 0.225]`.
+  - Danh sách 10 lớp CIFAR-10 theo thứ tự chuẩn: `['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']`.
+  - Đường dẫn tuyệt đối/tương đối đến các thư mục làm việc: `data/`, `checkpoints/`, `runs/`, `outputs/figures/`, `outputs/reports/`.
+  - Hàm `get_device()`: Tự động phát hiện `cuda` (ưu tiên số 1), `mps` (trên macOS), hoặc `cpu` (fallback).
+  - Tích hợp thông số đo lường phần cứng thực tế: Cài đặt giá trị mặc định `batch_size=64`, `num_workers=4`, `pin_memory=True` khi phát hiện GPU NVIDIA (RTX 3050 6GB) và CPU đa lõi.
 
 ### 2.2. `src/dataset.py` (Leak-Free Data Pipeline)
-- **Nhiem vu**: Tai xuong tap du lieu CIFAR-10, ap dung phep bien doi hinh anh chuan va tao cac `DataLoader` rieng biet cho Train, Validation, Test.
-- **Chi tiet xu ly**:
+- **Nhiệm vụ**: Tải xuống tập dữ liệu CIFAR-10, áp dụng phép biến đổi hình ảnh chuẩn và tạo các `DataLoader` riêng biệt cho Train, Validation, Test.
+- **Chi tiết xử lý**:
   - `train_transform`: `Resize((256, 256))` -> `RandomCrop((224, 224))` -> `RandomHorizontalFlip(p=0.5)` -> `ToTensor()` -> `Normalize(mean, std)`.
   - `eval_transform`: `Resize((224, 224))` -> `ToTensor()` -> `Normalize(mean, std)`.
-  - Co che chong ro ri du lieu (Leak-free Protocol): Khoi tao 2 doi tuong `CIFAR10(root, train=True)` rieng biet gan voi 2 bo transform tuong ung. Su dung chi so ngau nhien co dinh `torch.randperm` (seed=42) de cat 40,000 mau Train va 10,000 mau Validation. Tap Test (10,000 mau) lay tu `CIFAR10(root, train=False)`.
-  - Ho tro tham so `subset_ratio` (0.0 < ratio <= 1.0) va co `dry_run` de cat nhanh tap mau phuc vu kiem thu he thong.
+  - Cơ chế chống rò rỉ dữ liệu (Leak-free Protocol): Khởi tạo 2 đối tượng `CIFAR10(root, train=True)` riêng biệt gắn với 2 bộ transform tương ứng. Sử dụng chỉ số ngẫu nhiên cố định `torch.randperm` (seed=42) để cắt 40,000 mẫu Train và 10,000 mẫu Validation. Tập Test (10,000 mẫu) lấy từ `CIFAR10(root, train=False)`.
+  - Hỗ trợ tham số `subset_ratio` (0.0 < ratio <= 1.0) và cờ `dry_run` để cắt nhanh tập mẫu phục vụ kiểm thử hệ thống.
 
 ### 2.3. `src/model_factory.py` (Dynamic Model Factory & Inspection)
-- **Nhiem vu**: Khoi tao mo hinh pre-trained, phan tich cau truc tham so, thay the classification head va quan ly chien luoc dong bang trong so.
-- **Chi tiet xu ly**:
-  - Tich hop Torchvision Modern Weights API: Su dung `ResNet18_Weights.DEFAULT`, `ResNet50_Weights.DEFAULT`, `VGG16_BN_Weights.DEFAULT`, `DenseNet121_Weights.DEFAULT`.
-  - Ham `count_parameters(model)` va `inspect_model(model)`: Tinh toan va in bang thong ke Total Parameters, Trainable Parameters, Frozen Parameters va ty le phan tram tham so duoc huan luyen.
-  - Dynamic Head Replacement:
-    - ResNet: Thay `model.fc` thanh `nn.Linear(in_features, 10)`.
-    - VGG: Thay `model.classifier[6]` thanh `nn.Linear(in_features, 10)`.
-    - DenseNet: Thay `model.classifier` thanh `nn.Linear(in_features, 10)`.
-  - Freezing Strategies:
-    - `freeze_all`: Dong bang toan bo backbone (`requires_grad = False`), chi mo khoa classification head moi.
-    - `unfreeze_last_block`: Mo khoa them `model.layer4` (ResNet), cac tang convolution cuoi (VGG), hoac `model.features.denseblock4` va `norm5` (DenseNet).
+- **Nhiệm vụ**: Khởi tạo mô hình pre-trained, phân tích cấu trúc tham số, thay thế classification head và quản lý chiến lược đóng băng trọng số.
+- **Chi tiết xử lý**:
+  - Tích hợp Torchvision Modern Weights API: Sử dụng `ResNet18_Weights.DEFAULT`, `ResNet50_Weights.DEFAULT`, `VGG16_BN_Weights.DEFAULT`, `DenseNet121_Weights.DEFAULT`.
+  - Hàm `count_parameters(model)` và `inspect_model(model)`: Tính toán và in bảng thống kê Total Parameters, Trainable Parameters, Frozen Parameters và tỷ lệ phần trăm tham số được huấn luyện.
+  - Thay thế Classification Head động (Dynamic Head Replacement):
+    - ResNet: Thay `model.fc` thành `nn.Linear(in_features, 10)`.
+    - VGG: Thay `model.classifier[6]` thành `nn.Linear(in_features, 10)`.
+    - DenseNet: Thay `model.classifier` thành `nn.Linear(in_features, 10)`.
+  - Chiến lược đóng băng (Freezing Strategies):
+    - `freeze_all`: Đóng băng toàn bộ backbone (`requires_grad = False`), chỉ mở khóa classification head mới.
+    - `unfreeze_last_block`: Mở khóa thêm `model.layer4` (ResNet), các tầng convolution cuối (VGG), hoặc `model.features.denseblock4` và `norm5` (DenseNet).
 
 ### 2.4. `src/trainer.py` (Training Engine & TensorBoard Logger)
-- **Nhiem vu**: Dieu phoi qua trinh huan luyen va kiem dinh mo hinh theo tung epoch.
-- **Chi tiet xu ly**:
-  - Tich hop `torch.cuda.amp.autocast()` va `GradScaler` giup tiet kiem bo nho VRAM va tang toc do tinh toan tren GPU.
-  - Ghi nhan nhat ky vao TensorBoard qua `SummaryWriter`: theo doi `Loss/train`, `Loss/val`, `Accuracy/train`, `Accuracy/val`, va `Learning_Rate` theo tung epoch.
-  - Theo doi thoi gian huan luyen tren tung epoch ($t_{\text{epoch}}$) va toc do xu ly mau (samples/sec).
-  - Tu dong luu checkpoint tot nhat (`checkpoints/best_<model>_<strategy>.pth`) dua tren chi so Validation Accuracy cao nhat.
+- **Nhiệm vụ**: Điều phối quá trình huấn luyện và kiểm định mô hình theo từng epoch.
+- **Chi tiết xử lý**:
+  - Tích hợp Automatic Mixed Precision (`torch.amp.autocast('cuda')`) và `GradScaler` giúp tiết kiệm bộ nhớ VRAM và tăng tốc độ tính toán trên GPU.
+  - Ghi nhận nhật ký vào TensorBoard qua `SummaryWriter`: theo dõi `Loss/train`, `Loss/val`, `Accuracy/train`, `Accuracy/val`, và `Learning_Rate` theo từng epoch.
+  - Theo dõi thời gian huấn luyện trên từng epoch ($t_{\text{epoch}}$) và tốc độ xử lý mẫu (samples/sec).
+  - Tự động lưu checkpoint tốt nhất (`checkpoints/best_<experiment_name>.pth`) dựa trên chỉ số Validation Accuracy cao nhất.
 
 ### 2.5. `src/evaluate.py` (Evaluator & Visualization Engine)
-- **Nhiem vu**: Tai checkpoint tot nhat de danh gia doc lap tren 10,000 anh Test; xuat bao cao va bieu do danh gia chat luong cao.
-- **Chi tiet xu ly**:
-  - Tinh toan Top-1 Overall Test Accuracy va Per-class Accuracy cho ca 10 lop doi tuong.
-  - In bang tong hop Per-class Precision, Recall, F1-Score ra man hinh console.
-  - Tinh toan va xuat 3 bieu do chuan xuat ban 300 DPI tai `outputs/figures/`:
-    1. `training_history.png`: Bieu do kep (Dual Subplots) the hien duong cong Loss va Accuracy giua Train va Val qua tung epoch.
-    2. `class_accuracy.png`: Bieu do cot the hien do chinh xac cua tung lop tren tap Test, kem duong nguong do chinh xac trung binh.
-    3. `confusion_matrix.png`: Heatmap ma tran nham lan duoc chuan hoa the hien ro cac cap lop bi phan loai sai.
+- **Nhiệm vụ**: Nạp checkpoint tốt nhất để đánh giá độc lập trên 10,000 ảnh Test; xuất báo cáo và biểu đồ đánh giá chất lượng cao.
+- **Chi tiết xử lý**:
+  - Tính toán Top-1 Overall Test Accuracy và Per-class Accuracy cho cả 10 lớp đối tượng.
+  - In bảng tổng hợp Per-class Precision, Recall, F1-Score ra màn hình console.
+  - Tính toán và xuất 3 biểu đồ chuẩn xuất bản 300 DPI tại `outputs/figures/`:
+    1. `training_history.png`: Biểu đồ kép (Dual Subplots) thể hiện đường cong Loss và Accuracy giữa Train và Val qua từng epoch.
+    2. `class_accuracy.png`: Biểu đồ cột thể hiện độ chính xác của từng lớp trên tập Test, kèm đường ngưỡng độ chính xác trung bình.
+    3. `confusion_matrix.png`: Heatmap ma trận nhầm lẫn được chuẩn hóa thể hiện rõ các cặp lớp bị phân loại sai.
 
 ### 2.6. `main.py` (CLI Interface & Pipeline Orchestrator)
-- **Nhiem vu**: Diem khoi chay duy nhat cua ung dung, phan tich cac tham so dong lenh (qua `argparse`) va lien ket cac module thuc thi theo yeu cau cua nguoi dung ma khong can can thiep vao ma nguon.
+- **Nhiệm vụ**: Điểm khởi chạy duy nhất của ứng dụng, phân tích các tham số dòng lệnh (qua `argparse`) và liên kết các module thực thi theo yêu cầu của người dùng mà không cần can thiệp vào mã nguồn.
 
 ---
 
 ## 3. Folder Structure
 
-Cau truc cay thu muc chuan cua toan bo du an:
+Cấu trúc phân cấp cây thư mục chuẩn của toàn bộ dự án:
 
-```
-LAB_DEEP_LEARNING/
-|-- checkpoints/                # Thu muc luu tru model checkpoints (.pth)
-|   `-- .gitkeep
-|-- data/                       # Thu muc luu tru dataset CIFAR-10
-|   `-- .gitkeep
-|-- docs/                       # Tai lieu dac ta yeu cau va thiet ke he thong
-|   |-- project_description.md
-|   `-- project_design.md
-|-- outputs/
-|   |-- figures/                # Do hoa danh gia 300 DPI
-|   |   `-- .gitkeep
-|   `-- reports/                # Bao cao ket qua dang json va csv
-|       `-- .gitkeep
-|-- runs/                       # Nhat ky TensorBoard event logs
-|   `-- .gitkeep
-|-- src/                        # Ma nguon module hoa he thong
-|   |-- __init__.py
-|   |-- config.py               # Quan ly cau hinh, hang so va thiet bi
-|   |-- dataset.py              # Xu ly du lieu va DataLoader
-|   |-- evaluate.py             # Danh gia tap Test va xuat bieu do
-|   |-- model_factory.py        # Khoi tao mo hinh, inspect va freeze weights
-|   `-- trainer.py              # Dong co huan luyen va TensorBoard logger
-|-- tests/                      # Kiem thu tu dong (Unit tests)
-|   |-- __init__.py
-|   |-- test_dataset.py         # Kiem thu tinh toan ven va chong ro ri du lieu
-|   `-- test_model_factory.py   # Kiem thu thay the head va dong bang trong so
-|-- .gitignore                  # Loai bo cac tep tin rac, data va checkpoints lon
-|-- main.py                     # Entry point CLI cua he thong
-|-- README.md                   # Huong dan su dung va tong ket ket qua
-`-- requirements.txt            # Danh sach thu vien can thiet
+```mermaid
+flowchart LR
+    ROOT["LAB_DEEP_LEARNING/"]
+
+    ROOT --> D_SRC["src/"]
+    D_SRC --> F_CFG["config.py"]
+    D_SRC --> F_DATA["dataset.py"]
+    D_SRC --> F_MOD["model_factory.py"]
+    D_SRC --> F_TRN["trainer.py"]
+    D_SRC --> F_EVL["evaluate.py"]
+
+    ROOT --> D_TEST["tests/"]
+    D_TEST --> F_T_DATA["test_dataset.py"]
+    D_TEST --> F_T_MOD["test_model_factory.py"]
+    D_TEST --> F_T_TRN["test_trainer.py"]
+    D_TEST --> F_T_EVL["test_evaluate.py"]
+
+    ROOT --> D_DOCS["docs/"]
+    D_DOCS --> F_DESC["project_description.md"]
+    D_DOCS --> F_DSGN["project_design.md"]
+    D_DOCS --> F_FLOW["development_workflow.md"]
+    D_DOCS --> F_AI["AI_usage.md"]
+
+    ROOT --> D_DATA["data/ (cifar-10-batches-py/)"]
+    ROOT --> D_CKPT["checkpoints/ (*.pth)"]
+    ROOT --> D_RUNS["runs/ (TensorBoard)"]
+    ROOT --> D_OUT["outputs/ (figures & reports)"]
+
+    ROOT --> F_MAIN["main.py (CLI)"]
+    ROOT --> F_README["README.md"]
+    ROOT --> F_REQ["requirements.txt"]
+
+    %% Bổ sung màu sắc theo nhóm
+    classDef rootStyle fill:#263238,stroke:#37474f,stroke-width:2px,color:#ffffff;
+    classDef dirStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1;
+    classDef srcStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px,color:#1b5e20;
+    classDef testStyle fill:#fff8e1,stroke:#f9a825,stroke-width:1px,color:#f57f17;
+    classDef docStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px,color:#4a148c;
+    classDef outStyle fill:#fbe9e7,stroke:#d84315,stroke-width:1px,color:#bf360c;
+
+    class ROOT rootStyle;
+    class D_SRC,D_TEST,D_DOCS dirStyle;
+    class F_CFG,F_DATA,F_MOD,F_TRN,F_EVL,F_MAIN srcStyle;
+    class F_T_DATA,F_T_MOD,F_T_TRN,F_T_EVL testStyle;
+    class F_DESC,F_DSGN,F_FLOW,F_AI,F_README docStyle;
+    class D_DATA,D_CKPT,D_RUNS,D_OUT outStyle;
 ```
 
 ---
 
 ## 4. Data Flow
 
-Luong bien doi du lieu va kich thuoc cu the cua Tensor duoc the hien qua so do va cac buoc chi tiet duoi day:
+Luồng biến đổi dữ liệu, kích thước Tensor (Tensor Shapes) tại từng chặng và luồng đạo hàm lan truyền ngược được thể hiện qua sơ đồ chi tiết:
 
-```
-[Raw Image: (3, 32, 32)]
-       |
-       v  (Resize 256x256 -> RandomCrop 224x224 -> Flip -> Normalize)
-[Batch Tensor: (B, 3, 224, 224)]
-       |
-       v  (Forward qua Frozen / Fine-tuned Backbone)
-[Feature Tensor: (B, C_feat, 1, 1) -> Flatten]
-  - ResNet-18:   (B, 512)
-  - ResNet-50:   (B, 2048)
-  - DenseNet-121: (B, 1024)
-  - VGG-16 (BN): (B, 4096)
-       |
-       v  (Forward qua Linear Classification Head)
-[Output Logits: (B, 10)]
-       |
-       +---> [CrossEntropyLoss] ---> [Scalar Loss: ()]
-       |                                   |
-       |                                   v (Backward qua requires_grad=True)
-       |                             [Gradient Updates -> Optimizer Step]
-       |
-       v  (Argmax dim=-1)
-[Predictions: (B,)] ---> [TensorBoard & Evaluator Metrics]
+```mermaid
+flowchart TD
+    RAW["Raw Image: (3, 32, 32)"] -->|"Resize 256 -> RandomCrop 224 -> Flip -> Normalize"| BATCH["Batch Tensor: (B, 3, 224, 224)"]
+    
+    BATCH -->|"Forward qua Backbone"| FEAT["Feature Tensor: (B, C_feat) <br/>• ResNet-18: (B, 512)<br/>• ResNet-50: (B, 2048)<br/>• DenseNet-121: (B, 1024)<br/>• VGG-16 BN: (B, 4096)"]
+    
+    FEAT -->|"Linear Classification Head"| LOGITS["Output Logits: (B, 10)"]
+    
+    LOGITS -->|"nn.CrossEntropyLoss"| LOSS["Scalar Loss: ()"]
+    LOSS -->|"Backward (AMP GradScaler)"| GRAD["Gradient Updates (requires_grad=True)"]
+    GRAD -->|"Optimizer Step"| OPT["Updated Weights (AdamW / SGD)"]
+
+    LOGITS -->|"Argmax (dim=-1)"| PREDS["Predictions: (B,)"]
+    PREDS --> METRICS["Metrics & Logs (Accuracy, TensorBoard, Plots)"]
+
+    %% Bổ sung màu sắc luồng dữ liệu
+    classDef inStyle fill:#e0f7fa,stroke:#00838f,stroke-width:2px,color:#004d40;
+    classDef featStyle fill:#ede7f6,stroke:#512da8,stroke-width:2px,color:#311b92;
+    classDef headStyle fill:#fff8e1,stroke:#f57f17,stroke-width:2px,color:#e65100;
+    classDef optStyle fill:#fbe9e7,stroke:#d84315,stroke-width:2px,color:#bf360c;
+    classDef evalStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20;
+
+    class RAW,BATCH inStyle;
+    class FEAT featStyle;
+    class LOGITS,LOSS headStyle;
+    class GRAD,OPT optStyle;
+    class PREDS,METRICS evalStyle;
 ```
 
-### 4.1. Chi tiet Kich thuoc Tensor tai tung Chang
-1. **Raw Image**: Anh goc CIFAR-10 co dinh dang RGB, kich thuoc `(3, 32, 32)` voi gia tri diem anh kieu `uint8` $[0, 255]$.
+### 4.1. Chi tiết Kích thước Tensor tại từng Chặng
+1. **Raw Image**: Ảnh gốc CIFAR-10 có định dạng RGB, kích thước `(3, 32, 32)` với giá trị điểm ảnh kiểu `uint8` $[0, 255]$.
 2. **Transform & Batch Collation**:
-   - Anh duoc dua ve kich thuoc `(3, 224, 224)` phu hop voi tieu chuan ImageNet pre-trained backbones va chuan hoa theo ImageNet mean/std.
-   - Batch gom $B$ anh ghep lai thanh Tensor `(B, 3, 224, 224)` voi kieu du lieu `torch.float32`. Nhan (Labels) la Tensor 1 chieu `(B,)` voi kieu `torch.int64`. Voi GPU RTX 3050 6GB, kich thuoc mac dinh $B = 64$.
+   - Ảnh được đưa về kích thước `(3, 224, 224)` phù hợp với tiêu chuẩn ImageNet pre-trained backbones và chuẩn hóa theo ImageNet mean/std.
+   - Batch gồm $B$ ảnh ghép lại thành Tensor `(B, 3, 224, 224)` với kiểu dữ liệu `torch.float32`. Nhãn (Labels) là Tensor 1 chiều `(B,)` với kiểu `torch.int64`. Với GPU RTX 3050 6GB, kích thước mặc định $B = 64$.
 3. **Backbone Feature Extraction**:
-   - Khi di qua cac tang Convolution cua Backbone, anh duoc trich xuat thanh Feature Map truoc khi dua qua Global Average Pooling (hoac AdaptiveAvgPool2d).
-   - Vector dac trung thu duoc sau khi duoi thang (flatten):
+   - Khi đi qua các tầng Convolution của Backbone, ảnh được trích xuất thành Feature Map trước khi đưa qua Global Average Pooling (hoặc AdaptiveAvgPool2d).
+   - Vector đặc trưng thu được sau khi duỗi thẳng (flatten):
      - ResNet-18: `(B, 512)`
      - ResNet-50: `(B, 2048)`
      - DenseNet-121: `(B, 1024)`
-     - VGG-16 with BN: `(B, 4096)` (sau khi di qua cac tang fully-connected dau cua classifier).
+     - VGG-16 with BN: `(B, 4096)` (sau khi đi qua các tầng fully-connected đầu của classifier).
 4. **Classification Head**:
-   - Tuyen tinh hoa ve khong gian 10 lop qua phep nhan ma tran $W \cdot X + b$:
+   - Tuyến tính hóa về không gian 10 lớp qua phép nhân ma trận $W \cdot X + b$:
      $$\text{Logits} = (B, \text{in\_features}) \times (\text{in\_features}, 10) = (B, 10)$$
 5. **Loss Computation & Backpropagation**:
-   - Loss duoc tinh thong qua `nn.CrossEntropyLoss`: ket qua la mot Tensor vo huong `()`.
-   - Gradient chi duoc lan truyen nguoc va tich luy tren cac tham so co `requires_grad=True`.
+   - Loss được tính thông qua `nn.CrossEntropyLoss`: kết quả là một Tensor vô hướng `()`.
+   - Gradient chỉ được lan truyền ngược và tích lũy trên các tham số có `requires_grad=True`.
 
 ---
 
 ## 5. Interface Design (Function & Class Signatures)
 
-Duoi day la khai bao interface chuan voi Type Hints va docstring day du cho cac module loi:
+Dưới đây là khai báo interface chuẩn với Type Hints và docstring đầy đủ cho các module lõi:
 
 ### 5.1. `src/dataset.py`
 
@@ -184,10 +214,10 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 def get_transforms() -> Tuple[transforms.Compose, transforms.Compose]:
-    """Khoi tao cac phep bien doi hinh anh chuan cho Train va Validation/Test.
+    """Khởi tạo các phép biến đổi hình ảnh chuẩn cho Train và Validation/Test.
     
     Returns:
-        Tuple gom (train_transform, eval_transform).
+        Tuple gồm (train_transform, eval_transform).
     """
     ...
 
@@ -199,18 +229,18 @@ def get_cifar10_dataloaders(
     dry_run: bool = False,
     seed: int = 42
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
-    """Tai tap du lieu CIFAR-10 va phan chia thanh Train (40k), Val (10k), Test (10k).
+    """Tải tập dữ liệu CIFAR-10 và phân chia thành Train (40k), Val (10k), Test (10k).
     
     Args:
-        data_dir: Thu muc luu tru du lieu.
-        batch_size: Kich thuoc mini-batch.
-        num_workers: So luong tien trinh con doc du lieu.
-        subset_ratio: Ty le mau su dung (kiem thu nhanh tren tap nho).
-        dry_run: Neu True, chi lay 100 mau moi tap de kiem thu nhanh.
-        seed: Gia tri hat giong de dam bao tinh tai lap khi chia tap train/val.
+        data_dir: Thư mục lưu trữ dữ liệu.
+        batch_size: Kích thước mini-batch.
+        num_workers: Số lượng tiến trình con đọc dữ liệu.
+        subset_ratio: Tỷ lệ mẫu sử dụng (kiểm thử nhanh trên tập nhỏ).
+        dry_run: Nếu True, chỉ lấy 100 mẫu mỗi tập để kiểm thử nhanh.
+        seed: Giá trị hạt giống để đảm bảo tính tái lập khi chia tập train/val.
         
     Returns:
-        Tuple gom (train_loader, val_loader, test_loader).
+        Tuple gồm (train_loader, val_loader, test_loader).
     """
     ...
 ```
@@ -222,22 +252,22 @@ from typing import Dict, Any
 import torch.nn as nn
 
 def count_parameters(model: nn.Module) -> Dict[str, int]:
-    """Dem va thong ke so luong tham so trong mo hinh.
+    """Đếm và thống kê số lượng tham số trong mô hình.
     
     Args:
-        model: Mo hinh PyTorch can phan tich.
+        model: Mô hình PyTorch cần phân tích.
         
     Returns:
-        Dictionary chua 'total', 'trainable', va 'frozen' parameters.
+        Dictionary chứa 'total', 'trainable', và 'frozen' parameters.
     """
     ...
 
 def inspect_model(model: nn.Module, model_name: str) -> None:
-    """In cau truc phan tang va bang thong ke tham so cua mo hinh ra console.
+    """In cấu trúc phân tầng và bảng thống kê tham số của mô hình ra console.
     
     Args:
-        model: Mo hinh PyTorch can in.
-        model_name: Ten dinh danh cua mo hinh.
+        model: Mô hình PyTorch cần in.
+        model_name: Tên định danh của mô hình.
     """
     ...
 
@@ -246,15 +276,15 @@ def build_model(
     strategy: str = "freeze_all",
     num_classes: int = 10
 ) -> nn.Module:
-    """Khoi tao mo hinh pre-trained, thay the classification head va ap dung chien luoc dong bang.
+    """Khởi tạo mô hình pre-trained, thay thế classification head và áp dụng chiến lược đóng băng.
     
     Args:
-        model_name: Ten kien truc ('resnet18', 'resnet50', 'vgg16_bn', 'densenet121').
-        strategy: Chien luoc dong bang trong so ('freeze_all', 'unfreeze_last_block').
-        num_classes: So luong lop dau ra (mac dinh 10 cho CIFAR-10).
+        model_name: Tên kiến trúc ('resnet18', 'resnet50', 'vgg16_bn', 'densenet121').
+        strategy: Chiến lược đóng băng trọng số ('freeze_all', 'unfreeze_last_block').
+        num_classes: Số lượng lớp đầu ra (mặc định 10 cho CIFAR-10).
         
     Returns:
-        nn.Module da duoc bien doi va thiet lap requires_grad hop le.
+        nn.Module đã được biến đổi và thiết lập requires_grad hợp lệ.
     """
     ...
 ```
@@ -269,7 +299,7 @@ from torch.utils.data import DataLoader
 from torch.optim import Optimizer
 
 class Trainer:
-    """Lop quan ly dong co huan luyen, kiem dinh va ghi log TensorBoard."""
+    """Lớp quản lý động cơ huấn luyện, kiểm định và ghi log TensorBoard."""
     
     def __init__(
         self,
@@ -285,49 +315,49 @@ class Trainer:
         experiment_name: str = "exp",
         use_amp: bool = True
     ) -> None:
-        """Khoi tao Trainer voi day du cac thanh phan can thiet."""
+        """Khởi tạo Trainer với đầy đủ các thành phần cần thiết."""
         ...
 
     def train_one_epoch(self, epoch: int) -> Tuple[float, float]:
-        """Thuc thi huan luyen trong 1 epoch.
+        """Thực thi huấn luyện trong 1 epoch.
         
         Args:
-            epoch: Chi so epoch hien tai.
+            epoch: Chỉ số epoch hiện tại.
             
         Returns:
-            Tuple gom (train_loss, train_accuracy).
+            Tuple gồm (train_loss, train_accuracy).
         """
         ...
 
     def validate(self, epoch: int) -> Tuple[float, float]:
-        """Thuc thi kiem dinh mo hinh tren tap validation.
+        """Thực thi kiểm định mô hình trên tập validation.
         
         Args:
-            epoch: Chi so epoch hien tai.
+            epoch: Chỉ số epoch hiện tại.
             
         Returns:
-            Tuple gom (val_loss, val_accuracy).
+            Tuple gồm (val_loss, val_accuracy).
         """
         ...
 
     def fit(self) -> Dict[str, List[float]]:
-        """Chay toan bo qua trinh huan luyen va kiem dinh qua tat ca cac epoch.
+        """Chạy toàn bộ quá trình huấn luyện và kiểm định qua tất cả các epoch.
         
         Returns:
-            Dictionary luu lich su gom 'train_loss', 'val_loss', 'train_acc', 'val_acc'.
+            Dictionary lưu lịch sử gồm 'train_loss', 'val_loss', 'train_acc', 'val_acc'.
         """
         ...
 
     def save_checkpoint(self, epoch: int, val_acc: float, is_best: bool = False) -> str:
-        """Luu checkpoint trong so mo hinh xuong o dia.
+        """Lưu checkpoint trọng số mô hình xuống ổ đĩa.
         
         Args:
-            epoch: Epoch hien tai.
-            val_acc: Do chinh xac validation dat duoc.
-            is_best: Co danh dau checkpoint co val_acc cao nhat.
+            epoch: Epoch hiện tại.
+            val_acc: Độ chính xác validation đạt được.
+            is_best: Cờ đánh dấu checkpoint có val_acc cao nhất.
             
         Returns:
-            Duong dan den file checkpoint da luu.
+            Đường dẫn đến file checkpoint đã lưu.
         """
         ...
 ```
@@ -348,23 +378,23 @@ def evaluate_test_set(
     device: torch.device,
     class_names: List[str]
 ) -> Dict[str, Any]:
-    """Danh gia toan dien mo hinh tren tap Test doc lap.
+    """Đánh giá toàn diện mô hình trên tập Test độc lập.
     
     Returns:
-        Dict chua 'test_loss', 'overall_acc', 'per_class_acc', va 'confusion_matrix'.
+        Dict chứa 'test_loss', 'overall_acc', 'per_class_acc', và 'confusion_matrix'.
     """
     ...
 
 def plot_training_history(history: Dict[str, List[float]], output_path: str) -> None:
-    """Ve bieu do loss va accuracy giua train va val theo tung epoch (300 DPI)."""
+    """Vẽ biểu đồ loss và accuracy giữa train và val theo từng epoch (300 DPI)."""
     ...
 
 def plot_per_class_accuracy(per_class_acc: Dict[str, float], output_path: str) -> None:
-    """Ve bieu do cot the hien do chinh xac cua tung lop tren tap Test (300 DPI)."""
+    """Vẽ biểu đồ cột thể hiện độ chính xác của từng lớp trên tập Test (300 DPI)."""
     ...
 
 def plot_confusion_matrix(cm: np.ndarray, class_names: List[str], output_path: str) -> None:
-    """Ve heatmap ma tran nham lan chuan hoa tren tap Test (300 DPI)."""
+    """Vẽ heatmap ma trận nhầm lẫn chuẩn hóa trên tập Test (300 DPI)."""
     ...
 ```
 
@@ -372,68 +402,84 @@ def plot_confusion_matrix(cm: np.ndarray, class_names: List[str], output_path: s
 
 ## 6. Implementation Milestones
 
-Qua trinh hien thuc hoa he thong duoc chia thanh 4 cot moc tuan tu voi Tieu chi hoan thanh (Definition of Done - DoD) ro rang:
+Quá trình hiện thực hóa hệ thống được chia thành 4 cột mốc tuần tự:
+
+```mermaid
+flowchart LR
+    M1["Milestone 1:<br/>Config & Data Pipeline<br/>(config.py, dataset.py)"] --> M2["Milestone 2:<br/>Model Factory & Inspection<br/>(model_factory.py)"]
+    M2 --> M3["Milestone 3:<br/>Training Engine & Logger<br/>(trainer.py)"]
+    M3 --> M4["Milestone 4:<br/>Evaluation & CLI<br/>(evaluate.py, main.py)"]
+
+    classDef m1Style fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef m2Style fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+    classDef m3Style fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef m4Style fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f;
+
+    class M1 m1Style;
+    class M2 m2Style;
+    class M3 m3Style;
+    class M4 m4Style;
+```
 
 ### Milestone 1: Config & Data Pipeline (`src/config.py`, `src/dataset.py`)
-- **Muc tieu**: Hoan thien module cau hinh va pipeline du lieu chong ro ri cho CIFAR-10.
-- **DoD (Co the kiem chung)**:
-  - Chay lenh: `python3 -c "from src.dataset import get_cifar10_dataloaders; tr, va, te = get_cifar10_dataloaders('data', dry_run=True); b = next(iter(tr)); print(b[0].shape, len(tr.dataset), len(va.dataset), len(te.dataset))"`
-  - Output dat yeu cau: In ra Tensor kich thuoc `torch.Size([64, 3, 224, 224])`, so mau dung ty le 40,000 / 10,000 / 10,000 (hoac mau dry_run). Khong bi xung dot dependencies.
+- **Mục tiêu**: Hoàn thiện module cấu hình và pipeline dữ liệu chống rò rỉ cho CIFAR-10.
+- **DoD (Có thể kiểm chứng)**:
+  - Chạy lệnh: `python3 -c "from src.dataset import get_cifar10_dataloaders; tr, va, te = get_cifar10_dataloaders('data', dry_run=True); b = next(iter(tr)); print(b[0].shape, len(tr.dataset), len(va.dataset), len(te.dataset))"`
+  - Output đạt yêu cầu: In ra Tensor kích thước `torch.Size([64, 3, 224, 224])`, số mẫu đúng tỷ lệ 40,000 / 10,000 / 10,000 (hoặc mẫu dry_run). Không bị xung đột dependencies.
 
 ### Milestone 2: Model Factory & Parameter Inspection (`src/model_factory.py`)
-- **Muc tieu**: Hoan thien factory khoi tao mo hinh pre-trained, inspect tham so, thay the classification head va logic dong bang trong so.
-- **DoD (Co the kiem chung)**:
-  - Chay lenh: `python3 -c "from src.model_factory import build_model, count_parameters; m = build_model('resnet18', 'freeze_all'); c = count_parameters(m); assert c['trainable'] == 5130; print('Pass ResNet18 Freeze All:', c)"`
-  - Output dat yeu cau: Chay thanh cong voi 4 kien truc (`resnet18`, `resnet50`, `vgg16_bn`, `densenet121`) tren ca 2 chien luoc `freeze_all` va `unfreeze_last_block`.
+- **Mục tiêu**: Hoàn thiện factory khởi tạo mô hình pre-trained, inspect tham số, thay thế classification head và logic đóng băng trọng số.
+- **DoD (Có thể kiểm chứng)**:
+  - Chạy lệnh: `python3 -c "from src.model_factory import build_model, count_parameters; m = build_model('resnet18', 'freeze_all'); c = count_parameters(m); assert c['trainable'] == 5130; print('Pass ResNet18 Freeze All:', c)"`
+  - Output đạt yêu cầu: Chạy thành công với 4 kiến trúc (`resnet18`, `resnet50`, `vgg16_bn`, `densenet121`) trên cả 2 chiến lược `freeze_all` và `unfreeze_last_block`.
 
 ### Milestone 3: Training Engine & TensorBoard (`src/trainer.py`)
-- **Muc tieu**: Hoan thien lop `Trainer`, tich hop `GradScaler` (AMP), tinh toan thoi gian chay moi epoch, tu dong luu checkpoint tot nhat va ghi log vao TensorBoard.
-- **DoD (Co the kiem chung)**:
-  - Chay lenh test nhanh: `python3 main.py --model resnet18 --epochs 1 --dry-run`
-  - Output dat yeu cau: Chay qua 1 epoch khong loi, tao thanh cong tep `checkpoints/best_resnet18_freeze_all.pth` va tep log TensorBoard trong `runs/`.
+- **Mục tiêu**: Hoàn thiện lớp `Trainer`, tích hợp `GradScaler` (AMP), tính toán thời gian chạy mỗi epoch, tự động lưu checkpoint tốt nhất và ghi log vào TensorBoard.
+- **DoD (Có thể kiểm chứng)**:
+  - Chạy lệnh test nhanh: `python3 main.py --model resnet18 --epochs 1 --dry-run`
+  - Output đạt yêu cầu: Chạy qua 1 epoch không lỗi, tạo thành công tệp `checkpoints/best_resnet18_freeze_all.pth` và tệp log TensorBoard trong `runs/`.
 
 ### Milestone 4: Evaluation, Visualization & CLI Complete (`src/evaluate.py`, `main.py`)
-- **Muc tieu**: Hoan thien danh gia tren tap Test, tinh ma tran nham lan, xuat 3 bieu do 300 DPI va hoan tat giao dien dong lenh CLI day du.
-- **DoD (Co the kiem chung)**:
-  - Chay lenh: `python3 main.py --model resnet18 --strategy freeze_all --epochs 2 --subset-ratio 0.05`
-  - Output dat yeu cau: Huan luyen xong, tu dong danh gia test set, in bang Per-class Accuracy, va xuat du 3 file anh chat luong cao: `outputs/figures/training_history.png`, `outputs/figures/class_accuracy.png`, `outputs/figures/confusion_matrix.png`.
+- **Mục tiêu**: Hoàn thiện đánh giá trên tập Test, tính ma trận nhầm lẫn, xuất 3 biểu đồ 300 DPI và hoàn tất giao diện dòng lệnh CLI đầy đủ.
+- **DoD (Có thể kiểm chứng)**:
+  - Chạy lệnh: `python3 main.py --model resnet18 --strategy freeze_all --epochs 2 --subset-ratio 0.05`
+  - Output đạt yêu cầu: Huấn luyện xong, tự động đánh giá test set, in bảng Per-class Accuracy, và xuất đủ 3 file ảnh chất lượng cao: `outputs/figures/training_history.png`, `outputs/figures/class_accuracy.png`, `outputs/figures/confusion_matrix.png`.
 
 ---
 
 ## 7. Technical Risks & Mitigations
 
-Duoi day la 5 rui ro ky thuat cot loi trong cac bai toan Transfer Learning va cac giai phap phong ngua duoc tich hop truc tiep vao ban thiet ke:
+Dưới đây là 5 rủi ro kỹ thuật cốt lõi trong các bài toán Transfer Learning và các giải pháp phòng ngừa được tích hợp trực tiếp vào bản thiết kế:
 
-### Rui ro 1: Data Augmentation Leakage khi phan chia tap Train/Val
-- **Nguyen nhan**: Neu ap dung Data Augmentation len toan bo Dataset roi dung `random_split`, tap Validation se bi anh huong boi cac phep bien doi ngau nhien (RandomCrop, Flip), lam sai lech do do danh gia thuc te.
-- **Giai phap thiet ke**: Khoi tao 2 doi tuong `CIFAR10(root, train=True)` rieng biet. Mot doi tuong gan voi `train_transform`, doi tuong con lai gan voi `eval_transform`. Su dung phep sinh hoan vi ngau nhien co dinh `torch.randperm(50000, generator=torch.Generator().manual_seed(42))` de tao danh sach chi so (indices). Sau do truyen cac chi so nay vao `torch.utils.data.Subset` de dam bao 2 tap hoan toan doc lap ve ca du lieu lan phep bien doi.
+### Rủi ro 1: Data Augmentation Leakage khi phân chia tập Train/Val
+- **Nguyên nhân**: Nếu áp dụng Data Augmentation lên toàn bộ Dataset rồi dùng `random_split`, tập Validation sẽ bị ảnh hưởng bởi các phép biến đổi ngẫu nhiên (RandomCrop, Flip), làm sai lệch độ đo đánh giá thực tế.
+- **Giải pháp thiết kế**: Khởi tạo 2 đối tượng `CIFAR10(root, train=True)` riêng biệt. Một đối tượng gắn với `train_transform`, đối tượng còn lại gắn với `eval_transform`. Sử dụng phép sinh hoán vị ngẫu nhiên cố định `torch.randperm(50000, generator=torch.Generator().manual_seed(42))` để tạo danh sách chỉ số (indices). Sau đó truyền các chỉ số này vào `torch.utils.data.Subset` để đảm bảo 2 tập hoàn toàn độc lập về cả dữ liệu lẫn phép biến đổi.
 
-### Rui ro 2: Truyen nham tham so dong bang vao Optimizer hoac sai lech trang thai BatchNorm
-- **Nguyen nhan**: Khi dong bang cac tang nhung van truyen toan bo `model.parameters()` vao Optimizer se gay lang phi bo nho VRAM cho cac bien trang thai (nhu momentum, v cua AdamW) va lam cham toc do cap nhat trong so. Ngoai ra, BatchNorm o cac tang dong bang co the bi cap nhat running mean/var neu quen chuyen trang thai.
-- **Giai phap thiet ke**:
-  - Khi khoi tao Optimizer, chi truyen bo loc:
+### Rủi ro 2: Truyền nhầm tham số đóng băng vào Optimizer hoặc sai lệch trạng thái BatchNorm
+- **Nguyên nhân**: Khi đóng băng các tầng nhưng vẫn truyền toàn bộ `model.parameters()` vào Optimizer sẽ gây lãng phí bộ nhớ VRAM cho các biến trạng thái (như momentum, v của AdamW) và làm chậm tốc độ cập nhật trọng số. Ngoài ra, BatchNorm ở các tầng đóng băng có thể bị cập nhật running mean/var nếu quên chuyển trạng thái.
+- **Giải pháp thiết kế**:
+  - Khi khởi tạo Optimizer, chỉ truyền bộ lọc:
     ```python
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = optim.AdamW(trainable_params, lr=lr, weight_decay=weight_decay)
     ```
-  - Trong chien luoc `freeze_all`, cac tang backbone luon duoc giu nguyen tinh toan forward ma khong luu do thi dao ham.
+  - Trong chiến lược `freeze_all`, các tầng backbone luôn được giữ nguyên tính toán forward mà không lưu đồ thị đạo hàm.
 
-### Rui ro 3: Bat dong bo thuoc tinh Classification Head giua cac ho kien truc
-- **Nguyen nhan**: Moi kien truc CNN trong Torchvision su dung ten thuoc tinh khac nhau cho tang phan loai cuoi (`.fc` trong ResNet, `.classifier[6]` trong VGG, `.classifier` trong DenseNet).
-- **Giai phap thiet ke**: Module `model_factory.py` su dung cau truc re nhanh tuong minh (`if/elif`) kem co che kiem tra kieu lop (`isinstance`) va in loi ro rang neu ten mo hinh khong nam trong danh sach ho tro.
+### Rủi ro 3: Bất đồng bộ thuộc tính Classification Head giữa các họ kiến trúc
+- **Nguyên nhân**: Mỗi kiến trúc CNN trong Torchvision sử dụng tên thuộc tính khác nhau cho tầng phân loại cuối (`.fc` trong ResNet, `.classifier[6]` trong VGG, `.classifier` trong DenseNet).
+- **Giải pháp thiết kế**: Module `model_factory.py` sử dụng cấu trúc rẽ nhánh tường minh (`if/elif`) kèm cơ chế kiểm tra kiểu lớp (`isinstance`) và in lỗi rõ ràng nếu tên mô hình không nằm trong danh sách hỗ trợ.
 
-### Rui ro 4: Tran bo nho VRAM (CUDA OOM) hoac qua tai RAM khi upscale anh len 224x224
-- **Nguyen nhan**: Anh CIFAR-10 goc co kich thuoc 32x32. Khi phong to len 224x224, luong bo nho cho moi batch tang khoang 49 lan. Tren GPU RTX 3050 (6GB VRAM), neu chon batch size 128 hoac 256 voi model VGG-16 se lap tuc gay loi `CUDA out of memory`.
-- **Giai phap thiet ke**:
-  - Phep resize duoc thuc hien on-the-fly trong DataLoader theo tung batch nho thay vi phong to toan bo dataset tren RAM.
-  - Cai dat `batch_size=64` lam gia tri mac dinh toi uu cho 6GB VRAM.
-  - Kich hoat `torch.cuda.amp.autocast()` (Mixed Precision FP16) de giam 40% dung luong VRAM.
-  - Ho tro tham so `--subset-ratio` va `--dry-run` de kiem thu nhanh tren tai nguyen gioi han.
+### Rủi ro 4: Tràn bộ nhớ VRAM (CUDA OOM) hoặc quá tải RAM khi upscale ảnh lên 224x224
+- **Nguyên nhân**: Ảnh CIFAR-10 gốc có kích thước 32x32. Khi phóng to lên 224x224, lượng bộ nhớ cho mỗi batch tăng khoảng 49 lần. Trên GPU RTX 3050 (6GB VRAM), nếu chọn batch size 128 hoặc 256 với model VGG-16 sẽ lập tức gây lỗi `CUDA out of memory`.
+- **Giải pháp thiết kế**:
+  - Phép resize được thực hiện on-the-fly trong DataLoader theo từng batch nhỏ thay vì phóng to toàn bộ dataset trên RAM.
+  - Cài đặt `batch_size=64` làm giá trị mặc định tối ưu cho 6GB VRAM.
+  - Kích hoạt `torch.amp.autocast('cuda')` (Mixed Precision FP16) để giảm 40% dung lượng VRAM.
+  - Hỗ trợ tham số `--subset-ratio` và `--dry-run` để kiểm thử nhanh trên tài nguyên giới hạn.
 
-### Rui ro 5: Ghi de file Checkpoint va xung dot Log TensorBoard khi chay lien tiep nhieu thuc nghiem
-- **Nguyen nhan**: Neu tat ca cac lan chay deu luu vao `best_model.pth` hoac ghi chung mot thu muc `runs/`, cac thuc nghiem so sanh giua ResNet, VGG va DenseNet se ghi de len nhau, lam mat du lieu thuc nghiem.
-- **Giai phap thiet ke**:
-  - Dinh danh thuc nghiem duoc tao tu dong theo cu phap chuan: `<model_name>_<strategy>_lr<lr>_bs<bs>_<timestamp>`.
-  - Checkpoint duoc luu ro rang thanh: `checkpoints/best_<experiment_id>.pth`.
-  - Thu muc log TensorBoard duoc tach rieng: `runs/<experiment_id>/`.
-
+### Rủi ro 5: Ghi đè file Checkpoint và xung đột Log TensorBoard khi chạy liên tiếp nhiều thực nghiệm
+- **Nguyên nhân**: Nếu tất cả các lần chạy đều lưu vào `best_model.pth` hoặc ghi chung một thư mục `runs/`, các thực nghiệm so sánh giữa ResNet, VGG và DenseNet sẽ ghi đè lên nhau, làm mất dữ liệu thực nghiệm.
+- **Giải pháp thiết kế**:
+  - Định danh thực nghiệm được tạo tự động theo cú pháp chuẩn: `<model_name>_<strategy>_lr<lr>_bs<bs>_<timestamp>`.
+  - Checkpoint được lưu rõ ràng thành: `checkpoints/best_<experiment_id>.pth`.
+  - Thư mục log TensorBoard được tách riêng: `runs/<experiment_id>/`.
