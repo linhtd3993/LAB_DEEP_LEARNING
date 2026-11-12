@@ -89,6 +89,7 @@ def evaluate_test_set(
     report_str = classification_report(
         targets_np,
         preds_np,
+        labels=list(range(len(class_names))),
         target_names=class_names,
         digits=4,
         zero_division=0,
@@ -96,6 +97,7 @@ def evaluate_test_set(
     report_dict = classification_report(
         targets_np,
         preds_np,
+        labels=list(range(len(class_names))),
         target_names=class_names,
         output_dict=True,
         zero_division=0,
