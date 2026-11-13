@@ -3,7 +3,7 @@
 **Họ và tên:** Bùi Đặng Bảo Phúc  
 **Mã số sinh viên:** 079206003745  
 **Lớp / Môn học:** Deep Learning  
-**Kết quả đạt được (Test Accuracy):** **88.11%**
+**Kết quả đạt được (Test Accuracy):** **88.75%**
 
 ---
 
@@ -12,7 +12,7 @@
 - [x] **Load & Preprocess Dataset:** Tải tập dữ liệu FashionMNIST và chuẩn hóa hình ảnh về khoảng `[-1, 1]`.
 - [x] **Model Architecture:** Thiết kế mạng nơ-ron Multi-Layer Perceptron (MLP) gồm 3 lớp Fully-Connected tích hợp `ReLU` và `Dropout(0.2)` để hạn chế Overfitting.
 - [x] **Training Pipeline:** Xây dựng vòng lặp huấn luyện với hàm mất mát `CrossEntropyLoss` và thuật toán tối ưu `Adam` (lr=0.001) trong 10 Epochs.
-- [x] **Evaluation & Saving:** Đánh giá mô hình trên tập Test, đạt độ chính xác **88.11%**. Lưu và tải lại trọng số mô hình `fashion_mnist_model.pth`.
+- [x] **Evaluation & Saving:** Đánh giá mô hình trên tập Test, đạt độ chính xác **88.75%**. Lưu và tải lại trọng số mô hình `fashion_mnist_model.pth`.
 - [x] **Visualization:** Trực quan hóa biểu đồ Training Loss qua các Epochs và hiển thị kết quả phân loại ngẫu nhiên 10 hình ảnh.
 
 ---
@@ -39,7 +39,7 @@ FashionClassifier(
 ## 3. Trực quan hóa & Kết quả (Results & Visualizations)
 
 - **Training Loss Over Epochs:** Loss giảm đều từ **0.5420** (Epoch 1) xuống **0.2874** (Epoch 10).
-- **Test Accuracy:** **88.11%**
+- **Test Accuracy:** **88.75%**
 - Các file hình ảnh kết quả được tạo tự động:
   - `loss_graph.png`: Đồ thị theo dõi tiến trình giảm Loss.
   - `predictions_display.png`: So sánh nhãn dự đoán (`Pred`) và nhãn thực tế (`Actual`).
