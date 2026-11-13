@@ -1,0 +1,10 @@
+# Versions observed in the successful Python 3.14.0 CPU run.
+# ipykernel was checked during review; other versions are in saved notebook output.
+torch==2.13.0
+transformers==4.57.1
+datasets==4.4.1
+accelerate==1.11.0
+scikit-learn==1.7.2
+matplotlib==3.10.7
+numpy==2.3.4
+ipykernel==7.1.0

@@ -1,0 +1,50 @@
+[
+  {
+    "text": "I really enjoyed this movie!",
+    "tokens": [
+      "i",
+      "really",
+      "enjoyed",
+      "this",
+      "movie",
+      "!"
+    ],
+    "input_ids": [
+      101,
+      1045,
+      2428,
+      5632,
+      2023,
+      3185,
+      999,
+      102
+    ],
+    "label": "POSITIVE",
+    "score": 0.9998719692230225
+  },
+  {
+    "text": "The movie was boring and disappointing.",
+    "tokens": [
+      "the",
+      "movie",
+      "was",
+      "boring",
+      "and",
+      "disappointing",
+      "."
+    ],
+    "input_ids": [
+      101,
+      1996,
+      3185,
+      2001,
+      11771,
+      1998,
+      15640,
+      1012,
+      102
+    ],
+    "label": "NEGATIVE",
+    "score": 0.9997933506965637
+  }
+]

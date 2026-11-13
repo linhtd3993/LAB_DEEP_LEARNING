@@ -1,0 +1,16 @@
+{
+  "source": "Saved environment output in Practice3.ipynb from the completed run",
+  "python": "3.14.0",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "device": "cpu",
+  "cuda_available": false,
+  "packages": {
+    "torch": "2.13.0",
+    "transformers": "4.57.1",
+    "datasets": "4.4.1",
+    "accelerate": "1.11.0",
+    "scikit-learn": "1.7.2",
+    "matplotlib": "3.10.7",
+    "numpy": "2.3.4"
+  }
+}
