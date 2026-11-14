@@ -1,0 +1,11 @@
+{
+  "train_size": 2000,
+  "val_size": 500,
+  "test_size": 500,
+  "epochs": 2.0,
+  "batch_size": 8,
+  "max_length": 128,
+  "seed": 42,
+  "output_dir": "outputs/finetune",
+  "cpu": false
+}

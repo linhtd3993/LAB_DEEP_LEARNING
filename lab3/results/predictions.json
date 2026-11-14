@@ -1,0 +1,12 @@
+[
+  {
+    "text": "The acting was excellent!",
+    "label": "POSITIVE",
+    "score": 0.911280632019043
+  },
+  {
+    "text": "I regret watching this movie.",
+    "label": "NEGATIVE",
+    "score": 0.7463964819908142
+  }
+]

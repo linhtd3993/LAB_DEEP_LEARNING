@@ -74,7 +74,7 @@ flowchart LR
     
     ROOT --> L1["lab1/ (Fashion-MNIST MLP)<br/>Trạng thái: Chờ tích hợp"]
     ROOT --> L2["lab2/ (Pre-trained CNNs on CIFAR-10)<br/>Trạng thái: Đã hoàn thành"]
-    ROOT --> L3["lab3/ (Transformers NLP)<br/>Trạng thái: Chờ tích hợp"]
+    ROOT --> L3["lab3/ (Transformers NLP)<br/>Trạng thái: Đã hoàn thành"]
 
     classDef l1Style fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
     classDef l2Style fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
@@ -91,7 +91,7 @@ flowchart LR
 | :--- | :--- | :--- | :--- | :---: |
 | [`lab1/`](lab1/README.md) | **Practice 1: Basic Neural Networks** | Fashion-MNIST (10 lớp quần áo) | Multi-Layer Perceptron (MLP) | Sẵn sàng tích hợp (`origin/lab1`) |
 | [`lab2/`](lab2/README.md) | **Practice 2: Pre-trained CNN Benchmark** | CIFAR-10 (10 lớp vật thể) | ResNet-18/50, VGG-16 BN, DenseNet-121 | **Đã hoàn thành** (Full Pipeline) |
-| [`lab3/`](lab3/README.md) | **Practice 3: Transformers & NLP** | IMDB / Sentiment Analysis | Fine-tuning Pre-trained Transformers | Sẵn sàng tích hợp (`origin/LAP-3`) |
+| [`lab3/`](lab3/README.md) | **Practice 3: Transformers & NLP** | IMDB / Sentiment Analysis | Fine-tuning Pre-trained Transformers | **Đã hoàn thành** |
 
 ---
 
@@ -128,3 +128,23 @@ Xem toàn bộ tài liệu đặc tả, thiết kế kiến trúc và hướng d
 *   **Tích hợp Lab 1**: Xem hướng dẫn tại [lab1/README.md](lab1/README.md).
 *   **Tích hợp Lab 3**: Xem hướng dẫn tại [lab3/README.md](lab3/README.md).
 main
+
+
+---
+
+## Hướng dẫn Lab 3 — Hugging Face và DistilBERT
+
+Lab 3 có notebook đã lưu output, 5 câu minh họa phân tích cảm xúc, báo cáo và minh chứng.
+Mô hình fine-tune đạt **82,40% accuracy** và **83,46% F1** trên 500 mẫu test IMDb.
+
+- [Hướng dẫn cài đặt và chạy](lab3/README.md)
+- [Notebook](lab3/Practice3.ipynb)
+- [Báo cáo](lab3/report.md)
+- [Hướng dẫn demo](lab3/demo.md)
+- [Minh chứng](lab3/results/README.md)
+
+Chạy các lệnh của Lab 3 từ thư mục bài thực hành:
+
+```powershell
+cd lab3
+```

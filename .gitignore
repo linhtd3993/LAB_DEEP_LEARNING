@@ -53,3 +53,9 @@ outputs/reports/*.json
 *.swp
 *.swo
 main
+
+# Lab 3 generated files
+.ipynb_checkpoints/
+.cache/
+/outputs/
+/lab3/outputs/

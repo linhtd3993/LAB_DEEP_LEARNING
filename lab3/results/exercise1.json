@@ -1,0 +1,149 @@
+[
+  {
+    "text": "I really enjoyed this movie!",
+    "tokens": [
+      "i",
+      "really",
+      "enjoyed",
+      "this",
+      "movie",
+      "!"
+    ],
+    "input_ids": [
+      101,
+      1045,
+      2428,
+      5632,
+      2023,
+      3185,
+      999,
+      102
+    ],
+    "label": "POSITIVE",
+    "score": 0.9998719692230225
+  },
+  {
+    "text": "The movie was boring and disappointing.",
+    "tokens": [
+      "the",
+      "movie",
+      "was",
+      "boring",
+      "and",
+      "disappointing",
+      "."
+    ],
+    "input_ids": [
+      101,
+      1996,
+      3185,
+      2001,
+      11771,
+      1998,
+      15640,
+      1012,
+      102
+    ],
+    "label": "NEGATIVE",
+    "score": 0.9997933506965637
+  },
+  {
+    "text": "The acting was excellent and the story was engaging.",
+    "tokens": [
+      "the",
+      "acting",
+      "was",
+      "excellent",
+      "and",
+      "the",
+      "story",
+      "was",
+      "engaging",
+      "."
+    ],
+    "input_ids": [
+      101,
+      1996,
+      3772,
+      2001,
+      6581,
+      1998,
+      1996,
+      2466,
+      2001,
+      11973,
+      1012,
+      102
+    ],
+    "label": "POSITIVE",
+    "score": 0.9998793601989746
+  },
+  {
+    "text": "I regret watching this movie because it was a waste of time.",
+    "tokens": [
+      "i",
+      "regret",
+      "watching",
+      "this",
+      "movie",
+      "because",
+      "it",
+      "was",
+      "a",
+      "waste",
+      "of",
+      "time",
+      "."
+    ],
+    "input_ids": [
+      101,
+      1045,
+      9038,
+      3666,
+      2023,
+      3185,
+      2138,
+      2009,
+      2001,
+      1037,
+      5949,
+      1997,
+      2051,
+      1012,
+      102
+    ],
+    "label": "NEGATIVE",
+    "score": 0.999778687953949
+  },
+  {
+    "text": "The soundtrack was beautiful and made the film memorable.",
+    "tokens": [
+      "the",
+      "soundtrack",
+      "was",
+      "beautiful",
+      "and",
+      "made",
+      "the",
+      "film",
+      "memorable",
+      "."
+    ],
+    "input_ids": [
+      101,
+      1996,
+      6050,
+      2001,
+      3376,
+      1998,
+      2081,
+      1996,
+      2143,
+      13432,
+      1012,
+      102
+    ],
+    "label": "POSITIVE",
+    "score": 0.9998866319656372
+  }
+]
