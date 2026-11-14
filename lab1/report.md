@@ -57,9 +57,7 @@ FashionClassifier(
 | **Exp 2 (Tối ưu)** | `784 -> 256 -> 128 -> 10` (3 lớp) | `0.2` | `Adam (lr=0.001)` | 10 | **0.2874** | **88.75%** | **Tối ưu nhất:** Tăng độ sâu mạng kết hợp `Dropout(0.2)` và `lr=0.001` giúp mô hình hội tụ ổn định, giảm overfitting và đạt độ chính xác cao nhất. |
 | **Exp 3 (Mạng sâu)** | `784 -> 512 -> 256 -> 128 -> 10` (4 lớp) | `0.3` | `Adam (lr=0.001)` | 15 | 0.2510 | 88.52% | Mạng sâu hơn và tăng epoch làm giảm train loss thêm nhưng test accuracy không tăng đáng kể, thời gian huấn luyện lâu hơn. |
 
----
-- **Biểu đồ độ chính xác từng lớp:** `class_recall_chart.png`
-- **Các mẫu dự đoán sai tiêu biểu:** `misclassified_display.png`
+## 5. Phân tích Kết quả Phân loại Đúng / Sai (Error Analysis)
 
 ### Tại sao mô hình phân loại ĐÚNG rất tốt ở một số lớp (>95%)?
 - Các lớp như **`Trouser` (Quần dài ~97%)**, **`Bag` (Túi xách ~97%)**, **`Sneaker` (~96%)**, **`Sandal` (~96%)** có đặc trưng hình học và tỷ lệ khung hình (aspect ratio) rất đặc thù (ví dụ: quần dài có 2 ống thẳng đứng, túi xách có quai và khối vuông). Ngay cả khi duỗi phẳng ảnh `28x28` thành vector 1D, vị trí các pixel sáng vẫn tách biệt hoàn toàn so với các nhóm khác.
@@ -68,3 +66,10 @@ FashionClassifier(
 - Tỷ lệ nhầm lẫn tập trung chủ yếu ở nhóm **`Shirt` (Áo sơ mi - Recall thấp nhất ~68–70%)**, **`Pullover` (~82%)**, **`Coat` (~81%)** và **`T-shirt/top` (~83%)**:
   1. **Sự tương đồng về hình dáng tổng thể:** Ở độ phân giải thấp `28x28` trắng đen, `Shirt`, `Coat` và `Pullover` đều có phom dáng thân áo và hai tay áo gần như trùng khớp nhau; các chi tiết nhỏ như cổ áo, hàng cúc hay chất liệu vải bị mờ đi khi thu nhỏ ảnh.
   2. **Hạn chế của kiến trúc MLP:** Mạng MLP duỗi phẳng ảnh thành vector 1D (`784` chiều) nên làm mất cấu trúc không gian 2D lân cận giữa các pixel (spatial locality). Mô hình không trích xuất được các đặc trưng cục bộ tinh vi như đường viền cổ áo hay kết cấu bề mặt như mạng tích chập (CNN).
+  ---
+## 6. Hướng dẫn chạy Code (How to Run)
+
+1. **Di chuyển vào thư mục bài Lab 1 và cài đặt thư viện:**
+   ```bash
+   cd lab1
+   py -m pip install torch torchvision matplotlib numpy scikit-learn
