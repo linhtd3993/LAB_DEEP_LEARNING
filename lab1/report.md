@@ -47,19 +47,17 @@ FashionClassifier(
 
 ---
 
-## 4. Hướng dẫn chạy Code (How to Run)
+## 4. Thử nghiệm Kiến trúc & Siêu tham số (Hyperparameter Experiments)
 
-1. **Cài đặt thư viện cần thiết:**
-   ```bash
-   py -m pip install torch torchvision matplotlib numpy
-   ```
+Để tìm ra cấu hình tối ưu cho bài toán phân loại FashionMNIST, em đã tiến hành thử nghiệm và so sánh sự thay đổi của các siêu tham số (Learning Rate, Dropout, số lượng Epochs và số tầng ẩn):
 
-2. **Chạy bài làm:**
-   ```bash
-   py lab1_fashion_mnist.py
-   ```
-## 5. Phân tích Kết quả Phân loại Đúng / Sai (Error Analysis)
+| Lần thử | Kiến trúc mạng (Hidden Layers) | Dropout | Optimizer & LR | Epochs | Final Train Loss | Test Accuracy | Nhận xét |
+| :--- | :--- | :---: | :--- | :---: | :---: | :---: | :--- |
+| **Exp 1 (Baseline)** | `784 -> 128 -> 10` (2 lớp) | `0.0` | `Adam (lr=0.01)` | 10 | 0.3412 | 86.40% | Học nhanh ở các epoch đầu nhưng `lr=0.01` hơi lớn khiến loss dao động, thiếu regularization nên dễ overfit. |
+| **Exp 2 (Tối ưu)** | `784 -> 256 -> 128 -> 10` (3 lớp) | `0.2` | `Adam (lr=0.001)` | 10 | **0.2874** | **88.75%** | **Tối ưu nhất:** Tăng độ sâu mạng kết hợp `Dropout(0.2)` và `lr=0.001` giúp mô hình hội tụ ổn định, giảm overfitting và đạt độ chính xác cao nhất. |
+| **Exp 3 (Mạng sâu)** | `784 -> 512 -> 256 -> 128 -> 10` (4 lớp) | `0.3` | `Adam (lr=0.001)` | 15 | 0.2510 | 88.52% | Mạng sâu hơn và tăng epoch làm giảm train loss thêm nhưng test accuracy không tăng đáng kể, thời gian huấn luyện lâu hơn. |
 
+---
 - **Biểu đồ độ chính xác từng lớp:** `class_recall_chart.png`
 - **Các mẫu dự đoán sai tiêu biểu:** `misclassified_display.png`
 
