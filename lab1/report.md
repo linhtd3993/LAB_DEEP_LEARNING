@@ -58,3 +58,15 @@ FashionClassifier(
    ```bash
    py lab1_fashion_mnist.py
    ```
+## 5. Phân tích Kết quả Phân loại Đúng / Sai (Error Analysis)
+
+- **Biểu đồ độ chính xác từng lớp:** `class_recall_chart.png`
+- **Các mẫu dự đoán sai tiêu biểu:** `misclassified_display.png`
+
+### Tại sao mô hình phân loại ĐÚNG rất tốt ở một số lớp (>95%)?
+- Các lớp như **`Trouser` (Quần dài ~97%)**, **`Bag` (Túi xách ~97%)**, **`Sneaker` (~96%)**, **`Sandal` (~96%)** có đặc trưng hình học và tỷ lệ khung hình (aspect ratio) rất đặc thù (ví dụ: quần dài có 2 ống thẳng đứng, túi xách có quai và khối vuông). Ngay cả khi duỗi phẳng ảnh `28x28` thành vector 1D, vị trí các pixel sáng vẫn tách biệt hoàn toàn so với các nhóm khác.
+
+### Tại sao mô hình phân loại SAI nhiều ở một số lớp (~68% - 82%)?
+- Tỷ lệ nhầm lẫn tập trung chủ yếu ở nhóm **`Shirt` (Áo sơ mi - Recall thấp nhất ~68–70%)**, **`Pullover` (~82%)**, **`Coat` (~81%)** và **`T-shirt/top` (~83%)**:
+  1. **Sự tương đồng về hình dáng tổng thể:** Ở độ phân giải thấp `28x28` trắng đen, `Shirt`, `Coat` và `Pullover` đều có phom dáng thân áo và hai tay áo gần như trùng khớp nhau; các chi tiết nhỏ như cổ áo, hàng cúc hay chất liệu vải bị mờ đi khi thu nhỏ ảnh.
+  2. **Hạn chế của kiến trúc MLP:** Mạng MLP duỗi phẳng ảnh thành vector 1D (`784` chiều) nên làm mất cấu trúc không gian 2D lân cận giữa các pixel (spatial locality). Mô hình không trích xuất được các đặc trưng cục bộ tinh vi như đường viền cổ áo hay kết cấu bề mặt như mạng tích chập (CNN).
