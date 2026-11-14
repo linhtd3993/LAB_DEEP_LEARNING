@@ -56,6 +56,7 @@ Kiểm tra thiết bị: `.\.venv\Scripts\python.exe -c "import torch; print(tor
 .\.venv\Scripts\python.exe exercise1_sentiment.py --text "I love this movie!" "This film was terrible."
 ```
 
+Lệnh mặc định chạy 5 câu tiếng Anh, cùng danh sách trong notebook; dùng `--text` để nhập các câu khác.
 Terminal in văn bản, tokens, input_ids, nhãn và score. Lưu ở `outputs/exercise1.json`.
 Score là xác suất softmax của nhãn được chọn, không phải độ chính xác toàn bộ mô hình.
 

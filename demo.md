@@ -23,10 +23,10 @@ Cần Internet để tải mô hình và IMDb lần đầu. Tải và huấn luy
 ## 2. Demo bài 1: tokenizer và suy luận
 
 ```powershell
-.\.venv\Scripts\python.exe exercise1_sentiment.py --text "I really enjoyed this movie!" "The movie was boring and disappointing."
+.\.venv\Scripts\python.exe exercise1_sentiment.py
 ```
 
-Trình bày các trường `tokens`, `input_ids`, `label`, `score` trên terminal và mở `outputs/exercise1.json`. Giải thích rằng tokenizer chuyển văn bản thành đầu vào mô hình, còn score là xác suất của nhãn dự đoán. Đối chiếu nhãn thực tế với ý nghĩa hai câu; không trình bày nhãn kỳ vọng như kết quả đã chạy.
+Lệnh mặc định chạy **5 câu tiếng Anh**, cùng danh sách trong notebook. Trình bày các trường `tokens`, `input_ids`, `label`, `score` trên terminal và mở `outputs/exercise1.json`. Giải thích rằng tokenizer chuyển văn bản thành đầu vào mô hình, còn score là xác suất của nhãn dự đoán. Đối chiếu nhãn thực tế với ý nghĩa từng câu; không trình bày nhãn kỳ vọng như kết quả đã chạy.
 
 ## 3. Demo bài 2: kiểm tra luồng với ít dữ liệu
 

@@ -42,18 +42,27 @@ Trainer ghi thời gian huấn luyện **1050.0554 giây**, khoảng **17 phút 
 
 Sử dụng `distilbert/distilbert-base-uncased-finetuned-sst-2-english`. Tokenizer chuyển câu thành đầu vào có padding/cắt tối đa 256 token; mô hình chạy ở chế độ đánh giá, không tính gradient. Softmax chuyển logits thành xác suất và nhãn có xác suất lớn nhất được chọn.
 
-| Văn bản | Nhãn thực tế | Score |
+Đã chạy mô hình trên **5 câu tiếng Anh**:
+
+| Câu đầu vào | Nhãn dự đoán | Score |
 |---|---|---|
 | `I really enjoyed this movie!` | POSITIVE | 0.999872 |
 | `The movie was boring and disappointing.` | NEGATIVE | 0.999793 |
+| `The acting was excellent and the story was engaging.` | POSITIVE | 0.999879 |
+| `I regret watching this movie because it was a waste of time.` | NEGATIVE | 0.999779 |
+| `The soundtrack was beautiful and made the film memorable.` | POSITIVE | 0.999887 |
 
-Cả hai nhãn phù hợp với ý nghĩa câu: câu đầu yêu thích bộ phim, câu sau chê phim nhàm chán và gây thất vọng.
+Mô hình gán 3 câu nhãn POSITIVE và 2 câu nhãn NEGATIVE. Các câu 1, 3 và 5 diễn tả sự yêu thích hoặc khen diễn xuất, nội dung, âm nhạc; các câu 2 và 4 diễn tả sự nhàm chán, thất vọng hoặc hối tiếc khi xem phim. Cả năm nhãn dự đoán đều phù hợp với ý nghĩa của các câu minh họa.
 
-- Câu 1 có tokens `['i', 'really', 'enjoyed', 'this', 'movie', '!']` và input IDs `[101, 1045, 2428, 5632, 2023, 3185, 999, 102]`.
-- Câu 2 có tokens `['the', 'movie', 'was', 'boring', 'and', 'disappointing', '.']` và input IDs `[101, 1996, 3185, 2001, 11771, 1998, 15640, 1012, 102]`.
-- `movie` có ID `3185` trong cả hai câu; chữ được chuyển về dạng thường và dấu câu được tách riêng. ID `101` và `102` đánh dấu đầu/cuối chuỗi.
+- Câu 1: `['i', 'really', 'enjoyed', 'this', 'movie', '!']`; input IDs: `[101, 1045, 2428, 5632, 2023, 3185, 999, 102]`.
+- Câu 2: `['the', 'movie', 'was', 'boring', 'and', 'disappointing', '.']`; input IDs: `[101, 1996, 3185, 2001, 11771, 1998, 15640, 1012, 102]`.
+- Câu 3: `['the', 'acting', 'was', 'excellent', 'and', 'the', 'story', 'was', 'engaging', '.']`; input IDs: `[101, 1996, 3772, 2001, 6581, 1998, 1996, 2466, 2001, 11973, 1012, 102]`.
+- Câu 4: `['i', 'regret', 'watching', 'this', 'movie', 'because', 'it', 'was', 'a', 'waste', 'of', 'time', '.']`; input IDs: `[101, 1045, 9038, 3666, 2023, 3185, 2138, 2009, 2001, 1037, 5949, 1997, 2051, 1012, 102]`.
+- Câu 5: `['the', 'soundtrack', 'was', 'beautiful', 'and', 'made', 'the', 'film', 'memorable', '.']`; input IDs: `[101, 1996, 6050, 2001, 3376, 1998, 2081, 1996, 2143, 13432, 1012, 102]`.
 
-Score là xác suất softmax của nhãn được chọn, không phải accuracy trên tập dữ liệu. Hai ví dụ chưa đủ để đánh giá chất lượng tổng quát. Với văn bản dài, danh sách tokens do script in chưa cắt có thể dài hơn phần thực sự đưa vào mô hình.
+Tokenizer chuyển chữ về dạng thường và tách dấu câu riêng; từ `movie` có ID `3185`. ID `101` và `102` đánh dấu đầu/cuối chuỗi.
+
+Score là xác suất softmax của nhãn được chọn, không phải accuracy trên tập dữ liệu. Năm ví dụ chưa đủ để đánh giá chất lượng tổng quát. Với văn bản dài, danh sách tokens do script in chưa cắt có thể dài hơn phần thực sự đưa vào mô hình.
 
 Minh chứng: [results/exercise1.json](results/exercise1.json).
 

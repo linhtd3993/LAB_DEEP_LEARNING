@@ -3,6 +3,14 @@ import argparse
 import json
 from pathlib import Path
 
+DEFAULT_TEXTS = [
+    'I really enjoyed this movie!',
+    'The movie was boring and disappointing.',
+    'The acting was excellent and the story was engaging.',
+    'I regret watching this movie because it was a waste of time.',
+    'The soundtrack was beautiful and made the film memorable.',
+]
+
 def run(texts, output='outputs/exercise1.json'):
     import torch
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -28,6 +36,6 @@ def run(texts, output='outputs/exercise1.json'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--text', nargs='+', default=['I really enjoyed this movie!', 'The movie was boring and disappointing.'])
+    parser.add_argument('--text', nargs='+', default=DEFAULT_TEXTS)
     args = parser.parse_args()
     run(args.text)
