@@ -1,6 +1,6 @@
 # Demo Lab 3 — Hugging Face
 
-Tài liệu này hướng dẫn trình diễn bài thực hành bằng terminal hoặc [Practice3.ipynb](Practice3.ipynb). Nội dung báo cáo ở [report.md](report.md). Các lệnh dưới đây chạy trong PowerShell tại thư mục gốc repo.
+Tài liệu này hướng dẫn trình diễn bài thực hành bằng terminal hoặc [Practice3.ipynb](Practice3.ipynb). Nội dung báo cáo ở [report.md](report.md). Các lệnh dưới đây chạy trong PowerShell tại thư mục `lab3/`. Nếu terminal đang ở thư mục gốc repo, chạy `cd lab3` trước.
 
 ## 1. Chuẩn bị môi trường
 

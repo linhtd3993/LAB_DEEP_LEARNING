@@ -19,7 +19,8 @@ Nhãn `0 = NEGATIVE`, `1 = POSITIVE`.
 
 ## 2. Cài đặt Windows / VS Code
 
-Mở thư mục repo `LAB_DEEP_LEARNING` bằng **File → Open Folder**.
+Mở thư mục `LAB_DEEP_LEARNING/lab3` bằng **File → Open Folder**.
+Nếu đang mở thư mục gốc repo, chạy `cd lab3` trong terminal trước khi dùng các lệnh bên dưới.
 
 Lần chạy trong notebook dùng **Python 3.14.0 trên CPU**. Phiên bản thực tế được ghi ở
 [requirements-run.txt](requirements-run.txt) và [results/environment.json](results/environment.json).
