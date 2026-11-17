@@ -1,0 +1,13 @@
+model,delay,n,errors,accuracy
+Simple RNN,4,96,0,1.0
+Simple RNN,12,96,0,1.0
+Simple RNN,24,96,0,1.0
+Simple RNN,36,96,0,1.0
+LSTM,4,96,0,1.0
+LSTM,12,96,0,1.0
+LSTM,24,96,0,1.0
+LSTM,36,96,0,1.0
+GRU,4,96,0,1.0
+GRU,12,96,0,1.0
+GRU,24,96,0,1.0
+GRU,36,96,0,1.0

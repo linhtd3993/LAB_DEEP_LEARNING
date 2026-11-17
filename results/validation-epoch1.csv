@@ -1,0 +1,769 @@
+model,sample,delay,target,prediction,error
+Simple RNN,0,4,0,0,False
+Simple RNN,1,4,1,0,True
+Simple RNN,2,4,0,0,False
+Simple RNN,3,4,1,0,True
+Simple RNN,4,4,0,1,True
+Simple RNN,5,4,1,1,False
+Simple RNN,6,4,0,1,True
+Simple RNN,7,4,1,1,False
+Simple RNN,8,4,0,0,False
+Simple RNN,9,4,1,1,False
+Simple RNN,10,4,0,0,False
+Simple RNN,11,4,1,0,True
+Simple RNN,12,4,0,1,True
+Simple RNN,13,4,1,1,False
+Simple RNN,14,4,0,0,False
+Simple RNN,15,4,1,0,True
+Simple RNN,16,4,0,1,True
+Simple RNN,17,4,1,1,False
+Simple RNN,18,4,0,0,False
+Simple RNN,19,4,1,0,True
+Simple RNN,20,4,0,1,True
+Simple RNN,21,4,1,1,False
+Simple RNN,22,4,0,0,False
+Simple RNN,23,4,1,1,False
+Simple RNN,24,4,0,1,True
+Simple RNN,25,4,1,1,False
+Simple RNN,26,4,0,0,False
+Simple RNN,27,4,1,0,True
+Simple RNN,28,4,0,0,False
+Simple RNN,29,4,1,1,False
+Simple RNN,30,4,0,1,True
+Simple RNN,31,4,1,1,False
+Simple RNN,32,4,0,1,True
+Simple RNN,33,4,1,1,False
+Simple RNN,34,4,0,0,False
+Simple RNN,35,4,1,0,True
+Simple RNN,36,4,0,0,False
+Simple RNN,37,4,1,1,False
+Simple RNN,38,4,0,0,False
+Simple RNN,39,4,1,0,True
+Simple RNN,40,4,0,1,True
+Simple RNN,41,4,1,1,False
+Simple RNN,42,4,0,1,True
+Simple RNN,43,4,1,1,False
+Simple RNN,44,4,0,0,False
+Simple RNN,45,4,1,1,False
+Simple RNN,46,4,0,1,True
+Simple RNN,47,4,1,1,False
+Simple RNN,48,4,0,0,False
+Simple RNN,49,4,1,1,False
+Simple RNN,50,4,0,0,False
+Simple RNN,51,4,1,1,False
+Simple RNN,52,4,0,1,True
+Simple RNN,53,4,1,1,False
+Simple RNN,54,4,0,1,True
+Simple RNN,55,4,1,1,False
+Simple RNN,56,4,0,1,True
+Simple RNN,57,4,1,1,False
+Simple RNN,58,4,0,1,True
+Simple RNN,59,4,1,1,False
+Simple RNN,60,4,0,0,False
+Simple RNN,61,4,1,1,False
+Simple RNN,62,4,0,1,True
+Simple RNN,63,4,1,1,False
+Simple RNN,64,12,0,0,False
+Simple RNN,65,12,1,0,True
+Simple RNN,66,12,0,1,True
+Simple RNN,67,12,1,1,False
+Simple RNN,68,12,0,0,False
+Simple RNN,69,12,1,0,True
+Simple RNN,70,12,0,1,True
+Simple RNN,71,12,1,1,False
+Simple RNN,72,12,0,0,False
+Simple RNN,73,12,1,0,True
+Simple RNN,74,12,0,0,False
+Simple RNN,75,12,1,0,True
+Simple RNN,76,12,0,0,False
+Simple RNN,77,12,1,0,True
+Simple RNN,78,12,0,1,True
+Simple RNN,79,12,1,1,False
+Simple RNN,80,12,0,1,True
+Simple RNN,81,12,1,1,False
+Simple RNN,82,12,0,1,True
+Simple RNN,83,12,1,1,False
+Simple RNN,84,12,0,1,True
+Simple RNN,85,12,1,1,False
+Simple RNN,86,12,0,1,True
+Simple RNN,87,12,1,1,False
+Simple RNN,88,12,0,1,True
+Simple RNN,89,12,1,1,False
+Simple RNN,90,12,0,0,False
+Simple RNN,91,12,1,0,True
+Simple RNN,92,12,0,0,False
+Simple RNN,93,12,1,0,True
+Simple RNN,94,12,0,0,False
+Simple RNN,95,12,1,0,True
+Simple RNN,96,12,0,1,True
+Simple RNN,97,12,1,1,False
+Simple RNN,98,12,0,1,True
+Simple RNN,99,12,1,1,False
+Simple RNN,100,12,0,1,True
+Simple RNN,101,12,1,1,False
+Simple RNN,102,12,0,0,False
+Simple RNN,103,12,1,0,True
+Simple RNN,104,12,0,1,True
+Simple RNN,105,12,1,1,False
+Simple RNN,106,12,0,1,True
+Simple RNN,107,12,1,1,False
+Simple RNN,108,12,0,1,True
+Simple RNN,109,12,1,1,False
+Simple RNN,110,12,0,1,True
+Simple RNN,111,12,1,1,False
+Simple RNN,112,12,0,1,True
+Simple RNN,113,12,1,1,False
+Simple RNN,114,12,0,1,True
+Simple RNN,115,12,1,1,False
+Simple RNN,116,12,0,1,True
+Simple RNN,117,12,1,1,False
+Simple RNN,118,12,0,1,True
+Simple RNN,119,12,1,1,False
+Simple RNN,120,12,0,1,True
+Simple RNN,121,12,1,1,False
+Simple RNN,122,12,0,1,True
+Simple RNN,123,12,1,1,False
+Simple RNN,124,12,0,1,True
+Simple RNN,125,12,1,1,False
+Simple RNN,126,12,0,1,True
+Simple RNN,127,12,1,1,False
+Simple RNN,128,24,0,0,False
+Simple RNN,129,24,1,0,True
+Simple RNN,130,24,0,0,False
+Simple RNN,131,24,1,0,True
+Simple RNN,132,24,0,1,True
+Simple RNN,133,24,1,1,False
+Simple RNN,134,24,0,0,False
+Simple RNN,135,24,1,0,True
+Simple RNN,136,24,0,0,False
+Simple RNN,137,24,1,0,True
+Simple RNN,138,24,0,1,True
+Simple RNN,139,24,1,1,False
+Simple RNN,140,24,0,0,False
+Simple RNN,141,24,1,0,True
+Simple RNN,142,24,0,0,False
+Simple RNN,143,24,1,0,True
+Simple RNN,144,24,0,1,True
+Simple RNN,145,24,1,1,False
+Simple RNN,146,24,0,0,False
+Simple RNN,147,24,1,0,True
+Simple RNN,148,24,0,1,True
+Simple RNN,149,24,1,1,False
+Simple RNN,150,24,0,1,True
+Simple RNN,151,24,1,1,False
+Simple RNN,152,24,0,0,False
+Simple RNN,153,24,1,0,True
+Simple RNN,154,24,0,0,False
+Simple RNN,155,24,1,0,True
+Simple RNN,156,24,0,1,True
+Simple RNN,157,24,1,1,False
+Simple RNN,158,24,0,1,True
+Simple RNN,159,24,1,1,False
+Simple RNN,160,24,0,1,True
+Simple RNN,161,24,1,1,False
+Simple RNN,162,24,0,1,True
+Simple RNN,163,24,1,1,False
+Simple RNN,164,24,0,1,True
+Simple RNN,165,24,1,1,False
+Simple RNN,166,24,0,1,True
+Simple RNN,167,24,1,1,False
+Simple RNN,168,24,0,1,True
+Simple RNN,169,24,1,1,False
+Simple RNN,170,24,0,1,True
+Simple RNN,171,24,1,1,False
+Simple RNN,172,24,0,0,False
+Simple RNN,173,24,1,0,True
+Simple RNN,174,24,0,1,True
+Simple RNN,175,24,1,1,False
+Simple RNN,176,24,0,1,True
+Simple RNN,177,24,1,1,False
+Simple RNN,178,24,0,0,False
+Simple RNN,179,24,1,0,True
+Simple RNN,180,24,0,0,False
+Simple RNN,181,24,1,0,True
+Simple RNN,182,24,0,0,False
+Simple RNN,183,24,1,0,True
+Simple RNN,184,24,0,1,True
+Simple RNN,185,24,1,1,False
+Simple RNN,186,24,0,0,False
+Simple RNN,187,24,1,0,True
+Simple RNN,188,24,0,1,True
+Simple RNN,189,24,1,1,False
+Simple RNN,190,24,0,1,True
+Simple RNN,191,24,1,1,False
+Simple RNN,192,36,0,0,False
+Simple RNN,193,36,1,0,True
+Simple RNN,194,36,0,0,False
+Simple RNN,195,36,1,0,True
+Simple RNN,196,36,0,1,True
+Simple RNN,197,36,1,1,False
+Simple RNN,198,36,0,1,True
+Simple RNN,199,36,1,1,False
+Simple RNN,200,36,0,1,True
+Simple RNN,201,36,1,1,False
+Simple RNN,202,36,0,0,False
+Simple RNN,203,36,1,0,True
+Simple RNN,204,36,0,1,True
+Simple RNN,205,36,1,1,False
+Simple RNN,206,36,0,1,True
+Simple RNN,207,36,1,1,False
+Simple RNN,208,36,0,0,False
+Simple RNN,209,36,1,0,True
+Simple RNN,210,36,0,0,False
+Simple RNN,211,36,1,0,True
+Simple RNN,212,36,0,1,True
+Simple RNN,213,36,1,1,False
+Simple RNN,214,36,0,1,True
+Simple RNN,215,36,1,1,False
+Simple RNN,216,36,0,1,True
+Simple RNN,217,36,1,1,False
+Simple RNN,218,36,0,1,True
+Simple RNN,219,36,1,1,False
+Simple RNN,220,36,0,1,True
+Simple RNN,221,36,1,1,False
+Simple RNN,222,36,0,1,True
+Simple RNN,223,36,1,1,False
+Simple RNN,224,36,0,1,True
+Simple RNN,225,36,1,1,False
+Simple RNN,226,36,0,0,False
+Simple RNN,227,36,1,0,True
+Simple RNN,228,36,0,0,False
+Simple RNN,229,36,1,0,True
+Simple RNN,230,36,0,1,True
+Simple RNN,231,36,1,1,False
+Simple RNN,232,36,0,1,True
+Simple RNN,233,36,1,1,False
+Simple RNN,234,36,0,1,True
+Simple RNN,235,36,1,1,False
+Simple RNN,236,36,0,1,True
+Simple RNN,237,36,1,1,False
+Simple RNN,238,36,0,1,True
+Simple RNN,239,36,1,1,False
+Simple RNN,240,36,0,1,True
+Simple RNN,241,36,1,1,False
+Simple RNN,242,36,0,0,False
+Simple RNN,243,36,1,0,True
+Simple RNN,244,36,0,0,False
+Simple RNN,245,36,1,0,True
+Simple RNN,246,36,0,1,True
+Simple RNN,247,36,1,1,False
+Simple RNN,248,36,0,0,False
+Simple RNN,249,36,1,0,True
+Simple RNN,250,36,0,0,False
+Simple RNN,251,36,1,0,True
+Simple RNN,252,36,0,0,False
+Simple RNN,253,36,1,0,True
+Simple RNN,254,36,0,1,True
+Simple RNN,255,36,1,1,False
+LSTM,0,4,0,1,True
+LSTM,1,4,1,1,False
+LSTM,2,4,0,1,True
+LSTM,3,4,1,1,False
+LSTM,4,4,0,0,False
+LSTM,5,4,1,1,False
+LSTM,6,4,0,0,False
+LSTM,7,4,1,1,False
+LSTM,8,4,0,1,True
+LSTM,9,4,1,1,False
+LSTM,10,4,0,1,True
+LSTM,11,4,1,1,False
+LSTM,12,4,0,1,True
+LSTM,13,4,1,1,False
+LSTM,14,4,0,1,True
+LSTM,15,4,1,1,False
+LSTM,16,4,0,1,True
+LSTM,17,4,1,1,False
+LSTM,18,4,0,1,True
+LSTM,19,4,1,1,False
+LSTM,20,4,0,1,True
+LSTM,21,4,1,1,False
+LSTM,22,4,0,0,False
+LSTM,23,4,1,1,False
+LSTM,24,4,0,1,True
+LSTM,25,4,1,1,False
+LSTM,26,4,0,1,True
+LSTM,27,4,1,1,False
+LSTM,28,4,0,1,True
+LSTM,29,4,1,1,False
+LSTM,30,4,0,0,False
+LSTM,31,4,1,0,True
+LSTM,32,4,0,1,True
+LSTM,33,4,1,1,False
+LSTM,34,4,0,1,True
+LSTM,35,4,1,1,False
+LSTM,36,4,0,1,True
+LSTM,37,4,1,1,False
+LSTM,38,4,0,1,True
+LSTM,39,4,1,1,False
+LSTM,40,4,0,0,False
+LSTM,41,4,1,1,False
+LSTM,42,4,0,1,True
+LSTM,43,4,1,1,False
+LSTM,44,4,0,1,True
+LSTM,45,4,1,1,False
+LSTM,46,4,0,1,True
+LSTM,47,4,1,1,False
+LSTM,48,4,0,1,True
+LSTM,49,4,1,1,False
+LSTM,50,4,0,0,False
+LSTM,51,4,1,0,True
+LSTM,52,4,0,1,True
+LSTM,53,4,1,1,False
+LSTM,54,4,0,0,False
+LSTM,55,4,1,1,False
+LSTM,56,4,0,1,True
+LSTM,57,4,1,1,False
+LSTM,58,4,0,1,True
+LSTM,59,4,1,1,False
+LSTM,60,4,0,1,True
+LSTM,61,4,1,1,False
+LSTM,62,4,0,0,False
+LSTM,63,4,1,1,False
+LSTM,64,12,0,1,True
+LSTM,65,12,1,1,False
+LSTM,66,12,0,0,False
+LSTM,67,12,1,1,False
+LSTM,68,12,0,1,True
+LSTM,69,12,1,1,False
+LSTM,70,12,0,1,True
+LSTM,71,12,1,1,False
+LSTM,72,12,0,0,False
+LSTM,73,12,1,0,True
+LSTM,74,12,0,1,True
+LSTM,75,12,1,1,False
+LSTM,76,12,0,1,True
+LSTM,77,12,1,1,False
+LSTM,78,12,0,1,True
+LSTM,79,12,1,1,False
+LSTM,80,12,0,1,True
+LSTM,81,12,1,1,False
+LSTM,82,12,0,0,False
+LSTM,83,12,1,0,True
+LSTM,84,12,0,1,True
+LSTM,85,12,1,1,False
+LSTM,86,12,0,0,False
+LSTM,87,12,1,0,True
+LSTM,88,12,0,0,False
+LSTM,89,12,1,0,True
+LSTM,90,12,0,1,True
+LSTM,91,12,1,1,False
+LSTM,92,12,0,1,True
+LSTM,93,12,1,1,False
+LSTM,94,12,0,0,False
+LSTM,95,12,1,0,True
+LSTM,96,12,0,1,True
+LSTM,97,12,1,1,False
+LSTM,98,12,0,1,True
+LSTM,99,12,1,1,False
+LSTM,100,12,0,1,True
+LSTM,101,12,1,1,False
+LSTM,102,12,0,1,True
+LSTM,103,12,1,1,False
+LSTM,104,12,0,0,False
+LSTM,105,12,1,0,True
+LSTM,106,12,0,1,True
+LSTM,107,12,1,1,False
+LSTM,108,12,0,1,True
+LSTM,109,12,1,1,False
+LSTM,110,12,0,1,True
+LSTM,111,12,1,1,False
+LSTM,112,12,0,1,True
+LSTM,113,12,1,1,False
+LSTM,114,12,0,1,True
+LSTM,115,12,1,1,False
+LSTM,116,12,0,1,True
+LSTM,117,12,1,1,False
+LSTM,118,12,0,1,True
+LSTM,119,12,1,1,False
+LSTM,120,12,0,1,True
+LSTM,121,12,1,1,False
+LSTM,122,12,0,0,False
+LSTM,123,12,1,0,True
+LSTM,124,12,0,0,False
+LSTM,125,12,1,0,True
+LSTM,126,12,0,0,False
+LSTM,127,12,1,0,True
+LSTM,128,24,0,1,True
+LSTM,129,24,1,1,False
+LSTM,130,24,0,0,False
+LSTM,131,24,1,0,True
+LSTM,132,24,0,1,True
+LSTM,133,24,1,1,False
+LSTM,134,24,0,0,False
+LSTM,135,24,1,0,True
+LSTM,136,24,0,1,True
+LSTM,137,24,1,1,False
+LSTM,138,24,0,0,False
+LSTM,139,24,1,0,True
+LSTM,140,24,0,1,True
+LSTM,141,24,1,1,False
+LSTM,142,24,0,1,True
+LSTM,143,24,1,1,False
+LSTM,144,24,0,1,True
+LSTM,145,24,1,1,False
+LSTM,146,24,0,0,False
+LSTM,147,24,1,0,True
+LSTM,148,24,0,0,False
+LSTM,149,24,1,0,True
+LSTM,150,24,0,0,False
+LSTM,151,24,1,0,True
+LSTM,152,24,0,1,True
+LSTM,153,24,1,1,False
+LSTM,154,24,0,0,False
+LSTM,155,24,1,0,True
+LSTM,156,24,0,1,True
+LSTM,157,24,1,1,False
+LSTM,158,24,0,1,True
+LSTM,159,24,1,1,False
+LSTM,160,24,0,1,True
+LSTM,161,24,1,1,False
+LSTM,162,24,0,1,True
+LSTM,163,24,1,1,False
+LSTM,164,24,0,1,True
+LSTM,165,24,1,1,False
+LSTM,166,24,0,1,True
+LSTM,167,24,1,1,False
+LSTM,168,24,0,0,False
+LSTM,169,24,1,0,True
+LSTM,170,24,0,1,True
+LSTM,171,24,1,1,False
+LSTM,172,24,0,1,True
+LSTM,173,24,1,1,False
+LSTM,174,24,0,0,False
+LSTM,175,24,1,0,True
+LSTM,176,24,0,0,False
+LSTM,177,24,1,0,True
+LSTM,178,24,0,0,False
+LSTM,179,24,1,0,True
+LSTM,180,24,0,1,True
+LSTM,181,24,1,1,False
+LSTM,182,24,0,1,True
+LSTM,183,24,1,1,False
+LSTM,184,24,0,0,False
+LSTM,185,24,1,0,True
+LSTM,186,24,0,0,False
+LSTM,187,24,1,0,True
+LSTM,188,24,0,1,True
+LSTM,189,24,1,1,False
+LSTM,190,24,0,1,True
+LSTM,191,24,1,1,False
+LSTM,192,36,0,1,True
+LSTM,193,36,1,1,False
+LSTM,194,36,0,1,True
+LSTM,195,36,1,1,False
+LSTM,196,36,0,1,True
+LSTM,197,36,1,1,False
+LSTM,198,36,0,1,True
+LSTM,199,36,1,1,False
+LSTM,200,36,0,1,True
+LSTM,201,36,1,1,False
+LSTM,202,36,0,0,False
+LSTM,203,36,1,0,True
+LSTM,204,36,0,1,True
+LSTM,205,36,1,1,False
+LSTM,206,36,0,1,True
+LSTM,207,36,1,1,False
+LSTM,208,36,0,1,True
+LSTM,209,36,1,1,False
+LSTM,210,36,0,1,True
+LSTM,211,36,1,1,False
+LSTM,212,36,0,1,True
+LSTM,213,36,1,1,False
+LSTM,214,36,0,1,True
+LSTM,215,36,1,1,False
+LSTM,216,36,0,1,True
+LSTM,217,36,1,1,False
+LSTM,218,36,0,1,True
+LSTM,219,36,1,1,False
+LSTM,220,36,0,1,True
+LSTM,221,36,1,1,False
+LSTM,222,36,0,1,True
+LSTM,223,36,1,1,False
+LSTM,224,36,0,1,True
+LSTM,225,36,1,1,False
+LSTM,226,36,0,1,True
+LSTM,227,36,1,1,False
+LSTM,228,36,0,0,False
+LSTM,229,36,1,0,True
+LSTM,230,36,0,0,False
+LSTM,231,36,1,0,True
+LSTM,232,36,0,1,True
+LSTM,233,36,1,1,False
+LSTM,234,36,0,1,True
+LSTM,235,36,1,1,False
+LSTM,236,36,0,0,False
+LSTM,237,36,1,0,True
+LSTM,238,36,0,0,False
+LSTM,239,36,1,0,True
+LSTM,240,36,0,1,True
+LSTM,241,36,1,1,False
+LSTM,242,36,0,1,True
+LSTM,243,36,1,1,False
+LSTM,244,36,0,1,True
+LSTM,245,36,1,1,False
+LSTM,246,36,0,1,True
+LSTM,247,36,1,1,False
+LSTM,248,36,0,1,True
+LSTM,249,36,1,1,False
+LSTM,250,36,0,1,True
+LSTM,251,36,1,1,False
+LSTM,252,36,0,1,True
+LSTM,253,36,1,1,False
+LSTM,254,36,0,1,True
+LSTM,255,36,1,1,False
+GRU,0,4,0,1,True
+GRU,1,4,1,1,False
+GRU,2,4,0,0,False
+GRU,3,4,1,1,False
+GRU,4,4,0,0,False
+GRU,5,4,1,1,False
+GRU,6,4,0,1,True
+GRU,7,4,1,1,False
+GRU,8,4,0,1,True
+GRU,9,4,1,1,False
+GRU,10,4,0,0,False
+GRU,11,4,1,1,False
+GRU,12,4,0,1,True
+GRU,13,4,1,1,False
+GRU,14,4,0,0,False
+GRU,15,4,1,1,False
+GRU,16,4,0,0,False
+GRU,17,4,1,1,False
+GRU,18,4,0,0,False
+GRU,19,4,1,1,False
+GRU,20,4,0,0,False
+GRU,21,4,1,1,False
+GRU,22,4,0,0,False
+GRU,23,4,1,1,False
+GRU,24,4,0,0,False
+GRU,25,4,1,1,False
+GRU,26,4,0,0,False
+GRU,27,4,1,0,True
+GRU,28,4,0,1,True
+GRU,29,4,1,1,False
+GRU,30,4,0,0,False
+GRU,31,4,1,1,False
+GRU,32,4,0,1,True
+GRU,33,4,1,1,False
+GRU,34,4,0,0,False
+GRU,35,4,1,1,False
+GRU,36,4,0,1,True
+GRU,37,4,1,1,False
+GRU,38,4,0,0,False
+GRU,39,4,1,0,True
+GRU,40,4,0,1,True
+GRU,41,4,1,1,False
+GRU,42,4,0,1,True
+GRU,43,4,1,1,False
+GRU,44,4,0,1,True
+GRU,45,4,1,1,False
+GRU,46,4,0,0,False
+GRU,47,4,1,1,False
+GRU,48,4,0,1,True
+GRU,49,4,1,1,False
+GRU,50,4,0,0,False
+GRU,51,4,1,0,True
+GRU,52,4,0,1,True
+GRU,53,4,1,1,False
+GRU,54,4,0,1,True
+GRU,55,4,1,1,False
+GRU,56,4,0,1,True
+GRU,57,4,1,1,False
+GRU,58,4,0,1,True
+GRU,59,4,1,1,False
+GRU,60,4,0,0,False
+GRU,61,4,1,1,False
+GRU,62,4,0,0,False
+GRU,63,4,1,1,False
+GRU,64,12,0,0,False
+GRU,65,12,1,0,True
+GRU,66,12,0,0,False
+GRU,67,12,1,0,True
+GRU,68,12,0,0,False
+GRU,69,12,1,1,False
+GRU,70,12,0,1,True
+GRU,71,12,1,1,False
+GRU,72,12,0,0,False
+GRU,73,12,1,0,True
+GRU,74,12,0,0,False
+GRU,75,12,1,0,True
+GRU,76,12,0,1,True
+GRU,77,12,1,1,False
+GRU,78,12,0,1,True
+GRU,79,12,1,1,False
+GRU,80,12,0,1,True
+GRU,81,12,1,1,False
+GRU,82,12,0,0,False
+GRU,83,12,1,0,True
+GRU,84,12,0,1,True
+GRU,85,12,1,1,False
+GRU,86,12,0,0,False
+GRU,87,12,1,1,False
+GRU,88,12,0,0,False
+GRU,89,12,1,0,True
+GRU,90,12,0,1,True
+GRU,91,12,1,1,False
+GRU,92,12,0,0,False
+GRU,93,12,1,0,True
+GRU,94,12,0,0,False
+GRU,95,12,1,0,True
+GRU,96,12,0,0,False
+GRU,97,12,1,0,True
+GRU,98,12,0,0,False
+GRU,99,12,1,0,True
+GRU,100,12,0,1,True
+GRU,101,12,1,1,False
+GRU,102,12,0,1,True
+GRU,103,12,1,1,False
+GRU,104,12,0,1,True
+GRU,105,12,1,1,False
+GRU,106,12,0,0,False
+GRU,107,12,1,0,True
+GRU,108,12,0,1,True
+GRU,109,12,1,1,False
+GRU,110,12,0,1,True
+GRU,111,12,1,1,False
+GRU,112,12,0,0,False
+GRU,113,12,1,0,True
+GRU,114,12,0,0,False
+GRU,115,12,1,1,False
+GRU,116,12,0,1,True
+GRU,117,12,1,1,False
+GRU,118,12,0,0,False
+GRU,119,12,1,0,True
+GRU,120,12,0,0,False
+GRU,121,12,1,0,True
+GRU,122,12,0,0,False
+GRU,123,12,1,0,True
+GRU,124,12,0,1,True
+GRU,125,12,1,1,False
+GRU,126,12,0,0,False
+GRU,127,12,1,0,True
+GRU,128,24,0,1,True
+GRU,129,24,1,1,False
+GRU,130,24,0,0,False
+GRU,131,24,1,0,True
+GRU,132,24,0,1,True
+GRU,133,24,1,1,False
+GRU,134,24,0,0,False
+GRU,135,24,1,0,True
+GRU,136,24,0,0,False
+GRU,137,24,1,0,True
+GRU,138,24,0,1,True
+GRU,139,24,1,1,False
+GRU,140,24,0,0,False
+GRU,141,24,1,0,True
+GRU,142,24,0,0,False
+GRU,143,24,1,0,True
+GRU,144,24,0,1,True
+GRU,145,24,1,1,False
+GRU,146,24,0,0,False
+GRU,147,24,1,0,True
+GRU,148,24,0,1,True
+GRU,149,24,1,1,False
+GRU,150,24,0,0,False
+GRU,151,24,1,0,True
+GRU,152,24,0,1,True
+GRU,153,24,1,1,False
+GRU,154,24,0,0,False
+GRU,155,24,1,0,True
+GRU,156,24,0,1,True
+GRU,157,24,1,1,False
+GRU,158,24,0,1,True
+GRU,159,24,1,1,False
+GRU,160,24,0,1,True
+GRU,161,24,1,1,False
+GRU,162,24,0,1,True
+GRU,163,24,1,1,False
+GRU,164,24,0,1,True
+GRU,165,24,1,1,False
+GRU,166,24,0,1,True
+GRU,167,24,1,1,False
+GRU,168,24,0,0,False
+GRU,169,24,1,0,True
+GRU,170,24,0,0,False
+GRU,171,24,1,0,True
+GRU,172,24,0,0,False
+GRU,173,24,1,0,True
+GRU,174,24,0,1,True
+GRU,175,24,1,1,False
+GRU,176,24,0,1,True
+GRU,177,24,1,1,False
+GRU,178,24,0,0,False
+GRU,179,24,1,0,True
+GRU,180,24,0,1,True
+GRU,181,24,1,1,False
+GRU,182,24,0,1,True
+GRU,183,24,1,1,False
+GRU,184,24,0,0,False
+GRU,185,24,1,0,True
+GRU,186,24,0,0,False
+GRU,187,24,1,0,True
+GRU,188,24,0,1,True
+GRU,189,24,1,1,False
+GRU,190,24,0,1,True
+GRU,191,24,1,1,False
+GRU,192,36,0,1,True
+GRU,193,36,1,1,False
+GRU,194,36,0,1,True
+GRU,195,36,1,1,False
+GRU,196,36,0,1,True
+GRU,197,36,1,1,False
+GRU,198,36,0,1,True
+GRU,199,36,1,1,False
+GRU,200,36,0,0,False
+GRU,201,36,1,0,True
+GRU,202,36,0,0,False
+GRU,203,36,1,0,True
+GRU,204,36,0,1,True
+GRU,205,36,1,1,False
+GRU,206,36,0,1,True
+GRU,207,36,1,1,False
+GRU,208,36,0,0,False
+GRU,209,36,1,0,True
+GRU,210,36,0,1,True
+GRU,211,36,1,1,False
+GRU,212,36,0,1,True
+GRU,213,36,1,1,False
+GRU,214,36,0,0,False
+GRU,215,36,1,0,True
+GRU,216,36,0,1,True
+GRU,217,36,1,1,False
+GRU,218,36,0,1,True
+GRU,219,36,1,1,False
+GRU,220,36,0,1,True
+GRU,221,36,1,1,False
+GRU,222,36,0,0,False
+GRU,223,36,1,0,True
+GRU,224,36,0,1,True
+GRU,225,36,1,1,False
+GRU,226,36,0,0,False
+GRU,227,36,1,0,True
+GRU,228,36,0,1,True
+GRU,229,36,1,1,False
+GRU,230,36,0,0,False
+GRU,231,36,1,0,True
+GRU,232,36,0,1,True
+GRU,233,36,1,1,False
+GRU,234,36,0,1,True
+GRU,235,36,1,1,False
+GRU,236,36,0,0,False
+GRU,237,36,1,0,True
+GRU,238,36,0,1,True
+GRU,239,36,1,1,False
+GRU,240,36,0,0,False
+GRU,241,36,1,0,True
+GRU,242,36,0,0,False
+GRU,243,36,1,0,True
+GRU,244,36,0,1,True
+GRU,245,36,1,1,False
+GRU,246,36,0,0,False
+GRU,247,36,1,0,True
+GRU,248,36,0,0,False
+GRU,249,36,1,0,True
+GRU,250,36,0,1,True
+GRU,251,36,1,1,False
+GRU,252,36,0,1,True
+GRU,253,36,1,1,False
+GRU,254,36,0,1,True
+GRU,255,36,1,1,False
