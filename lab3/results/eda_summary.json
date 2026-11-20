@@ -1,0 +1,488 @@
+{
+  "dataset": "stanfordnlp/imdb",
+  "seed": 42,
+  "max_length": 128,
+  "full_dataset": {
+    "train_total": 25000,
+    "train_neg": 12500,
+    "train_pos": 12500,
+    "test_total": 25000,
+    "test_neg": 12500,
+    "test_pos": 12500,
+    "unsupervised_total": 50000,
+    "train_html_br_pct": 58.66,
+    "test_html_br_pct": 58.14,
+    "train_raw_word_stats": {
+      "mean": 233.79,
+      "median": 174.0,
+      "std": 173.73,
+      "min": 10.0,
+      "p75": 284.0,
+      "p90": 458.0,
+      "p95": 598.0,
+      "max": 2470.0
+    },
+    "test_raw_word_stats": {
+      "mean": 228.53,
+      "median": 172.0,
+      "std": 168.88,
+      "min": 4.0,
+      "p75": 277.0,
+      "p90": 444.0,
+      "p95": 582.05,
+      "max": 2278.0
+    }
+  },
+  "splits": {
+    "train": {
+      "count": 2000,
+      "neg_count": 1000,
+      "pos_count": 1000,
+      "neg_pct": 50.0,
+      "pos_pct": 50.0,
+      "word_stats": {
+        "mean": 226.25,
+        "median": 170.0,
+        "std": 167.03,
+        "min": 12.0,
+        "p75": 266.0,
+        "p90": 449.2,
+        "p95": 585.05,
+        "max": 999.0
+      },
+      "raw_word_stats": {
+        "mean": 228.43,
+        "median": 172.0,
+        "std": 168.63,
+        "min": 12.0,
+        "p75": 268.25,
+        "p90": 452.1,
+        "p95": 587.05,
+        "max": 1005.0
+      },
+      "token_stats": {
+        "mean": 306.51,
+        "median": 231.0,
+        "std": 225.27,
+        "min": 17.0,
+        "p75": 366.0,
+        "p90": 607.1,
+        "p95": 799.1,
+        "max": 1416.0
+      },
+      "by_label": {
+        "NEGATIVE": {
+          "count": 1000,
+          "word_stats": {
+            "mean": 222.47,
+            "median": 172.0,
+            "std": 160.82,
+            "min": 23.0,
+            "p75": 261.25,
+            "p90": 420.2,
+            "p95": 569.35,
+            "max": 999.0
+          },
+          "token_stats": {
+            "mean": 304.22,
+            "median": 236.0,
+            "std": 218.22,
+            "min": 30.0,
+            "p75": 358.5,
+            "p90": 567.3,
+            "p95": 784.1,
+            "max": 1416.0
+          }
+        },
+        "POSITIVE": {
+          "count": 1000,
+          "word_stats": {
+            "mean": 230.02,
+            "median": 169.0,
+            "std": 172.94,
+            "min": 12.0,
+            "p75": 272.0,
+            "p90": 470.3,
+            "p95": 608.0,
+            "max": 974.0
+          },
+          "token_stats": {
+            "mean": 308.81,
+            "median": 227.0,
+            "std": 232.08,
+            "min": 17.0,
+            "p75": 377.25,
+            "p90": 643.3,
+            "p95": 804.3,
+            "max": 1383.0
+          }
+        }
+      },
+      "truncation": {
+        "max_length": 128,
+        "gt_max_length_count": 1777,
+        "gt_max_length_pct": 88.85,
+        "gt_128_count": 1777,
+        "gt_128_pct": 88.85,
+        "gt_256_count": 870,
+        "gt_256_pct": 43.5,
+        "gt_512_count": 271,
+        "gt_512_pct": 13.55
+      },
+      "html_br_count": 1189,
+      "html_br_pct": 59.45,
+      "empty_count": 0,
+      "duplicate_count": 0
+    },
+    "validation": {
+      "count": 500,
+      "neg_count": 243,
+      "pos_count": 257,
+      "neg_pct": 48.6,
+      "pos_pct": 51.4,
+      "word_stats": {
+        "mean": 225.59,
+        "median": 169.0,
+        "std": 160.59,
+        "min": 28.0,
+        "p75": 284.25,
+        "p90": 449.2,
+        "p95": 556.8,
+        "max": 1047.0
+      },
+      "raw_word_stats": {
+        "mean": 227.75,
+        "median": 170.5,
+        "std": 162.1,
+        "min": 28.0,
+        "p75": 287.0,
+        "p90": 454.0,
+        "p95": 564.8,
+        "max": 1051.0
+      },
+      "token_stats": {
+        "mean": 305.76,
+        "median": 224.0,
+        "std": 214.95,
+        "min": 38.0,
+        "p75": 384.0,
+        "p90": 611.2,
+        "p95": 797.05,
+        "max": 1277.0
+      },
+      "by_label": {
+        "NEGATIVE": {
+          "count": 243,
+          "word_stats": {
+            "mean": 222.61,
+            "median": 170.0,
+            "std": 147.98,
+            "min": 37.0,
+            "p75": 285.5,
+            "p90": 414.6,
+            "p95": 525.6,
+            "max": 948.0
+          },
+          "token_stats": {
+            "mean": 304.35,
+            "median": 228.0,
+            "std": 201.79,
+            "min": 51.0,
+            "p75": 384.0,
+            "p90": 592.8,
+            "p95": 725.9,
+            "max": 1276.0
+          }
+        },
+        "POSITIVE": {
+          "count": 257,
+          "word_stats": {
+            "mean": 228.41,
+            "median": 168.0,
+            "std": 171.62,
+            "min": 28.0,
+            "p75": 273.0,
+            "p90": 479.0,
+            "p95": 582.6,
+            "max": 1047.0
+          },
+          "token_stats": {
+            "mean": 307.09,
+            "median": 217.0,
+            "std": 226.69,
+            "min": 38.0,
+            "p75": 375.0,
+            "p90": 629.8,
+            "p95": 806.4,
+            "max": 1277.0
+          }
+        }
+      },
+      "truncation": {
+        "max_length": 128,
+        "gt_max_length_count": 447,
+        "gt_max_length_pct": 89.4,
+        "gt_128_count": 447,
+        "gt_128_pct": 89.4,
+        "gt_256_count": 214,
+        "gt_256_pct": 42.8,
+        "gt_512_count": 72,
+        "gt_512_pct": 14.4
+      },
+      "html_br_count": 284,
+      "html_br_pct": 56.8,
+      "empty_count": 0,
+      "duplicate_count": 0
+    },
+    "test": {
+      "count": 500,
+      "neg_count": 254,
+      "pos_count": 246,
+      "neg_pct": 50.8,
+      "pos_pct": 49.2,
+      "word_stats": {
+        "mean": 196.74,
+        "median": 153.0,
+        "std": 138.28,
+        "min": 34.0,
+        "p75": 239.0,
+        "p90": 375.3,
+        "p95": 444.75,
+        "max": 966.0
+      },
+      "raw_word_stats": {
+        "mean": 198.69,
+        "median": 154.5,
+        "std": 140.17,
+        "min": 34.0,
+        "p75": 241.0,
+        "p90": 377.6,
+        "p95": 452.5,
+        "max": 1001.0
+      },
+      "token_stats": {
+        "mean": 266.78,
+        "median": 205.5,
+        "std": 192.12,
+        "min": 44.0,
+        "p75": 322.0,
+        "p90": 490.8,
+        "p95": 618.3,
+        "max": 1470.0
+      },
+      "by_label": {
+        "NEGATIVE": {
+          "count": 254,
+          "word_stats": {
+            "mean": 203.78,
+            "median": 157.5,
+            "std": 148.6,
+            "min": 37.0,
+            "p75": 242.25,
+            "p90": 377.1,
+            "p95": 512.6,
+            "max": 966.0
+          },
+          "token_stats": {
+            "mean": 278.58,
+            "median": 212.0,
+            "std": 209.02,
+            "min": 49.0,
+            "p75": 327.75,
+            "p90": 534.7,
+            "p95": 646.95,
+            "max": 1470.0
+          }
+        },
+        "POSITIVE": {
+          "count": 246,
+          "word_stats": {
+            "mean": 189.46,
+            "median": 148.0,
+            "std": 126.33,
+            "min": 34.0,
+            "p75": 238.75,
+            "p90": 372.0,
+            "p95": 437.75,
+            "max": 846.0
+          },
+          "token_stats": {
+            "mean": 254.61,
+            "median": 201.5,
+            "std": 172.1,
+            "min": 44.0,
+            "p75": 310.0,
+            "p90": 486.0,
+            "p95": 573.75,
+            "max": 1122.0
+          }
+        }
+      },
+      "truncation": {
+        "max_length": 128,
+        "gt_max_length_count": 428,
+        "gt_max_length_pct": 85.6,
+        "gt_128_count": 428,
+        "gt_128_pct": 85.6,
+        "gt_256_count": 180,
+        "gt_256_pct": 36.0,
+        "gt_512_count": 48,
+        "gt_512_pct": 9.6
+      },
+      "html_br_count": 271,
+      "html_br_pct": 54.2,
+      "empty_count": 0,
+      "duplicate_count": 0
+    }
+  },
+  "distinctive_words_train": {
+    "top_positive": [
+      {
+        "word": "corbett",
+        "score": 3.3155,
+        "pos_count": 28,
+        "neg_count": 0
+      },
+      {
+        "word": "dominick",
+        "score": 3.167,
+        "pos_count": 24,
+        "neg_count": 0
+      },
+      {
+        "word": "wonderfully",
+        "score": 3.1262,
+        "pos_count": 23,
+        "neg_count": 0
+      },
+      {
+        "word": "matthau",
+        "score": 3.0392,
+        "pos_count": 21,
+        "neg_count": 0
+      },
+      {
+        "word": "alvin",
+        "score": 2.9439,
+        "pos_count": 19,
+        "neg_count": 0
+      },
+      {
+        "word": "scrooge",
+        "score": 2.9439,
+        "pos_count": 19,
+        "neg_count": 0
+      },
+      {
+        "word": "holt",
+        "score": 2.8926,
+        "pos_count": 18,
+        "neg_count": 0
+      },
+      {
+        "word": "brave",
+        "score": 2.8385,
+        "pos_count": 17,
+        "neg_count": 0
+      },
+      {
+        "word": "petiot",
+        "score": 2.8385,
+        "pos_count": 17,
+        "neg_count": 0
+      },
+      {
+        "word": "sullivan",
+        "score": 2.8385,
+        "pos_count": 17,
+        "neg_count": 0
+      },
+      {
+        "word": "antwone",
+        "score": 2.7814,
+        "pos_count": 16,
+        "neg_count": 0
+      },
+      {
+        "word": "boxing",
+        "score": 2.7814,
+        "pos_count": 16,
+        "neg_count": 0
+      }
+    ],
+    "top_negative": [
+      {
+        "word": "seagal",
+        "score": -3.384,
+        "pos_count": 0,
+        "neg_count": 27
+      },
+      {
+        "word": "dillinger",
+        "score": -3.1429,
+        "pos_count": 0,
+        "neg_count": 21
+      },
+      {
+        "word": "aztec",
+        "score": -2.9963,
+        "pos_count": 0,
+        "neg_count": 18
+      },
+      {
+        "word": "mst",
+        "score": -2.885,
+        "pos_count": 0,
+        "neg_count": 16
+      },
+      {
+        "word": "parsons",
+        "score": -2.885,
+        "pos_count": 0,
+        "neg_count": 16
+      },
+      {
+        "word": "berkowitz",
+        "score": -2.8244,
+        "pos_count": 0,
+        "neg_count": 15
+      },
+      {
+        "word": "delia",
+        "score": -2.8244,
+        "pos_count": 0,
+        "neg_count": 15
+      },
+      {
+        "word": "superman",
+        "score": -2.8244,
+        "pos_count": 0,
+        "neg_count": 15
+      },
+      {
+        "word": "tedious",
+        "score": -2.8244,
+        "pos_count": 0,
+        "neg_count": 15
+      },
+      {
+        "word": "pointless",
+        "score": -2.7374,
+        "pos_count": 2,
+        "neg_count": 43
+      },
+      {
+        "word": "insulting",
+        "score": -2.6909,
+        "pos_count": 0,
+        "neg_count": 13
+      },
+      {
+        "word": "worthless",
+        "score": -2.6909,
+        "pos_count": 0,
+        "neg_count": 13
+      }
+    ]
+  }
+}

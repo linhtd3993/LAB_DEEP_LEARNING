@@ -2,15 +2,17 @@
 
 Bài thực hành phân tích cảm xúc tiếng Anh với Hugging Face. Kết quả đã chạy:
 **82,40% test accuracy**, **83,46% F1** trên 500 mẫu test IMDb.
-Xem [báo cáo](report.md), [notebook](Practice3.ipynb) và [minh chứng](results/README.md).
+Xem [định nghĩa bài toán](define.md), [thiết kế hệ thống](design.md), [báo cáo](report.md), [notebook](Practice3.ipynb) và [minh chứng](results/README.md).
 ## 1. Nội dung
 
 | Bài | File | Các bước |
 |---|---|---|
+| Đặc tả & Thiết kế | `define.md`, `design.md` | Định nghĩa bài toán, kiến trúc DistilBERT, schema dữ liệu và phân tích rủi ro |
 | Exercise 1 | `exercise1_sentiment.py` | Tải mô hình SST-2 có sẵn, tokenize, in token/ID, dự đoán nhãn và xác suất |
 | Exercise 2 | `exercise2_finetune.py` | Tải IMDb, chia dữ liệu, tokenize, cấu hình TrainingArguments, Trainer, fine-tune, đánh giá |
+| EDA & Error Analysis | `evaluate_lab3.py` | Phân tích EDA dữ liệu IMDb, đánh giá Đúng/Sai trên 500 mẫu test và xuất 4 biểu đồ |
 | Dự đoán mới | `predict.py` | Nạp mô hình đã lưu, phân loại câu nhập vào |
-| Notebook | `Practice3.ipynb` | Chạy và xem từng bước, có thể dùng để trình bày |
+| Notebook | `Practice3.ipynb` | Chạy và xem từng bước gồm EDA, huấn luyện và phân tích lỗi, có thể dùng để trình bày |
 
 Bài 1 dùng `distilbert/distilbert-base-uncased-finetuned-sst-2-english`.
 Bài 2 bắt đầu từ `distilbert/distilbert-base-uncased`, huấn luyện đầu phân loại nhị phân.
@@ -98,11 +100,20 @@ Trong `outputs/finetune/`:
 - `loss_curve.png`: loss huấn luyện và validation theo epoch.
 - `training_history.json`: lịch sử loss và chỉ số validation.
 - `config.json`: tham số thí nghiệm.
+- `test_predictions.json`: dự đoán chi tiết từng mẫu trong 500 mẫu test (`TN/TP/FP/FN`, confidence, độ dài token).
+- `eda_summary.json`, `eda_class_and_length.png`, `eda_text_insights.png`: thống kê và biểu đồ EDA dữ liệu IMDb.
+- `error_analysis.json`, `error_analysis_overview.png`, `correct_vs_wrong_cases.png`: đánh giá theo độ dài/độ tự tin và trực quan hóa mẫu Đúng/Sai tiêu biểu.
+
+Chạy lại riêng bước EDA và Error Analysis trên mô hình đã lưu (không cần huấn luyện lại):
+
+```powershell
+.\.venv\Scripts\python.exe evaluate_lab3.py --results-dir results
+```
 
 Precision/recall/F1 trong metrics.json tính với lớp POSITIVE là lớp dương.
 Accuracy = số dự đoán đúng / tổng mẫu. F1 là trung bình điều hòa precision và recall.
 Kết quả lần chạy đã hoàn thành được đính kèm trong `results/`, gồm cấu hình,
-chỉ số, lịch sử, hai biểu đồ và ví dụ dự đoán. Đây là bản sao của lần chạy được báo cáo;
+chỉ số, lịch sử, báo cáo EDA, báo cáo Error Analysis, 6 biểu đồ và ví dụ dự đoán. Đây là bản sao của lần chạy được báo cáo;
 nếu chạy lại thí nghiệm, cần cập nhật minh chứng và báo cáo đồng bộ.
 
 ```powershell
@@ -132,16 +143,18 @@ Khi chạy lại, cell huấn luyện có thể chạy lâu trên CPU.
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-Đã có đầu ra bài 1, huấn luyện 2 epoch và đánh giá 500 mẫu test.
-Kiểm tra tự động bao gồm metric, các tùy chọn dự đoán, cú pháp Python,
-cấu trúc notebook và tính nhất quán của minh chứng. Dự đoán từ mô hình đã lưu
+Đã có đầu ra bài 1, phân tích EDA IMDb, huấn luyện 2 epoch và đánh giá Đúng/Sai trên 500 mẫu test.
+Kiểm tra tự động bao gồm metric, các tùy chọn dự đoán, các hàm EDA/Error Analysis, cú pháp Python,
+cấu trúc notebook và tính nhất quán của minh chứng trong `results/`. Dự đoán từ mô hình đã lưu
 được kiểm tra lại trên CPU; không huấn luyện lại khi rà soát tài liệu.
 
 ## 9. Tài liệu nộp bài và demo
 
-- [report.md](report.md): báo cáo phương pháp, môi trường thực tế, số liệu, biểu đồ và nhận xét.
+- [define.md](define.md): định nghĩa bài toán, đặc tả dữ liệu IMDb, input/output và tiêu chí đánh giá.
+- [design.md](design.md): thiết kế kiến trúc hệ thống, mô hình DistilBERT, data flow và phân tích rủi ro.
+- [report.md](report.md): báo cáo phương pháp, EDA dữ liệu, số liệu, biểu đồ Đúng/Sai, giải thích nguyên nhân và nhận xét.
 - [demo.md](demo.md): các bước cài đặt, chạy demo, xem kết quả và checklist trước khi nộp.
-- [Practice3.ipynb](Practice3.ipynb): notebook chạy hai bài, hiển thị kết quả và ghi nhận xét; chọn chế độ `report` hoặc `demo` ở cell cấu hình.
+- [Practice3.ipynb](Practice3.ipynb): notebook chạy hai bài, hiển thị EDA, kết quả, phân tích Đúng/Sai và ghi nhận xét; chọn chế độ `report` hoặc `demo` ở cell cấu hình.
 
 Notebook mặc định dùng cấu hình bài thực hành 2.000/500/500 mẫu và 2 epoch.
 Chế độ thử nhanh dùng `outputs/demo/`; chế độ báo cáo dùng `outputs/finetune/`.

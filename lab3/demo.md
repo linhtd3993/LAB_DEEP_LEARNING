@@ -1,6 +1,6 @@
 # Demo Lab 3 — Hugging Face
 
-Tài liệu này hướng dẫn trình diễn bài thực hành bằng terminal hoặc [Practice3.ipynb](Practice3.ipynb). Nội dung báo cáo ở [report.md](report.md). Các lệnh dưới đây chạy trong PowerShell tại thư mục `lab3/`. Nếu terminal đang ở thư mục gốc repo, chạy `cd lab3` trước.
+Tài liệu này hướng dẫn trình diễn bài thực hành bằng terminal hoặc [Practice3.ipynb](Practice3.ipynb). Tài liệu đặc tả ở [define.md](define.md), thiết kế kiến trúc ở [design.md](design.md) và nội dung báo cáo ở [report.md](report.md). Các lệnh dưới đây chạy trong PowerShell tại thư mục `lab3/`. Nếu terminal đang ở thư mục gốc repo, chạy `cd lab3` trước.
 
 ## 1. Chuẩn bị môi trường
 
@@ -62,10 +62,11 @@ Thực hiện trước khi hoàn thiện báo cáo; không cần huấn luyện 
 
 ```powershell
 .\.venv\Scripts\python.exe exercise2_finetune.py --train-size 2000 --val-size 500 --test-size 500 --epochs 2 --output-dir outputs/finetune
+.\.venv\Scripts\python.exe evaluate_lab3.py --results-dir results
 .\.venv\Scripts\python.exe predict.py --model outputs/finetune/model --output outputs/finetune/predictions.json --text "The acting was excellent!" "I regret watching this movie."
 ```
 
-Lần chạy hiện tại đã có **82,40% accuracy**, **83,46% F1** và đã được điền vào `report.md`; minh chứng ở `results/`. Nếu chạy lại, lấy số liệu từ `outputs/finetune/metrics.json` và cập nhật báo cáo cùng các minh chứng của **cùng lần chạy**. `outputs/demo` và `outputs/finetune` tách riêng để lần thử nhanh không ghi đè kết quả báo cáo. Nếu chạy lại cùng output directory, các file kết quả có thể bị ghi đè.
+Lần chạy hiện tại đã có **82,40% accuracy**, **83,46% F1** và đã được điền vào `report.md`; minh chứng (bao gồm EDA và Error Analysis) ở `results/`. Nếu chỉ cần tái tạo lại phân tích EDA và Đúng/Sai từ mô hình đã lưu (không huấn luyện lại), chạy riêng lệnh `evaluate_lab3.py --results-dir results`. Nếu huấn luyện lại, lấy số liệu từ `outputs/finetune/metrics.json` và cập nhật báo cáo cùng các minh chứng của **cùng lần chạy**. `outputs/demo` và `outputs/finetune` tách riêng để lần thử nhanh không ghi đè kết quả báo cáo. Nếu chạy lại cùng output directory, các file kết quả có thể bị ghi đè.
 
 ## 6. Trình diễn bằng notebook
 
@@ -73,18 +74,21 @@ Lần chạy hiện tại đã có **82,40% accuracy**, **83,46% F1** và đã �
 2. Chạy cell kiểm tra môi trường.
 3. Chạy phần bài 1 và quan sát bảng dự đoán, tokens và ID.
 4. Ở cell cấu hình bài 2, giữ `MODE = "report"` cho bài nộp hoặc đổi sang `"demo"` để thử nhanh.
-5. Chạy cell huấn luyện, xem cấu hình, chỉ số, classification report và biểu đồ.
-6. Chạy dự đoán mới, điền phần nhận xét và lưu notebook bằng Ctrl+S để giữ output thực tế.
+5. Chạy cell **EDA dữ liệu IMDb** để xem thống kê cân bằng lớp, tỷ lệ cắt 128 token và từ khóa phân biệt.
+6. Chạy cell huấn luyện, xem cấu hình, chỉ số, classification report, biểu đồ và cell **Đánh giá Output & Phân tích Đúng/Sai**.
+7. Chạy dự đoán mới, điền phần nhận xét và lưu notebook bằng Ctrl+S để giữ output thực tế.
 
-Nếu đã có kết quả huấn luyện, có thể bỏ qua cell huấn luyện và chạy cell đọc kết quả sau khi chạy các cell import/cấu hình. Không đổi chế độ giữa lúc huấn luyện và đọc kết quả.
+Nếu đã có kết quả huấn luyện, có thể bỏ qua cell huấn luyện và chạy các cell đọc kết quả EDA, metrics và Error Analysis sau khi chạy các cell import/cấu hình. Không đổi chế độ giữa lúc huấn luyện và đọc kết quả.
 
 ## 7. Checklist trước khi nộp
 
+- [x] Đã bổ sung tài liệu [define.md](define.md) và [design.md](design.md).
 - [x] Đã chạy bài 1 và lưu đầu ra thực tế.
+- [x] Đã thực hiện EDA dữ liệu IMDb và lưu biểu đồ + thống kê chi tiết.
 - [x] Đã huấn luyện cấu hình bài thực hành, ghi lại môi trường và cấu hình thực tế.
-- [x] Điền các chỉ số và nhận xét trong `report.md` từ kết quả thật.
-- [x] Notebook đã có output; hai biểu đồ và báo cáo được đính kèm trong `results/`.
-- [ ] Kiểm tra file trước khi commit; giữ mô hình/checkpoint lớn trong `outputs/` được Git bỏ qua.
+- [x] Đã phân tích Error Analysis Đúng/Sai trên 500 mẫu test và trả lời rõ nguyên nhân đúng/sai trong `report.md`.
+- [x] Notebook đã có đầy đủ output; 6 biểu đồ và báo cáo được đính kèm trong `results/`.
+- [x] Kiểm tra file trước khi commit; giữ mô hình/checkpoint lớn trong `outputs/` được Git bỏ qua.
 
 ## 8. Xử lý lỗi trong lúc demo
 

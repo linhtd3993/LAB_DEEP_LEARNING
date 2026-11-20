@@ -83,6 +83,27 @@ def main(a):
     for filename, value in [('metrics.json', result.metrics), ('config.json', vars(a)),
                             ('training_history.json', trainer.state.log_history)]:
         (out / filename).write_text(json.dumps(value, indent=2), encoding='utf-8')
+    test_probs = torch.softmax(torch.tensor(result.predictions), dim=-1).numpy()
+    test_texts = data['test']['text']
+    full_tok_lens = [len(ids) for ids in tokenizer(test_texts, truncation=False)['input_ids']]
+    test_pred_rows = [
+        {
+            'idx': idx,
+            'text': txt,
+            'true_label': int(true_y),
+            'pred_label': int(pred_y),
+            'prob_neg': round(float(prob[0]), 6),
+            'prob_pos': round(float(prob[1]), 6),
+            'confidence': round(float(prob[int(pred_y)]), 6),
+            'truncated': tok_len > a.max_length,
+        }
+        for idx, (txt, true_y, pred_y, prob, tok_len) in enumerate(
+            zip(test_texts, result.label_ids, pred, test_probs, full_tok_lens)
+        )
+    ]
+    (out / 'test_predictions.json').write_text(
+        json.dumps(test_pred_rows, indent=2, ensure_ascii=False), encoding='utf-8'
+    )
     (out / 'classification_report.txt').write_text(report, encoding='utf-8')
     ConfusionMatrixDisplay.from_predictions(result.label_ids, pred, labels=[0, 1],
         display_labels=['NEGATIVE', 'POSITIVE'], cmap='Blues')
