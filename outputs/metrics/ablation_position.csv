@@ -1,0 +1,25 @@
+﻿image,case,top1,prob_lớp_gốc,giữ_top1,max|logit3-logit4|
+bear.jpg,1. Gốc,"brown bear, bruin, Ursus arctos",0.8868,True,5.841255187988281e-06
+bear.jpg,2. Xáo trộn patch,"brown bear, bruin, Ursus arctos",0.6526,True,5.841255187988281e-06
+bear.jpg,3. Bỏ pos,"giant panda, panda, panda bear, coon bear, Ailuropoda melanoleuca",0.0021,False,5.841255187988281e-06
+bear.jpg,4. Bỏ pos + xáo trộn,"giant panda, panda, panda bear, coon bear, Ailuropoda melanoleuca",0.0021,False,5.841255187988281e-06
+cats.jpg,1. Gốc,"remote control, remote",0.374,True,5.364418029785156e-06
+cats.jpg,2. Xáo trộn patch,"apiary, bee house",0.0004,False,5.364418029785156e-06
+cats.jpg,3. Bỏ pos,pinwheel,0.0002,False,5.364418029785156e-06
+cats.jpg,4. Bỏ pos + xáo trộn,pinwheel,0.0002,False,5.364418029785156e-06
+stop_sign.jpg,1. Gốc,street sign,0.8195,True,5.602836608886719e-06
+stop_sign.jpg,2. Xáo trộn patch,birdhouse,0.2877,False,5.602836608886719e-06
+stop_sign.jpg,3. Bỏ pos,"refrigerator, icebox",0.0003,False,5.602836608886719e-06
+stop_sign.jpg,4. Bỏ pos + xáo trộn,"refrigerator, icebox",0.0003,False,5.602836608886719e-06
+truck.jpg,1. Gốc,"garbage truck, dustcart",0.8889,True,5.245208740234375e-06
+truck.jpg,2. Xáo trộn patch,crane,0.0291,False,5.245208740234375e-06
+truck.jpg,3. Bỏ pos,ambulance,0.0151,False,5.245208740234375e-06
+truck.jpg,4. Bỏ pos + xáo trộn,ambulance,0.0151,False,5.245208740234375e-06
+baseball.jpg,1. Gốc,"ballplayer, baseball player",0.6996,True,5.4836273193359375e-06
+baseball.jpg,2. Xáo trộn patch,"ballplayer, baseball player",0.5905,True,5.4836273193359375e-06
+baseball.jpg,3. Bỏ pos,baseball,0.0257,False,5.4836273193359375e-06
+baseball.jpg,4. Bỏ pos + xáo trộn,baseball,0.0257,False,5.4836273193359375e-06
+kitchen.jpg,1. Gốc,"microwave, microwave oven",0.3798,True,4.410743713378906e-06
+kitchen.jpg,2. Xáo trộn patch,"maze, labyrinth",0.0005,False,4.410743713378906e-06
+kitchen.jpg,3. Bỏ pos,golf ball,0.0007,False,4.410743713378906e-06
+kitchen.jpg,4. Bỏ pos + xáo trộn,golf ball,0.0007,False,4.410743713378906e-06

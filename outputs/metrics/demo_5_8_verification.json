@@ -1,0 +1,46 @@
+{
+  "model": "vit_base_patch16_224.augreg2_in21k_ft_in1k",
+  "weights": "pretrained",
+  "device": "cpu",
+  "torch": "2.14.1+cpu",
+  "timm": "1.0.22",
+  "tokens_shape": [
+    1,
+    197,
+    768
+  ],
+  "features_shape": [
+    1,
+    768
+  ],
+  "attention_shape": [
+    1,
+    12,
+    197,
+    197
+  ],
+  "top5": [
+    {
+      "label": "brown bear, bruin, Ursus arctos",
+      "probability": 0.8867925405502319
+    },
+    {
+      "label": "ice bear, polar bear, Ursus Maritimus, Thalarctos maritimus",
+      "probability": 0.0012687811395153403
+    },
+    {
+      "label": "American black bear, black bear, Ursus americanus, Euarctos americanus",
+      "probability": 0.0011543139116838574
+    },
+    {
+      "label": "sloth bear, Melursus ursinus, Ursus ursinus",
+      "probability": 0.0010749982902780175
+    },
+    {
+      "label": "chow, chow chow",
+      "probability": 0.0008718338795006275
+    }
+  ],
+  "msa_max_abs_error": 8.344650268554688e-07,
+  "block_max_abs_error": 0.0
+}

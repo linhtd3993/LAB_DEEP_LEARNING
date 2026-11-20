@@ -1,0 +1,82 @@
+{
+  "model": "vit_base_patch16_224.augreg2_in21k_ft_in1k",
+  "weights": "pretrained (IN-21k -> IN-1k)",
+  "patch": 16,
+  "dim": 768,
+  "depth": 12,
+  "heads": 12,
+  "num_patches": 196,
+  "params_M": 86.57,
+  "attn_dist_block1_min": 13.6,
+  "attn_dist_block1_max": 121.2,
+  "attn_dist_last_mean": 120.1,
+  "random_top1_prob": 0.0042,
+  "pretrained_top1_prob": 0.8868,
+  "pos_ablation_keep_top1": {
+    "1. Gốc": 6,
+    "2. Xáo trộn patch": 2,
+    "3. Bỏ pos": 0,
+    "4. Bỏ pos + xáo trộn": 0
+  },
+  "vit_vs_resnet": [
+    {
+      "model": "ViT-B/16",
+      "params_M": 86.6,
+      "GMACs": 16.85,
+      "latency_ms_cpu": 147.7
+    },
+    {
+      "model": "ResNet-50",
+      "params_M": 25.6,
+      "GMACs": 4.09,
+      "latency_ms_cpu": 56.0
+    }
+  ],
+  "complexity": [
+    {
+      "img_size": 224,
+      "tokens": 197,
+      "linear_GMACs": 16.73,
+      "attn_matrix_GMACs": 0.72,
+      "attn_mem_MB_per_block": 1.78,
+      "vit_ms": 167.45,
+      "resnet50_ms": 58.7
+    },
+    {
+      "img_size": 320,
+      "tokens": 401,
+      "linear_GMACs": 34.06,
+      "attn_matrix_GMACs": 2.96,
+      "attn_mem_MB_per_block": 7.36,
+      "vit_ms": 281.15,
+      "resnet50_ms": 96.53
+    },
+    {
+      "img_size": 384,
+      "tokens": 577,
+      "linear_GMACs": 49.01,
+      "attn_matrix_GMACs": 6.14,
+      "attn_mem_MB_per_block": 15.24,
+      "vit_ms": 409.78,
+      "resnet50_ms": 132.43
+    },
+    {
+      "img_size": 448,
+      "tokens": 785,
+      "linear_GMACs": 66.67,
+      "attn_matrix_GMACs": 11.36,
+      "attn_mem_MB_per_block": 28.21,
+      "vit_ms": 564.93,
+      "resnet50_ms": 171.66
+    },
+    {
+      "img_size": 512,
+      "tokens": 1025,
+      "linear_GMACs": 87.06,
+      "attn_matrix_GMACs": 19.37,
+      "attn_mem_MB_per_block": 48.09,
+      "vit_ms": 760.56,
+      "resnet50_ms": 221.89
+    }
+  ]
+}

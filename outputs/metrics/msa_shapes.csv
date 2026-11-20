@@ -1,0 +1,11 @@
+﻿Bước,Shape
+Đầu vào (sau LayerNorm),"(1, 197, 768)"
+Linear qkv: D -> 3D,"(1, 197, 2304)"
+Tách 3 x h head,"(1, 197, 3, 12, 64)"
+Đổi trục,"(3, 1, 12, 197, 64)"
+"Q (tương tự K, V)","(1, 12, 197, 64)"
+QKᵀ/√d (attention score),"(1, 12, 197, 197)"
+softmax theo hàng,"(1, 12, 197, 197)"
+A·V (mỗi head),"(1, 12, 197, 64)"
+Concat các head,"(1, 197, 768)"
+Linear W_O,"(1, 197, 768)"

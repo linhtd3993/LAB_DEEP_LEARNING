@@ -1,0 +1,11 @@
+﻿Thành phần,Số tham số
+Patch embedding (Conv 16x16 = Linear 768->768),590592
+[CLS] token,768
+Positional embedding (197 x 768),151296
+1 block: LayerNorm x2,3072
+1 block: MSA (qkv + proj),2362368
+1 block: MLP (768->3072->768),4722432
+12 blocks Encoder,85054464
+LayerNorm cuối,1536
+MLP Head (768 -> 1000),769000
+Tổng,86567656

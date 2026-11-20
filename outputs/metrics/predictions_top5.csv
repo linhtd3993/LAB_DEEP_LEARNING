@@ -1,0 +1,31 @@
+﻿image,rank,label,prob
+bear.jpg,1,"brown bear, bruin, Ursus arctos",0.8868
+bear.jpg,2,"ice bear, polar bear, Ursus Maritimus, Thalarctos maritimus",0.0013
+bear.jpg,3,"American black bear, black bear, Ursus americanus, Euarctos americanus",0.0012
+bear.jpg,4,"sloth bear, Melursus ursinus, Ursus ursinus",0.0011
+bear.jpg,5,"chow, chow chow",0.0009
+cats.jpg,1,"remote control, remote",0.374
+cats.jpg,2,"tabby, tabby cat",0.2345
+cats.jpg,3,tiger cat,0.1549
+cats.jpg,4,Egyptian cat,0.1108
+cats.jpg,5,"lynx, catamount",0.0021
+stop_sign.jpg,1,street sign,0.8195
+stop_sign.jpg,2,pole,0.0266
+stop_sign.jpg,3,"traffic light, traffic signal, stoplight",0.0051
+stop_sign.jpg,4,"mailbox, letter box",0.0018
+stop_sign.jpg,5,parking meter,0.0017
+truck.jpg,1,"garbage truck, dustcart",0.8889
+truck.jpg,2,"harvester, reaper",0.0022
+truck.jpg,3,"ashcan, trash can, garbage can, wastebin, ash bin, ash-bin, ashbin, dustbin, trash barrel, trash bin",0.0019
+truck.jpg,4,crane,0.0017
+truck.jpg,5,"snowplow, snowplough",0.0017
+baseball.jpg,1,"ballplayer, baseball player",0.6996
+baseball.jpg,2,baseball,0.13
+baseball.jpg,3,knee pad,0.0017
+baseball.jpg,4,"sandbar, sand bar",0.0008
+baseball.jpg,5,scoreboard,0.0008
+kitchen.jpg,1,"microwave, microwave oven",0.3798
+kitchen.jpg,2,"dishwasher, dish washer, dishwashing machine",0.283
+kitchen.jpg,3,"refrigerator, icebox",0.1344
+kitchen.jpg,4,"washer, automatic washer, washing machine",0.012
+kitchen.jpg,5,stove,0.0095

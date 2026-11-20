@@ -1,0 +1,3 @@
+﻿model,params_M,GMACs,latency_ms_cpu,top1_6_ảnh
+ViT-B/16,86.6,16.85,147.7,"brown bear, bruin, Ursus arctos; remote control, remote; street sign; garbage truck, dustcart; ballplayer, baseball player; microwave, microwave oven"
+ResNet-50,25.6,4.09,56.0,"brown bear, bruin, Ursus arctos; tiger cat; street sign; garbage truck, dustcart; ballplayer, baseball player; dishwasher, dish washer, dishwashing machine"
