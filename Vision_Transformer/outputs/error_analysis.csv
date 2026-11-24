@@ -1,0 +1,3 @@
+﻿image_id,true_class,top1,p_true,top5_correct,"Giả thuyết, chưa xác minh"
+n02979186_02,cassette player,tape player,0.3009241223335266,True,Các lớp thiết bị phát băng có hình dáng gần nhau
+n03028079_02,church,monastery,0.34903061389923096,True,Kiến trúc church và monastery có đặc trưng thị giác tương tự

@@ -1,0 +1,9 @@
+﻿Kiểm tra,Đạt
+manifest_and_image_hashes,True
+projection_equivalence,True
+trace_matches_forward,True
+occlusion_only_changes_selected_pixels,True
+finite_normalized_probabilities,True
+top5_rows_complete,True
+three_cases_three_regions,True
+all_trace_shapes_match,True

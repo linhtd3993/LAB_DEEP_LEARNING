@@ -1,0 +1,16 @@
+﻿image_id,true_class,top1,p_true,top1_correct,top5_correct
+n01440764_01,tench,tench,0.9079068303108215,True,True
+n01440764_02,tench,tench,0.8932567238807678,True,True
+n02102040_01,English springer,English springer,0.6959857940673828,True,True
+n02102040_02,English springer,English springer,0.8052816987037659,True,True
+n02979186_01,cassette player,cassette player,0.4540252685546875,True,True
+n02979186_02,cassette player,tape player,0.3009241223335266,False,True
+n03000684_01,chain saw,chain saw,0.8917748928070068,True,True
+n03000684_02,chain saw,chain saw,0.8751010894775391,True,True
+n03028079_01,church,church,0.18842412531375885,True,True
+n03028079_02,church,monastery,0.34903061389923096,False,True
+n03394916_01,French horn,French horn,0.6410184502601624,True,True
+n03417042_01,garbage truck,garbage truck,0.8562938570976257,True,True
+n03425413_01,gas pump,gas pump,0.8606804013252258,True,True
+n03445777_01,golf ball,golf ball,0.8856871724128723,True,True
+n03888257_01,parachute,parachute,0.9111552238464355,True,True

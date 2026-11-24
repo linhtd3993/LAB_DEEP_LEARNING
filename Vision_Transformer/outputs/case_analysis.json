@@ -1,0 +1,17 @@
+[
+  {
+    "image_id": "n01440764_01",
+    "observation": "n01440764_01 (tench): p(nhãn thật) ban đầu 90.79%. Giá trị Δp nhỏ nhất trong ba vùng tại Trung tâm: 81.82%, Δp = -8.97 điểm phần trăm. Top-1: tench → tench. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+    "largest_drop_region": "center"
+  },
+  {
+    "image_id": "n02102040_01",
+    "observation": "n02102040_01 (English springer): p(nhãn thật) ban đầu 69.60%. Giá trị Δp nhỏ nhất trong ba vùng tại Trung tâm: 52.28%, Δp = -17.32 điểm phần trăm. Top-1: English springer → English springer. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+    "largest_drop_region": "center"
+  },
+  {
+    "image_id": "n02979186_01",
+    "observation": "n02979186_01 (cassette player): p(nhãn thật) ban đầu 45.40%. Giá trị Δp nhỏ nhất trong ba vùng tại Góc trái trên: 44.95%, Δp = -0.45 điểm phần trăm. Top-1: cassette player → cassette player. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+    "largest_drop_region": "top_left"
+  }
+]
