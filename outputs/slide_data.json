@@ -1,0 +1,1739 @@
+{
+  "predictions": [
+    {
+      "image_id": "n01440764_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 0,
+      "class_name": "tench",
+      "probability": 0.9079068303108216
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 389,
+      "class_name": "barracouta",
+      "probability": 0.0007270693895407
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.0004658985126297
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 766,
+      "class_name": "rotisserie",
+      "probability": 0.000358427001629
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 758,
+      "class_name": "reel",
+      "probability": 0.000356018950697
+    },
+    {
+      "image_id": "n01440764_02",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 0,
+      "class_name": "tench",
+      "probability": 0.8932567238807678
+    },
+    {
+      "image_id": "n01440764_02",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 389,
+      "class_name": "barracouta",
+      "probability": 0.0009641923825256
+    },
+    {
+      "image_id": "n01440764_02",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 395,
+      "class_name": "gar",
+      "probability": 0.0004372243711259
+    },
+    {
+      "image_id": "n01440764_02",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 323,
+      "class_name": "monarch",
+      "probability": 0.000344699510606
+    },
+    {
+      "image_id": "n01440764_02",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 394,
+      "class_name": "sturgeon",
+      "probability": 0.0003410971548873
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 217,
+      "class_name": "English springer",
+      "probability": 0.6959857940673828
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 267,
+      "class_name": "standard poodle",
+      "probability": 0.0997888147830963
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 220,
+      "class_name": "Sussex spaniel",
+      "probability": 0.0184190683066844
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 232,
+      "class_name": "Border collie",
+      "probability": 0.0178566649556159
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 218,
+      "class_name": "Welsh springer spaniel",
+      "probability": 0.0119375772774219
+    },
+    {
+      "image_id": "n02102040_02",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 217,
+      "class_name": "English springer",
+      "probability": 0.8052816987037659
+    },
+    {
+      "image_id": "n02102040_02",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 215,
+      "class_name": "Brittany spaniel",
+      "probability": 0.0162425655871629
+    },
+    {
+      "image_id": "n02102040_02",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 220,
+      "class_name": "Sussex spaniel",
+      "probability": 0.0138295115903019
+    },
+    {
+      "image_id": "n02102040_02",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 152,
+      "class_name": "Japanese spaniel",
+      "probability": 0.010227589868009
+    },
+    {
+      "image_id": "n02102040_02",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 218,
+      "class_name": "Welsh springer spaniel",
+      "probability": 0.0059969713911414
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.4540252685546875
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 848,
+      "class_name": "tape player",
+      "probability": 0.3817654252052307
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 485,
+      "class_name": "CD player",
+      "probability": 0.0316639728844165
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 481,
+      "class_name": "cassette",
+      "probability": 0.0144535647705197
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 754,
+      "class_name": "radio",
+      "probability": 0.0099045792594552
+    },
+    {
+      "image_id": "n02979186_02",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 848,
+      "class_name": "tape player",
+      "probability": 0.4903892278671264
+    },
+    {
+      "image_id": "n02979186_02",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.3009241223335266
+    },
+    {
+      "image_id": "n02979186_02",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 481,
+      "class_name": "cassette",
+      "probability": 0.1156978756189346
+    },
+    {
+      "image_id": "n02979186_02",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 485,
+      "class_name": "CD player",
+      "probability": 0.001223359722644
+    },
+    {
+      "image_id": "n02979186_02",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 754,
+      "class_name": "radio",
+      "probability": 0.001026313053444
+    },
+    {
+      "image_id": "n03000684_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 491,
+      "class_name": "chain saw",
+      "probability": 0.8917748928070068
+    },
+    {
+      "image_id": "n03000684_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 795,
+      "class_name": "ski",
+      "probability": 0.0113611482083797
+    },
+    {
+      "image_id": "n03000684_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 796,
+      "class_name": "ski mask",
+      "probability": 0.0064696413464844
+    },
+    {
+      "image_id": "n03000684_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 880,
+      "class_name": "unicycle",
+      "probability": 0.0045994925312697
+    },
+    {
+      "image_id": "n03000684_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 671,
+      "class_name": "mountain bike",
+      "probability": 0.0029067306313663
+    },
+    {
+      "image_id": "n03000684_02",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 491,
+      "class_name": "chain saw",
+      "probability": 0.8751010894775391
+    },
+    {
+      "image_id": "n03000684_02",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.0005519674159586
+    },
+    {
+      "image_id": "n03000684_02",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 535,
+      "class_name": "disk brake",
+      "probability": 0.000370948575437
+    },
+    {
+      "image_id": "n03000684_02",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.0003388037148397
+    },
+    {
+      "image_id": "n03000684_02",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 590,
+      "class_name": "hand-held computer",
+      "probability": 0.0003274932096246
+    },
+    {
+      "image_id": "n03028079_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 497,
+      "class_name": "church",
+      "probability": 0.1884241253137588
+    },
+    {
+      "image_id": "n03028079_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 562,
+      "class_name": "fountain",
+      "probability": 0.1440575271844864
+    },
+    {
+      "image_id": "n03028079_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 399,
+      "class_name": "abaya",
+      "probability": 0.0615399666130542
+    },
+    {
+      "image_id": "n03028079_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 872,
+      "class_name": "tripod",
+      "probability": 0.0391369238495826
+    },
+    {
+      "image_id": "n03028079_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 728,
+      "class_name": "plastic bag",
+      "probability": 0.0346584841609001
+    },
+    {
+      "image_id": "n03028079_02",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 663,
+      "class_name": "monastery",
+      "probability": 0.4873857200145721
+    },
+    {
+      "image_id": "n03028079_02",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 497,
+      "class_name": "church",
+      "probability": 0.3490306138992309
+    },
+    {
+      "image_id": "n03028079_02",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 442,
+      "class_name": "bell cote",
+      "probability": 0.0107748201116919
+    },
+    {
+      "image_id": "n03028079_02",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 698,
+      "class_name": "palace",
+      "probability": 0.0061498582363128
+    },
+    {
+      "image_id": "n03028079_02",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 498,
+      "class_name": "cinema",
+      "probability": 0.0033781703095883
+    },
+    {
+      "image_id": "n03394916_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 566,
+      "class_name": "French horn",
+      "probability": 0.6410184502601624
+    },
+    {
+      "image_id": "n03394916_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 875,
+      "class_name": "trombone",
+      "probability": 0.1351224780082702
+    },
+    {
+      "image_id": "n03394916_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 513,
+      "class_name": "cornet",
+      "probability": 0.0916743576526641
+    },
+    {
+      "image_id": "n03394916_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 776,
+      "class_name": "sax",
+      "probability": 0.0050017922185361
+    },
+    {
+      "image_id": "n03394916_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 439,
+      "class_name": "bearskin",
+      "probability": 0.0012636360479518
+    },
+    {
+      "image_id": "n03417042_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 569,
+      "class_name": "garbage truck",
+      "probability": 0.8562938570976257
+    },
+    {
+      "image_id": "n03417042_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 867,
+      "class_name": "trailer truck",
+      "probability": 0.0193048026412725
+    },
+    {
+      "image_id": "n03417042_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 660,
+      "class_name": "mobile home",
+      "probability": 0.018566008657217
+    },
+    {
+      "image_id": "n03417042_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 675,
+      "class_name": "moving van",
+      "probability": 0.005980531219393
+    },
+    {
+      "image_id": "n03417042_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 864,
+      "class_name": "tow truck",
+      "probability": 0.0046786218881607
+    },
+    {
+      "image_id": "n03425413_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 571,
+      "class_name": "gas pump",
+      "probability": 0.8606804013252258
+    },
+    {
+      "image_id": "n03425413_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 480,
+      "class_name": "cash machine",
+      "probability": 0.0071997386403381
+    },
+    {
+      "image_id": "n03425413_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 844,
+      "class_name": "switch",
+      "probability": 0.0020412062294781
+    },
+    {
+      "image_id": "n03425413_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 688,
+      "class_name": "oscilloscope",
+      "probability": 0.0013171460013836
+    },
+    {
+      "image_id": "n03425413_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 707,
+      "class_name": "pay-phone",
+      "probability": 0.001069386024028
+    },
+    {
+      "image_id": "n03445777_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 574,
+      "class_name": "golf ball",
+      "probability": 0.8856871724128723
+    },
+    {
+      "image_id": "n03445777_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 522,
+      "class_name": "croquet ball",
+      "probability": 0.0167489442974329
+    },
+    {
+      "image_id": "n03445777_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 892,
+      "class_name": "wall clock",
+      "probability": 0.0144883142784237
+    },
+    {
+      "image_id": "n03445777_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 736,
+      "class_name": "pool table",
+      "probability": 0.0061333696357905
+    },
+    {
+      "image_id": "n03445777_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.005475569050759
+    },
+    {
+      "image_id": "n03888257_01",
+      "variant": "original",
+      "rank": 1,
+      "class_id": 701,
+      "class_name": "parachute",
+      "probability": 0.9111552238464355
+    },
+    {
+      "image_id": "n03888257_01",
+      "variant": "original",
+      "rank": 2,
+      "class_id": 405,
+      "class_name": "airship",
+      "probability": 0.0004745977348648
+    },
+    {
+      "image_id": "n03888257_01",
+      "variant": "original",
+      "rank": 3,
+      "class_id": 692,
+      "class_name": "packet",
+      "probability": 0.0004424313665367
+    },
+    {
+      "image_id": "n03888257_01",
+      "variant": "original",
+      "rank": 4,
+      "class_id": 978,
+      "class_name": "seashore",
+      "probability": 0.0004113540053367
+    },
+    {
+      "image_id": "n03888257_01",
+      "variant": "original",
+      "rank": 5,
+      "class_id": 417,
+      "class_name": "balloon",
+      "probability": 0.0003475417033769
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "top_left",
+      "rank": 1,
+      "class_id": 0,
+      "class_name": "tench",
+      "probability": 0.8413964509963989
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "top_left",
+      "rank": 2,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.0018282069358974
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "top_left",
+      "rank": 3,
+      "class_id": 777,
+      "class_name": "scabbard",
+      "probability": 0.0013240034459158
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "top_left",
+      "rank": 4,
+      "class_id": 758,
+      "class_name": "reel",
+      "probability": 0.001201631152071
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "top_left",
+      "rank": 5,
+      "class_id": 389,
+      "class_name": "barracouta",
+      "probability": 0.0010808783117681
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "center",
+      "rank": 1,
+      "class_id": 0,
+      "class_name": "tench",
+      "probability": 0.8182389140129089
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "center",
+      "rank": 2,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.0018765475833788
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "center",
+      "rank": 3,
+      "class_id": 413,
+      "class_name": "assault rifle",
+      "probability": 0.0016187515575438
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "center",
+      "rank": 4,
+      "class_id": 777,
+      "class_name": "scabbard",
+      "probability": 0.0015752657782286
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "center",
+      "rank": 5,
+      "class_id": 764,
+      "class_name": "rifle",
+      "probability": 0.0013390978565439
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "bottom_right",
+      "rank": 1,
+      "class_id": 0,
+      "class_name": "tench",
+      "probability": 0.8212736248970032
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "bottom_right",
+      "rank": 2,
+      "class_id": 777,
+      "class_name": "scabbard",
+      "probability": 0.0013673176290467
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "bottom_right",
+      "rank": 3,
+      "class_id": 456,
+      "class_name": "bow",
+      "probability": 0.0011659932788461
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "bottom_right",
+      "rank": 4,
+      "class_id": 389,
+      "class_name": "barracouta",
+      "probability": 0.0011252729455009
+    },
+    {
+      "image_id": "n01440764_01",
+      "variant": "bottom_right",
+      "rank": 5,
+      "class_id": 916,
+      "class_name": "web site",
+      "probability": 0.0010487727122381
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "top_left",
+      "rank": 1,
+      "class_id": 217,
+      "class_name": "English springer",
+      "probability": 0.6550140976905823
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "top_left",
+      "rank": 2,
+      "class_id": 267,
+      "class_name": "standard poodle",
+      "probability": 0.0465717576444149
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "top_left",
+      "rank": 3,
+      "class_id": 220,
+      "class_name": "Sussex spaniel",
+      "probability": 0.0341715216636657
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "top_left",
+      "rank": 4,
+      "class_id": 218,
+      "class_name": "Welsh springer spaniel",
+      "probability": 0.0167601406574249
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "top_left",
+      "rank": 5,
+      "class_id": 219,
+      "class_name": "cocker spaniel",
+      "probability": 0.0154667515307664
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "center",
+      "rank": 1,
+      "class_id": 217,
+      "class_name": "English springer",
+      "probability": 0.5228217840194702
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "center",
+      "rank": 2,
+      "class_id": 267,
+      "class_name": "standard poodle",
+      "probability": 0.1745930761098861
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "center",
+      "rank": 3,
+      "class_id": 219,
+      "class_name": "cocker spaniel",
+      "probability": 0.0183743722736835
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "center",
+      "rank": 4,
+      "class_id": 220,
+      "class_name": "Sussex spaniel",
+      "probability": 0.0179421156644821
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "center",
+      "rank": 5,
+      "class_id": 218,
+      "class_name": "Welsh springer spaniel",
+      "probability": 0.0142929395660758
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "bottom_right",
+      "rank": 1,
+      "class_id": 217,
+      "class_name": "English springer",
+      "probability": 0.6130855083465576
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "bottom_right",
+      "rank": 2,
+      "class_id": 267,
+      "class_name": "standard poodle",
+      "probability": 0.12394929677248
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "bottom_right",
+      "rank": 3,
+      "class_id": 218,
+      "class_name": "Welsh springer spaniel",
+      "probability": 0.0136478533968329
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "bottom_right",
+      "rank": 4,
+      "class_id": 220,
+      "class_name": "Sussex spaniel",
+      "probability": 0.0126747889444231
+    },
+    {
+      "image_id": "n02102040_01",
+      "variant": "bottom_right",
+      "rank": 5,
+      "class_id": 219,
+      "class_name": "cocker spaniel",
+      "probability": 0.0101718641817569
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "top_left",
+      "rank": 1,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.4495334923267364
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "top_left",
+      "rank": 2,
+      "class_id": 848,
+      "class_name": "tape player",
+      "probability": 0.3390752971172333
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "top_left",
+      "rank": 3,
+      "class_id": 485,
+      "class_name": "CD player",
+      "probability": 0.0357547923922538
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "top_left",
+      "rank": 4,
+      "class_id": 481,
+      "class_name": "cassette",
+      "probability": 0.0189009383320808
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "top_left",
+      "rank": 5,
+      "class_id": 754,
+      "class_name": "radio",
+      "probability": 0.0116114458069205
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "center",
+      "rank": 1,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.4630483388900757
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "center",
+      "rank": 2,
+      "class_id": 848,
+      "class_name": "tape player",
+      "probability": 0.3266853392124176
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "center",
+      "rank": 3,
+      "class_id": 485,
+      "class_name": "CD player",
+      "probability": 0.0338893756270408
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "center",
+      "rank": 4,
+      "class_id": 481,
+      "class_name": "cassette",
+      "probability": 0.0182240158319473
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "center",
+      "rank": 5,
+      "class_id": 754,
+      "class_name": "radio",
+      "probability": 0.0084149027243256
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "bottom_right",
+      "rank": 1,
+      "class_id": 482,
+      "class_name": "cassette player",
+      "probability": 0.470639556646347
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "bottom_right",
+      "rank": 2,
+      "class_id": 848,
+      "class_name": "tape player",
+      "probability": 0.3266899883747101
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "bottom_right",
+      "rank": 3,
+      "class_id": 485,
+      "class_name": "CD player",
+      "probability": 0.0309606045484542
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "bottom_right",
+      "rank": 4,
+      "class_id": 481,
+      "class_name": "cassette",
+      "probability": 0.018264215439558
+    },
+    {
+      "image_id": "n02979186_01",
+      "variant": "bottom_right",
+      "rank": 5,
+      "class_id": 754,
+      "class_name": "radio",
+      "probability": 0.0147352842614054
+    }
+  ],
+  "baseline_summary": [
+    {
+      "image_id": "n01440764_01",
+      "true_class": "tench",
+      "top1": "tench",
+      "p_true": 0.9079068303108216,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n01440764_02",
+      "true_class": "tench",
+      "top1": "tench",
+      "p_true": 0.8932567238807678,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n02102040_01",
+      "true_class": "English springer",
+      "top1": "English springer",
+      "p_true": 0.6959857940673828,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n02102040_02",
+      "true_class": "English springer",
+      "top1": "English springer",
+      "p_true": 0.8052816987037659,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n02979186_01",
+      "true_class": "cassette player",
+      "top1": "cassette player",
+      "p_true": 0.4540252685546875,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n02979186_02",
+      "true_class": "cassette player",
+      "top1": "tape player",
+      "p_true": 0.3009241223335266,
+      "top1_correct": false,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03000684_01",
+      "true_class": "chain saw",
+      "top1": "chain saw",
+      "p_true": 0.8917748928070068,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03000684_02",
+      "true_class": "chain saw",
+      "top1": "chain saw",
+      "p_true": 0.8751010894775391,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03028079_01",
+      "true_class": "church",
+      "top1": "church",
+      "p_true": 0.1884241253137588,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03028079_02",
+      "true_class": "church",
+      "top1": "monastery",
+      "p_true": 0.3490306138992309,
+      "top1_correct": false,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03394916_01",
+      "true_class": "French horn",
+      "top1": "French horn",
+      "p_true": 0.6410184502601624,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03417042_01",
+      "true_class": "garbage truck",
+      "top1": "garbage truck",
+      "p_true": 0.8562938570976257,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03425413_01",
+      "true_class": "gas pump",
+      "top1": "gas pump",
+      "p_true": 0.8606804013252258,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03445777_01",
+      "true_class": "golf ball",
+      "top1": "golf ball",
+      "p_true": 0.8856871724128723,
+      "top1_correct": true,
+      "top5_correct": true
+    },
+    {
+      "image_id": "n03888257_01",
+      "true_class": "parachute",
+      "top1": "parachute",
+      "p_true": 0.9111552238464355,
+      "top1_correct": true,
+      "top5_correct": true
+    }
+  ],
+  "occlusion_summary": [
+    {
+      "image_id": "n01440764_01",
+      "region": "top_left",
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "tench",
+      "top1_before": "tench",
+      "top1_after": "tench",
+      "p_true_before": 0.9079068303108216,
+      "p_true_after": 0.8413964509963989,
+      "delta_p_true": -0.0665103793144226,
+      "p_original_top1_before": 0.9079068303108216,
+      "p_original_top1_after": 0.8413964509963989,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n01440764_01",
+      "region": "center",
+      "x": 80,
+      "y": 80,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "tench",
+      "top1_before": "tench",
+      "top1_after": "tench",
+      "p_true_before": 0.9079068303108216,
+      "p_true_after": 0.8182389140129089,
+      "delta_p_true": -0.0896679162979126,
+      "p_original_top1_before": 0.9079068303108216,
+      "p_original_top1_after": 0.8182389140129089,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n01440764_01",
+      "region": "bottom_right",
+      "x": 160,
+      "y": 160,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "tench",
+      "top1_before": "tench",
+      "top1_after": "tench",
+      "p_true_before": 0.9079068303108216,
+      "p_true_after": 0.8212736248970032,
+      "delta_p_true": -0.0866332054138183,
+      "p_original_top1_before": 0.9079068303108216,
+      "p_original_top1_after": 0.8212736248970032,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02102040_01",
+      "region": "top_left",
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "English springer",
+      "top1_before": "English springer",
+      "top1_after": "English springer",
+      "p_true_before": 0.6959857940673828,
+      "p_true_after": 0.6550140976905823,
+      "delta_p_true": -0.0409716963768005,
+      "p_original_top1_before": 0.6959857940673828,
+      "p_original_top1_after": 0.6550140976905823,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02102040_01",
+      "region": "center",
+      "x": 80,
+      "y": 80,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "English springer",
+      "top1_before": "English springer",
+      "top1_after": "English springer",
+      "p_true_before": 0.6959857940673828,
+      "p_true_after": 0.5228217840194702,
+      "delta_p_true": -0.1731640100479126,
+      "p_original_top1_before": 0.6959857940673828,
+      "p_original_top1_after": 0.5228217840194702,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02102040_01",
+      "region": "bottom_right",
+      "x": 160,
+      "y": 160,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "English springer",
+      "top1_before": "English springer",
+      "top1_after": "English springer",
+      "p_true_before": 0.6959857940673828,
+      "p_true_after": 0.6130855083465576,
+      "delta_p_true": -0.0829002857208252,
+      "p_original_top1_before": 0.6959857940673828,
+      "p_original_top1_after": 0.6130855083465576,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02979186_01",
+      "region": "top_left",
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "cassette player",
+      "top1_before": "cassette player",
+      "top1_after": "cassette player",
+      "p_true_before": 0.4540252685546875,
+      "p_true_after": 0.4495334923267364,
+      "delta_p_true": -0.004491776227951,
+      "p_original_top1_before": 0.4540252685546875,
+      "p_original_top1_after": 0.4495334923267364,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02979186_01",
+      "region": "center",
+      "x": 80,
+      "y": 80,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "cassette player",
+      "top1_before": "cassette player",
+      "top1_after": "cassette player",
+      "p_true_before": 0.4540252685546875,
+      "p_true_after": 0.4630483388900757,
+      "delta_p_true": 0.0090230703353881,
+      "p_original_top1_before": 0.4540252685546875,
+      "p_original_top1_after": 0.4630483388900757,
+      "true_class_in_top5": true
+    },
+    {
+      "image_id": "n02979186_01",
+      "region": "bottom_right",
+      "x": 160,
+      "y": 160,
+      "width": 64,
+      "height": 64,
+      "fill": "zero_normalized",
+      "true_class": "cassette player",
+      "top1_before": "cassette player",
+      "top1_after": "cassette player",
+      "p_true_before": 0.4540252685546875,
+      "p_true_after": 0.470639556646347,
+      "delta_p_true": 0.0166142880916595,
+      "p_original_top1_before": 0.4540252685546875,
+      "p_original_top1_after": 0.470639556646347,
+      "true_class_in_top5": true
+    }
+  ],
+  "tensor_shapes": [
+    {
+      "Bước": "Ảnh NCHW",
+      "Kỳ vọng": "(1, 3, 224, 224)",
+      "Quan sát": "(1, 3, 224, 224)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Flatten patch",
+      "Kỳ vọng": "(1, 196, 768)",
+      "Quan sát": "(1, 196, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Conv projection",
+      "Kỳ vọng": "(1, 768, 14, 14)",
+      "Quan sát": "(1, 768, 14, 14)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Patch embedding",
+      "Kỳ vọng": "(1, 196, 768)",
+      "Quan sát": "(1, 196, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Ghép CLS",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Cộng vị trí",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 01",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 02",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 03",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 04",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 05",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 06",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 07",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 08",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 09",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 10",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 11",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Encoder 12",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Final LayerNorm",
+      "Kỳ vọng": "(1, 197, 768)",
+      "Quan sát": "(1, 197, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Lấy CLS",
+      "Kỳ vọng": "(1, 768)",
+      "Quan sát": "(1, 768)",
+      "Khớp": true
+    },
+    {
+      "Bước": "Classification head",
+      "Kỳ vọng": "(1, 1000)",
+      "Quan sát": "(1, 1000)",
+      "Khớp": true
+    }
+  ],
+  "vit_cnn_comparison": [
+    {
+      "Tiêu chí": "Locality",
+      "CNN": "Kernel cục bộ; ngữ cảnh mở rộng qua lớp",
+      "ViT": "Attention toàn cục giữa token"
+    },
+    {
+      "Tiêu chí": "Chia sẻ trọng số",
+      "CNN": "Kernel dùng chung trên không gian",
+      "ViT": "Projection và MLP dùng chung trên token"
+    },
+    {
+      "Tiêu chí": "Inductive bias",
+      "CNN": "Cấu trúc ưu tiên tính cục bộ và dịch chuyển",
+      "ViT": "Ít ràng buộc 2D hơn; học quan hệ vị trí"
+    },
+    {
+      "Tiêu chí": "Dữ liệu",
+      "CNN": "Thường có lợi khi dữ liệu hạn chế",
+      "ViT": "Phụ thuộc dữ liệu, pretraining và regularization"
+    },
+    {
+      "Tiêu chí": "Tính toán",
+      "CNN": "Phụ thuộc kernel, kênh và độ phân giải",
+      "ViT": "Attention chuẩn theo L²; MLP theo L"
+    },
+    {
+      "Tiêu chí": "Lựa chọn",
+      "CNN": "Đánh giá trên tác vụ và ngân sách thực tế",
+      "ViT": "Không có kiến trúc luôn tốt hơn"
+    }
+  ],
+  "patch_complexity": [
+    {
+      "Patch P": 32,
+      "N patch": 49,
+      "L gồm CLS": 50,
+      "L² / head": 2500,
+      "Tỷ lệ so với P16": 0.0644180473601484
+    },
+    {
+      "Patch P": 16,
+      "N patch": 196,
+      "L gồm CLS": 197,
+      "L² / head": 38809,
+      "Tỷ lệ so với P16": 1.0
+    },
+    {
+      "Patch P": 8,
+      "N patch": 784,
+      "L gồm CLS": 785,
+      "L² / head": 616225,
+      "Tỷ lệ so với P16": 15.878404493802984
+    }
+  ],
+  "config": {
+    "executed_at": "2026-11-24T12:43:43.585644+07:00",
+    "python": "3.10.11",
+    "torch": "2.14.1+cpu",
+    "torchvision": "0.29.2+cpu",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "device": "cpu",
+    "threads": 4,
+    "seed": 42,
+    "checkpoint": "ViT_B_16_Weights.IMAGENET1K_V1",
+    "checkpoint_sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9",
+    "transform": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+    "n_parameters": 86567656,
+    "n_blocks": 12,
+    "heads": 12,
+    "hidden_dim": 768,
+    "elapsed_seconds": 22.34,
+    "data_count": 15,
+    "case_ids": [
+      "n01440764_01",
+      "n02102040_01",
+      "n02979186_01"
+    ],
+    "occlusion_regions": {
+      "top_left": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "center": [
+        80,
+        80,
+        64,
+        64
+      ],
+      "bottom_right": [
+        160,
+        160,
+        64,
+        64
+      ]
+    },
+    "checks": {
+      "manifest_and_image_hashes": true,
+      "projection_equivalence": true,
+      "trace_matches_forward": true,
+      "occlusion_only_changes_selected_pixels": true,
+      "finite_normalized_probabilities": true,
+      "top5_rows_complete": true,
+      "three_cases_three_regions": true,
+      "all_trace_shapes_match": true
+    },
+    "metrics": {
+      "n_images": 15,
+      "top1_count": 13,
+      "top5_count": 15,
+      "top1_rate": 0.8666666666666667,
+      "top5_rate": 1.0
+    }
+  },
+  "analysis": [
+    {
+      "image_id": "n01440764_01",
+      "observation": "n01440764_01 (tench): p(nhãn thật) ban đầu 90.79%. Giá trị Δp nhỏ nhất trong ba vùng tại Trung tâm: 81.82%, Δp = -8.97 điểm phần trăm. Top-1: tench → tench. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+      "largest_drop_region": "center"
+    },
+    {
+      "image_id": "n02102040_01",
+      "observation": "n02102040_01 (English springer): p(nhãn thật) ban đầu 69.60%. Giá trị Δp nhỏ nhất trong ba vùng tại Trung tâm: 52.28%, Δp = -17.32 điểm phần trăm. Top-1: English springer → English springer. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+      "largest_drop_region": "center"
+    },
+    {
+      "image_id": "n02979186_01",
+      "observation": "n02979186_01 (cassette player): p(nhãn thật) ban đầu 45.40%. Giá trị Δp nhỏ nhất trong ba vùng tại Góc trái trên: 44.95%, Δp = -0.45 điểm phần trăm. Top-1: cassette player → cassette player. Kết luận chỉ áp dụng cho can thiệp này; vị trí và ngữ cảnh có thể ảnh hưởng kết quả.",
+      "largest_drop_region": "top_left"
+    }
+  ],
+  "images": [
+    {
+      "image_id": "n01440764_01",
+      "relative_path": "data/images/n01440764_01.JPEG",
+      "class_id": 0,
+      "class_name": "tench",
+      "synset": "n01440764",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n01440764/ILSVRC2012_val_00009111.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "35f017eff957abc92897ed441585a7e48076efe8213661b062d8e40a01f5483d",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n01440764_02",
+      "relative_path": "data/images/n01440764_02.JPEG",
+      "class_id": 0,
+      "class_name": "tench",
+      "synset": "n01440764",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n01440764/ILSVRC2012_val_00009191.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "6b1d89c440f3a1d3718c2a50796319bc777bcda2c5b36de9a9c08043646dac53",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n02102040_01",
+      "relative_path": "data/images/n02102040_01.JPEG",
+      "class_id": 217,
+      "class_name": "English springer",
+      "synset": "n02102040",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n02102040/ILSVRC2012_val_00004650.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "6a68fe50375437c8ff4aed686da10a524dfe714a8acc7034c9258e1fd56d56bc",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n02102040_02",
+      "relative_path": "data/images/n02102040_02.JPEG",
+      "class_id": 217,
+      "class_name": "English springer",
+      "synset": "n02102040",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n02102040/ILSVRC2012_val_00007032.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "9f79d394211efff524e7d3ebaaa6671b945a7652c99609d78029b38b0568a1a9",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n02979186_01",
+      "relative_path": "data/images/n02979186_01.JPEG",
+      "class_id": 482,
+      "class_name": "cassette player",
+      "synset": "n02979186",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n02979186/ILSVRC2012_val_00008651.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "beed8283796bd328261165df86cccb4efd148352b3ad3fcb6f71251d95ba5860",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n02979186_02",
+      "relative_path": "data/images/n02979186_02.JPEG",
+      "class_id": 482,
+      "class_name": "cassette player",
+      "synset": "n02979186",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n02979186/ILSVRC2012_val_00020400.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "47fabcf8382f6acff0f7fd34315d9c3c932aa49642d3b568ed542e8ece683070",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03000684_01",
+      "relative_path": "data/images/n03000684_01.JPEG",
+      "class_id": 491,
+      "class_name": "chain saw",
+      "synset": "n03000684",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03000684/ILSVRC2012_val_00004262.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "edb9297def5d831056e49230992e0a98d3a2da9cbbcdea080b12c7550b01ed2f",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03000684_02",
+      "relative_path": "data/images/n03000684_02.JPEG",
+      "class_id": 491,
+      "class_name": "chain saw",
+      "synset": "n03000684",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03000684/ILSVRC2012_val_00007460.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "20d3be8d40eb5be52638b2a2ae7d95dcfa69c7c2a17741a4035c8db09957d9e7",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03028079_01",
+      "relative_path": "data/images/n03028079_01.JPEG",
+      "class_id": 497,
+      "class_name": "church",
+      "synset": "n03028079",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03028079/ILSVRC2012_val_00003351.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "b2ea8f422061ca8046b7a9d5b26f2269572093be41b29e79da6544ac9c77749f",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03028079_02",
+      "relative_path": "data/images/n03028079_02.JPEG",
+      "class_id": 497,
+      "class_name": "church",
+      "synset": "n03028079",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03028079/ILSVRC2012_val_00003682.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "b8dd5b10994d71b1133c0c0ee0cd52a4a8c3304439319109f4e1a5f92b4f8d0a",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03394916_01",
+      "relative_path": "data/images/n03394916_01.JPEG",
+      "class_id": 566,
+      "class_name": "French horn",
+      "synset": "n03394916",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03394916/ILSVRC2012_val_00001492.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "9309150552adaee69aa666a57d508f4165f7c32f800f94bb387c42b6db5e5bb1",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03417042_01",
+      "relative_path": "data/images/n03417042_01.JPEG",
+      "class_id": 569,
+      "class_name": "garbage truck",
+      "synset": "n03417042",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03417042/ILSVRC2012_val_00002210.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "6ff43513920b8c61c3e0a4a43713e4e0136f9c576eb793ea0d3c1e3c18ac0cac",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03425413_01",
+      "relative_path": "data/images/n03425413_01.JPEG",
+      "class_id": 571,
+      "class_name": "gas pump",
+      "synset": "n03425413",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03425413/ILSVRC2012_val_00000732.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "81ae723b8b7357853ff2eed95c3cbab35b1379b945a99c50fab2496692bcb052",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03445777_01",
+      "relative_path": "data/images/n03445777_01.JPEG",
+      "class_id": 574,
+      "class_name": "golf ball",
+      "synset": "n03445777",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03445777/ILSVRC2012_val_00008161.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "c76a5e63f0baa65e50e38d472f51cb8d1cd3f10486b36cc64aca28000eb1a1a4",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    },
+    {
+      "image_id": "n03888257_01",
+      "relative_path": "data/images/n03888257_01.JPEG",
+      "class_id": 701,
+      "class_name": "parachute",
+      "synset": "n03888257",
+      "split": "imagenette validation",
+      "archive_member": "imagenette2-160/val/n03888257/ILSVRC2012_val_00001440.JPEG",
+      "source_url": "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+      "source_page": "https://github.com/fastai/imagenette",
+      "author": "Original ImageNet contributors; individual author not supplied by archive",
+      "license": "Original image rights retained; Imagenette repository Apache-2.0 does not establish individual image license",
+      "sha256": "3ea1d2aa71fb64f0a890a7af29c97d7e67a1af5eb78cbcc0d32c95f543d1e7f8",
+      "notes": "Deterministic filename order, selected before inference; resized source min-side 160"
+    }
+  ]
+}

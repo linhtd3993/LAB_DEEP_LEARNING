@@ -1,0 +1,7 @@
+﻿Tiêu chí,CNN,ViT
+Locality,Kernel cục bộ; ngữ cảnh mở rộng qua lớp,Attention toàn cục giữa token
+Chia sẻ trọng số,Kernel dùng chung trên không gian,Projection và MLP dùng chung trên token
+Inductive bias,Cấu trúc ưu tiên tính cục bộ và dịch chuyển,Ít ràng buộc 2D hơn; học quan hệ vị trí
+Dữ liệu,Thường có lợi khi dữ liệu hạn chế,"Phụ thuộc dữ liệu, pretraining và regularization"
+Tính toán,"Phụ thuộc kernel, kênh và độ phân giải",Attention chuẩn theo L²; MLP theo L
+Lựa chọn,Đánh giá trên tác vụ và ngân sách thực tế,Không có kiến trúc luôn tốt hơn

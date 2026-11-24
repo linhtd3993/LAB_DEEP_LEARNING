@@ -1,0 +1,16 @@
+﻿image_id,class_id,class_name,split
+n01440764_01,0,tench,imagenette validation
+n01440764_02,0,tench,imagenette validation
+n02102040_01,217,English springer,imagenette validation
+n02102040_02,217,English springer,imagenette validation
+n02979186_01,482,cassette player,imagenette validation
+n02979186_02,482,cassette player,imagenette validation
+n03000684_01,491,chain saw,imagenette validation
+n03000684_02,491,chain saw,imagenette validation
+n03028079_01,497,church,imagenette validation
+n03028079_02,497,church,imagenette validation
+n03394916_01,566,French horn,imagenette validation
+n03417042_01,569,garbage truck,imagenette validation
+n03425413_01,571,gas pump,imagenette validation
+n03445777_01,574,golf ball,imagenette validation
+n03888257_01,701,parachute,imagenette validation
