@@ -1,9 +1,27 @@
-torch>=2.0.0
-torchvision>=0.15.0
+# Canonical environment for Lab 2 on the verified Windows + CUDA 12.1 machine.
+# PyPI supplies general packages; the official PyTorch index supplies +cu121 wheels.
+--extra-index-url https://download.pytorch.org/whl/cu121
+
+# Deep learning runtime
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+
+# Data, evaluation, and visualization
 numpy>=1.24.0
-scikit-learn>=1.2.0
+pandas>=2.0.0
+pillow>=10.0.0
+# Newer builds were blocked by Windows Application Control on the verified machine.
+scikit-learn==1.7.2
 matplotlib>=3.7.0
 seaborn>=0.12.0
 tensorboard>=2.12.0
 tqdm>=4.65.0
+
+# Notebooks
+jupyterlab>=4.0.0
+ipykernel>=6.0.0
+ipython>=8.0.0
+nbclient>=0.10.0
+nbformat>=5.9.0
+nbconvert>=7.0.0
 

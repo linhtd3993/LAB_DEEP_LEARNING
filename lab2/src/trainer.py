@@ -101,6 +101,11 @@ class Trainer:
             Tuple gom (train_loss_trung_binh, train_accuracy_phan_tram).
         """
         self.model.train()
+        # Preserve running statistics of frozen backbone BatchNorm layers.
+        for module in self.model.modules():
+            if isinstance(module, nn.modules.batchnorm._BatchNorm):
+                if not any(p.requires_grad for p in module.parameters()):
+                    module.eval()
         running_loss = 0.0
         correct = 0
         total = 0
@@ -215,6 +220,7 @@ class Trainer:
             "optimizer_state_dict": self.optimizer.state_dict(),
             "val_acc": val_acc,
             "experiment_name": self.experiment_name,
+            "config": getattr(self.model, "lab2_config", {}),
         }
 
         if is_best:

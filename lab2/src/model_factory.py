@@ -59,6 +59,7 @@ def build_model(
     model_name: str = "resnet18",
     strategy: str = "freeze_all",
     num_classes: int = 10,
+    pretrained: bool = True,
 ) -> nn.Module:
     """Khoi tao mo hinh pre-trained, thay the classification head va ap dung chien luoc dong bang.
 
@@ -87,13 +88,13 @@ def build_model(
 
     # 1. Nap mo hinh pre-trained bang Torchvision Modern Weights API
     if model_key == "resnet18":
-        model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
+        model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT if pretrained else None)
     elif model_key == "resnet50":
-        model = models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
+        model = models.resnet50(weights=models.ResNet50_Weights.DEFAULT if pretrained else None)
     elif model_key == "vgg16_bn":
-        model = models.vgg16_bn(weights=models.VGG16_BN_Weights.DEFAULT)
+        model = models.vgg16_bn(weights=models.VGG16_BN_Weights.DEFAULT if pretrained else None)
     elif model_key == "densenet121":
-        model = models.densenet121(weights=models.DenseNet121_Weights.DEFAULT)
+        model = models.densenet121(weights=models.DenseNet121_Weights.DEFAULT if pretrained else None)
 
     # 2. Ap dung chien luoc dong bang trong so backbone truoc khi thay the head
     # Buoc 2.1: Dong bang toan bo cac tang
@@ -129,5 +130,6 @@ def build_model(
         in_features = model.classifier.in_features
         model.classifier = nn.Linear(in_features, num_classes)
 
+    model.lab2_config = {"model": model_key, "strategy": strategy_key, "num_classes": num_classes}
     return model
 

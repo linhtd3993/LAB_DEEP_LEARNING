@@ -6,6 +6,7 @@ va ve 3 bieu do chuan xuat ban 300 DPI phuc vu nghien cuu va bao cao.
 """
 
 from pathlib import Path
+import time
 from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
@@ -14,7 +15,7 @@ import seaborn as sns
 from sklearn.metrics import classification_report, confusion_matrix
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, SequentialSampler, Subset
 
 
 def evaluate_test_set(
@@ -43,16 +44,40 @@ def evaluate_test_set(
         - 'classification_report_dict': Dictionary chua precision, recall, f1-score.
     """
     model.eval()
+    if len(class_names) < 3 or len(set(class_names)) != len(class_names):
+        raise ValueError("Evaluation requires at least three unique class names")
     running_loss = 0.0
     all_targets: List[int] = []
     all_predictions: List[int] = []
+    predictions = []
+    if not isinstance(test_loader.sampler, SequentialSampler) or test_loader.drop_last:
+        raise ValueError("Evaluation requires sequential sampling and drop_last=False for stable sample IDs")
+    sample_indices = list(range(len(test_loader.dataset)))
+    dataset = test_loader.dataset
+    while isinstance(dataset, Subset):
+        sample_indices = [int(dataset.indices[i]) for i in sample_indices]
+        dataset = dataset.dataset
+    if not sample_indices:
+        raise ValueError("Cannot evaluate an empty dataset")
+    inference_seconds = 0.0
 
     with torch.no_grad():
         for inputs, targets in test_loader:
             inputs = inputs.to(device, non_blocking=True)
             targets = targets.to(device, non_blocking=True)
 
+            if device.type == "cuda":
+                torch.cuda.synchronize(device)
+            started = time.perf_counter()
             outputs = model(inputs)
+            if device.type == "cuda":
+                torch.cuda.synchronize(device)
+            inference_seconds += time.perf_counter() - started
+            if outputs.shape != (targets.size(0), len(class_names)):
+                raise ValueError("Model output shape does not match class names")
+            if not torch.isfinite(outputs).all():
+                raise ValueError("Model produced non-finite logits")
+            probabilities = outputs.softmax(dim=1).cpu().tolist()
             loss = criterion(outputs, targets)
 
             batch_size = targets.size(0)
@@ -60,10 +85,29 @@ def evaluate_test_set(
 
             _, preds = torch.max(outputs, 1)
 
+            offset = len(all_targets)
+            for j, (target, pred, probs) in enumerate(zip(targets.tolist(), preds.tolist(), probabilities)):
+                ranking = sorted(range(len(probs)), key=lambda k: (-probs[k], k))
+                row = {
+                    "sample_index": sample_indices[offset + j],
+                    "true_label": class_names[target],
+                    "predicted_label": class_names[pred],
+                    "is_correct": target == pred,
+                    "confidence": probs[pred],
+                    "margin_top1_top2": probs[ranking[0]] - probs[ranking[1]],
+                }
+                for rank, index in enumerate(ranking[:3], 1):
+                    row[f"top{rank}_label"] = class_names[index]
+                    row[f"top{rank}_probability"] = probs[index]
+                row.update({f"prob_{name}": probs[k] for k, name in enumerate(class_names)})
+                predictions.append(row)
+
             all_targets.extend(targets.cpu().numpy().tolist())
             all_predictions.extend(preds.cpu().numpy().tolist())
 
     total_samples = len(test_loader.dataset)
+    if len(predictions) != total_samples:
+        raise ValueError("Evaluation did not visit every dataset sample exactly once")
     test_loss = running_loss / total_samples
 
     targets_np = np.array(all_targets)
@@ -105,7 +149,7 @@ def evaluate_test_set(
 
     # In bao cao truc quan ra man hinh console
     print("=" * 70)
-    print("KET QUA DANH GIA TREN TAP TEST DOC LAP (10,000 ANH CIFAR-10)")
+    print(f"KET QUA DANH GIA TREN TAP TEST DOC LAP ({total_samples} ANH)")
     print("=" * 70)
     print(f"  Test Loss            : {test_loss:.4f}")
     print(f"  Top-1 Overall Accuracy: {overall_acc:.2f}%\n")
@@ -125,6 +169,8 @@ def evaluate_test_set(
         "confusion_matrix": cm,
         "classification_report_str": report_str,
         "classification_report_dict": report_dict,
+        "predictions": predictions,
+        "inference_ms_per_image": inference_seconds * 1000 / total_samples,
     }
 
 

@@ -33,16 +33,15 @@ DEFAULT_SEED: int = 42
 SRC_DIR: Path = Path(__file__).resolve().parent
 PROJECT_ROOT: Path = SRC_DIR.parent
 DATA_DIR: Path = PROJECT_ROOT / "data"
-CHECKPOINT_DIR: Path = PROJECT_ROOT / "checkpoints"
-RUNS_DIR: Path = PROJECT_ROOT / "runs"
 OUTPUTS_DIR: Path = PROJECT_ROOT / "outputs"
-FIGURES_DIR: Path = OUTPUTS_DIR / "figures"
-REPORTS_DIR: Path = OUTPUTS_DIR / "reports"
+EXPERIMENTS_DIR: Path = OUTPUTS_DIR / "experiments"
+CHECKPOINT_DIR: Path = EXPERIMENTS_DIR
+RUNS_DIR: Path = EXPERIMENTS_DIR
 
 
 def ensure_directories() -> None:
     """Khoi tao cac thu muc lam viec can thiet neu chua ton tai."""
-    for directory in [DATA_DIR, CHECKPOINT_DIR, RUNS_DIR, FIGURES_DIR, REPORTS_DIR]:
+    for directory in [DATA_DIR, EXPERIMENTS_DIR]:
         directory.mkdir(parents=True, exist_ok=True)
 
 

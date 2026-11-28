@@ -6,10 +6,13 @@ huan luyen va ghi log TensorBoard -> danh gia tap Test doc lap -> xuat bao cao v
 """
 
 import argparse
+import csv
 import json
+import platform
 import random
 import sys
 from datetime import datetime
+from uuid import uuid4
 from pathlib import Path
 from typing import Dict, Any
 
@@ -17,6 +20,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torchvision
 
 from src.config import (
     CIFAR10_CLASSES,
@@ -29,9 +33,8 @@ from src.config import (
     DEFAULT_OPTIMIZER,
     DEFAULT_SEED,
     DEFAULT_WEIGHT_DECAY,
-    FIGURES_DIR,
     NUM_CLASSES,
-    REPORTS_DIR,
+    EXPERIMENTS_DIR,
     RUNS_DIR,
     ensure_directories,
     get_device,
@@ -131,7 +134,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Che do kiem thu nhanh: chi lay 100 mau cho moi tap du lieu",
+        help="Che do kiem thu nhanh: toi da 128 Train, 64 Validation va 64 Test",
     )
     parser.add_argument(
         "--no-amp",
@@ -172,12 +175,46 @@ def parse_arguments() -> argparse.Namespace:
         help="Thu muc luu TensorBoard logs",
     )
 
-    return parser.parse_args()
+    parser.add_argument("--output-dir", default=str(EXPERIMENTS_DIR), help="Root directory for run artifacts")
+    args = parser.parse_args()
+    if args.epochs <= 0 or args.batch_size <= 0 or args.num_workers < 0:
+        parser.error("epochs and batch-size must be positive; num-workers must be nonnegative")
+    if not 0 < args.subset_ratio <= 1 or not np.isfinite(args.lr) or args.lr <= 0:
+        parser.error("subset-ratio must be in (0, 1]; lr must be finite and positive")
+    if not np.isfinite(args.weight_decay) or args.weight_decay < 0:
+        parser.error("weight-decay must be finite and nonnegative")
+    return args
+
+
+def create_run_id(model: str, strategy: str) -> str:
+    """Generate a unique timestamped identifier for every invocation."""
+    return f"{model}_{strategy}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_{uuid4().hex[:8]}"
+
+
+def load_best_checkpoint(model: nn.Module, path: str, device: torch.device) -> Dict[str, Any]:
+    """Load the selected checkpoint, failing before evaluation on invalid input."""
+    if not path or not Path(path).is_file():
+        raise FileNotFoundError(f"Best checkpoint is missing: {path!r}")
+    try:
+        checkpoint = torch.load(path, map_location=device, weights_only=True)
+        model.load_state_dict(checkpoint["model_state_dict"], strict=True)
+    except (KeyError, RuntimeError, ValueError, TypeError) as exc:
+        raise RuntimeError(f"Cannot load best checkpoint {path}: {exc}") from exc
+    return checkpoint
+
+
+def write_csv(path: Path, rows: list) -> None:
+    """Write a table with a stable header using exclusive creation."""
+    with path.open("x", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def main() -> int:
     """Ham dieu phoi chinh cua toan bo chuong trinh."""
     args = parse_arguments()
+    started_at = datetime.now().astimezone().isoformat()
 
     # Khoi tao cac thu muc can thiet
     ensure_directories()
@@ -208,10 +245,12 @@ def main() -> int:
     # In thong tin tom tat tham so
     inspect_model(model, args.model)
 
+    model = model.to(device)
+
     # Xac dinh duong dan
     data_dir = args.data_dir if args.data_dir else str(DATA_DIR)
-    ckpt_dir = args.checkpoint_dir if args.checkpoint_dir else str(CHECKPOINT_DIR)
-    log_dir = args.log_dir if args.log_dir else str(RUNS_DIR)
+    ckpt_dir = args.checkpoint_dir if args.checkpoint_dir else ""
+    log_dir = args.log_dir if args.log_dir else ""
 
     # Nap du lieu CIFAR-10
     print("\nDang nap tap du lieu CIFAR-10...")
@@ -251,8 +290,12 @@ def main() -> int:
     criterion = nn.CrossEntropyLoss()
 
     # Dinh danh thuc nghiem chuan hoa
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    experiment_name = f"{args.model}_{args.strategy}_lr{args.lr}_bs{args.batch_size}"
+    timestamp = started_at
+    experiment_name = create_run_id(args.model, args.strategy)
+    output_dir = Path(args.output_dir).resolve() / experiment_name
+    output_dir.mkdir(parents=True, exist_ok=False)
+    ckpt_dir = ckpt_dir or str(output_dir / "checkpoints")
+    log_dir = log_dir or str(output_dir / "tensorboard")
 
     # Khoi tao Trainer
     trainer = Trainer(
@@ -275,12 +318,7 @@ def main() -> int:
     # Nap checkpoint tot nhat de danh gia tren tap Test
     print("\nDang nap checkpoint tot nhat de danh gia tren tap Test...")
     best_checkpoint_path = trainer.best_checkpoint_path
-    if Path(best_checkpoint_path).exists():
-        checkpoint_data = torch.load(best_checkpoint_path, map_location=device)
-        model.load_state_dict(checkpoint_data["model_state_dict"])
-        print(f"  Da nap thanh cong trong so tu: {best_checkpoint_path}")
-    else:
-        print("  Canh bao: Khong tim thay checkpoint, su dung trong so hien tai.")
+    checkpoint_data = load_best_checkpoint(model, best_checkpoint_path, device)
 
     # Danh gia toan dien tren tap Test doc lap
     eval_results = evaluate_test_set(
@@ -292,10 +330,10 @@ def main() -> int:
     )
 
     # Xuat 3 bieu do 300 DPI chuan xuat ban
-    print("\nDang xuat 3 bieu do danh gia 300 DPI tai outputs/figures/...")
-    history_fig_path = str(FIGURES_DIR / f"{experiment_name}_history.png")
-    class_acc_fig_path = str(FIGURES_DIR / f"{experiment_name}_class_accuracy.png")
-    cm_fig_path = str(FIGURES_DIR / f"{experiment_name}_confusion_matrix.png")
+    print(f"\nDang xuat 3 bieu do danh gia 300 DPI tai {output_dir}...")
+    history_fig_path = str(output_dir / "training_history.png")
+    class_acc_fig_path = str(output_dir / "class_accuracy.png")
+    cm_fig_path = str(output_dir / "confusion_matrix.png")
 
     plot_training_history(
         history, history_fig_path, title_suffix=f"({args.model} - {args.strategy})"
@@ -310,17 +348,6 @@ def main() -> int:
         CIFAR10_CLASSES,
         cm_fig_path,
         title_suffix=f"({args.model} - {args.strategy})",
-    )
-
-    # Luu them ban sao voi ten mac dinh de tien xem nhanh
-    plot_training_history(history, str(FIGURES_DIR / "training_history.png"))
-    plot_per_class_accuracy(
-        eval_results["per_class_acc"], str(FIGURES_DIR / "class_accuracy.png")
-    )
-    plot_confusion_matrix(
-        eval_results["confusion_matrix"],
-        CIFAR10_CLASSES,
-        str(FIGURES_DIR / "confusion_matrix.png"),
     )
 
     print(f"  1. Training History   : {history_fig_path}")
@@ -351,9 +378,56 @@ def main() -> int:
         "training_history": history,
     }
 
-    report_json_path = REPORTS_DIR / f"{experiment_name}_report.json"
-    with open(report_json_path, "w", encoding="utf-8") as f:
-        json.dump(report_data, f, indent=2, ensure_ascii=False)
+    artifacts = {
+        "checkpoint": str(Path(best_checkpoint_path).resolve()),
+        "tensorboard": str(trainer.tb_dir.resolve()),
+        "report": str(output_dir / "report.json"),
+        "summary": str(output_dir / "summary.csv"),
+        "predictions": str(output_dir / "predictions.csv"),
+        "training_history": history_fig_path,
+        "class_accuracy": class_acc_fig_path,
+        "confusion_matrix": cm_fig_path,
+    }
+    summary = {
+        "run_id": experiment_name, "model": args.model, "strategy": args.strategy,
+        "optimizer": args.optimizer, "lr": args.lr, "batch_size": args.batch_size,
+        "epochs": args.epochs, "seed": args.seed,
+        "best_epoch": int(checkpoint_data["epoch"]) + 1,
+        "best_val_accuracy_pct": trainer.best_val_acc,
+        "test_accuracy_pct": eval_results["overall_acc"],
+        "test_macro_f1": eval_results["classification_report_dict"]["macro avg"]["f1-score"],
+        "avg_epoch_time_s": float(np.mean(history["epoch_time"])),
+        "inference_ms_per_image": eval_results["inference_ms_per_image"],
+        "total_params": param_counts["total"], "trainable_params": param_counts["trainable"],
+    }
+    write_csv(Path(artifacts["predictions"]), eval_results["predictions"])
+    write_csv(Path(artifacts["summary"]), [summary])
+    report_data.update({
+        "schema_version": "1.0", "run_id": experiment_name,
+        "started_at": started_at, "finished_at": datetime.now().astimezone().isoformat(),
+        "config": vars(args),
+        "environment": {"device": str(device), "python": platform.python_version(),
+                        "torch": str(torch.__version__), "torchvision": str(torchvision.__version__)},
+        "dataset": {"name": "CIFAR-10", "class_names": CIFAR10_CLASSES,
+                    "train_samples": len(train_loader.dataset), "val_samples": len(val_loader.dataset),
+                    "test_samples": len(test_loader.dataset), "split_seed": args.seed},
+        "training": {"best_epoch": summary["best_epoch"], "best_val_accuracy_pct": trainer.best_val_acc,
+                     "history": history},
+        "evaluation": {"test_loss": eval_results["test_loss"],
+                       "accuracy_pct": eval_results["overall_acc"],
+                       "macro_f1": summary["test_macro_f1"],
+                       "classification_report": eval_results["classification_report_dict"],
+                       "confusion_matrix": eval_results["confusion_matrix"].tolist(),
+                       "inference_ms_per_image": eval_results["inference_ms_per_image"]},
+        "artifacts": artifacts,
+    })
+    report_json_path = Path(artifacts["report"])
+    with report_json_path.open("x", encoding="utf-8") as f:
+        json.dump(report_data, f, indent=2, ensure_ascii=False, allow_nan=False)
+    for name, path in artifacts.items():
+        if not Path(path).exists() or (Path(path).is_file() and Path(path).stat().st_size == 0):
+            raise RuntimeError(f"Missing or empty artifact {name}: {path}")
+        print(f"  {name}: {path}")
 
     print(f"  Bao cao thuc nghiem da luu tai: {report_json_path}")
     print("=" * 70)

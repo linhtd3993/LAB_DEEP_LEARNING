@@ -1,285 +1,201 @@
-# PyTorch Pre-trained CNN Benchmark & Fine-Tuning Pipeline
+# Lab 2 — Transfer Learning trên CIFAR-10
 
-Repository phục vụ bài thực hành **Practice 2: Hands-on practice with pre-trained neural network architectures**. Hệ thống cung cấp một pipeline thực nghiệm transfer learning tiêu chuẩn công nghiệp trên PyTorch để đánh giá, so sánh và tinh chỉnh các kiến trúc mạng nơ-ron tích chập (CNN) tiền huấn luyện trên bộ dữ liệu CIFAR-10.
+Lab 2 xây dựng pipeline PyTorch hoàn chỉnh để so sánh bốn CNN pretrained và hai chiến lược transfer learning trên CIFAR-10. Pipeline thực hiện từ chia dữ liệu, transform, huấn luyện, chọn checkpoint bằng Validation đến đánh giá Test, xuất dự đoán từng ảnh và phân tích Grad-CAM.
 
----
+## 1. Bài toán
 
-## 1. Project Overview & Review
+CIFAR-10 gồm 60.000 ảnh RGB kích thước 32 × 32 thuộc 10 lớp: airplane, automobile, bird, cat, deer, dog, frog, horse, ship và truck.
 
-Bài thực hành tập trung vào việc khai thác sức mạnh của các mô hình học sâu tiền huấn luyện (Pre-trained Models) từ `torchvision.models` để giải quyết bài toán thị giác máy tính mà không cần huấn luyện từ đầu (from scratch).
+| Tập | Số ảnh | Vai trò |
+|---|---:|---|
+| Train | 40.000 | Cập nhật trọng số |
+| Validation | 10.000 | Chọn checkpoint tốt nhất |
+| Test | 10.000 | Đánh giá checkpoint đã chọn |
 
-Phạm vi khảo sát bao gồm 3 họ kiến trúc CNN kinh điển tiền huấn luyện trên tập dữ liệu ImageNet-1K:
-- **Residual Networks (ResNet)**: ResNet-18, ResNet-50.
-- **Visual Geometry Group (VGG)**: VGG-16 tích hợp Batch Normalization (`vgg16_bn`).
-- **Densely Connected Networks (DenseNet)**: DenseNet-121.
+Lab khảo sát:
 
-Hệ thống hỗ trợ đầy đủ 7 bước thực hành của bài Lab: thiết lập môi trường, nạp mô hình bằng Torchvision modern Weights API, khám phá cấu trúc tham số (Model Inspection), thay thế Classification Head thích ứng, tiền xử lý dữ liệu không rò rỉ (Leak-free Data Pipeline), huấn luyện giám sát thời gian thực qua TensorBoard và đánh giá chi tiết trên tập Test độc lập.
+- ResNet-18, ResNet-50, VGG-16 BN và DenseNet-121 pretrained trên ImageNet.
+- `freeze_all`: đóng băng backbone, chỉ huấn luyện classification head mới.
+- `unfreeze_last_block`: mở block cuối và classification head.
+- Accuracy, macro-F1, thời gian mỗi epoch và số tham số trainable.
+- Ảnh dự đoán đúng/sai, confidence, Top-3, confusion matrix và Grad-CAM.
 
----
+Giải thích chi tiết về model và luồng xử lý ảnh nằm trong [docs/model.md](docs/model.md).
 
-## 2. Problem Statement & Core Objectives
+## 2. Kết quả chính
 
-### 2.1. Bài toán Phân loại CIFAR-10
-Phân loại 60,000 ảnh màu RGB kích thước 32x32 pixel thuộc 10 lớp đối tượng: `airplane`, `automobile`, `bird`, `cat`, `deer`, `dog`, `frog`, `horse`, `ship`, `truck`. Dữ liệu được chia thành:
-- 40,000 mẫu Train
-- 10,000 mẫu Validation
-- 10,000 mẫu Test độc lập
+EXP_02, ResNet-18 với `unfreeze_last_block`, được chọn theo Validation Accuracy cao nhất. Checkpoint đạt 94,35% Validation tại epoch 13, 93,63% Test Accuracy và 0,9360 macro-F1.
 
-### 2.2. Mục tiêu Cốt lõi
-1. **Khảo sát sự đánh đổi (Trade-off)** giữa tốc độ hội tụ, chi phí tính toán (dung lượng VRAM, thời gian mỗi epoch, số tham số huấn luyện) và độ chính xác (Top-1 Accuracy, Per-class Accuracy).
-2. **So sánh 2 chiến lược Chuyển giao Tri thức**:
-   - `freeze_all` (Feature Extraction): Đóng băng toàn bộ backbone, chỉ huấn luyện Classification Head mới.
-   - `unfreeze_last_block` (Fine-Tuning): Mở khóa khối tích chập cuối cùng kèm Classification Head với tốc độ học thấp hơn.
-3. **Đánh giá tác động của Siêu tham số**: Khảo sát ảnh hưởng của Learning Rate ($10^{-2}, 10^{-3}, 10^{-4}$), Batch Size (32, 64, 128) và Optimizer (AdamW, SGD with Momentum).
+EXP_06 đạt Test Accuracy 93,86%, nhưng Test không được dùng để thay đổi checkpoint đã chọn. Mỗi cấu hình hiện chỉ có một lần chạy với seed 42.
 
-Chi tiết đặc tả bài toán xem tại: [docs/project_description.md](docs/project_description.md).
+| ID | Model | Strategy | Optimizer | LR | Batch | Trainable | Best Val | Test | Macro-F1 | giây/epoch |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| [EXP_01](outputs/experiments/resnet18_freeze_all_20261121_111828_636263_eb6f2e9c/report.json) | ResNet-18 | `freeze_all` | AdamW | 0,001 | 64 | 5.130 | 87,91% | 87,17% | 0,8712 | 110,9 |
+| [EXP_02](outputs/experiments/resnet18_unfreeze_last_block_20261121_115234_018455_f40df826/report.json) | ResNet-18 | `unfreeze_last_block` | AdamW | 0,0001 | 64 | 8.398.858 | **94,35%** | 93,63% | 0,9360 | 152,1 |
+| [EXP_03](outputs/experiments/resnet50_freeze_all_20261121_123125_013998_3428b478/report.json) | ResNet-50 | `freeze_all` | AdamW | 0,001 | 64 | 20.490 | 92,98% | 92,16% | 0,9216 | 208,5 |
+| [EXP_04](outputs/experiments/vgg16_bn_freeze_all_20261121_132439_221130_f32c5c63/report.json) | VGG-16 BN | `freeze_all` | AdamW | 0,001 | 64 | 40.970 | 86,43% | 84,97% | 0,8483 | 308,7 |
+| [EXP_05](outputs/experiments/densenet121_freeze_all_20261121_144340_162639_0c9b0ff0/report.json) | DenseNet-121 | `freeze_all` | AdamW | 0,001 | 64 | 10.250 | 90,06% | 89,70% | 0,8970 | 149,1 |
+| [EXP_06](outputs/experiments/densenet121_unfreeze_last_block_20261121_152146_940288_daf50c6d/report.json) | DenseNet-121 | `unfreeze_last_block` | AdamW | 0,0001 | 64 | 2.170.378 | 94,23% | **93,86%** | 0,9386 | 183,4 |
+| [EXT_LR_OPT](outputs/experiments/resnet18_freeze_all_20261121_164228_619907_bb622e8e/report.json) | ResNet-18 | `freeze_all` | SGD | 0,01 | 64 | 5.130 | 87,86% | 86,98% | 0,8688 | 148,2 |
+| [EXT_BATCH](outputs/experiments/resnet18_freeze_all_20261121_172016_786401_88231a7d/report.json) | ResNet-18 | `freeze_all` | AdamW | 0,001 | 32 | 5.130 | 87,85% | 87,01% | 0,8695 | 114,4 |
 
----
+Mở block cuối đồng thời giảm learning rate giúp Validation tăng 6,44 điểm phần trăm trên ResNet-18 và 4,17 điểm trên DenseNet-121. Hai biến thay đổi cùng lúc nên kết quả thể hiện hiệu ứng kết hợp. EXT_LR_OPT cũng thay optimizer và learning rate cùng lúc. Các kết quả này chưa tách riêng ảnh hưởng của từng biến.
 
-## 3. System Architecture & Main Structure
-
-Hệ thống được tổ chức theo kiến trúc mô-đun hóa một chiều (Clean Modular Architecture), đảm bảo tính tách bạch và dễ kiểm thử:
-
-```mermaid
-flowchart TD
-    CLI["CLI & Entry Point (main.py)"] --> CFG["Central Configuration (src/config.py)"]
-    CFG --> DATA["Leak-Free Data Pipeline (src/dataset.py)"]
-    CFG --> MODEL["Dynamic Model Factory (src/model_factory.py)"]
-    DATA --> TRAIN["Training & Validation Engine (src/trainer.py)"]
-    MODEL --> TRAIN
-    TRAIN --> TB["TensorBoard Logger (runs/)"]
-    TRAIN --> CKPT["Model Checkpointing (checkpoints/)"]
-    CKPT --> EVAL["Independent Evaluator & Visualizer (src/evaluate.py)"]
-    EVAL --> OUT["Reports & Figures (outputs/)"]
-
-    %% Bổ sung màu sắc trực quan theo vai trò chức năng
-    classDef cliStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
-    classDef coreStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
-    classDef engineStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
-    classDef outStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f;
-
-    class CLI,CFG cliStyle;
-    class DATA,MODEL coreStyle;
-    class TRAIN,EVAL engineStyle;
-    class TB,CKPT,OUT outStyle;
-```
-
-### Điểm nhấn Kỹ thuật:
-- **Đơn hướng (One-way Dependency)**: Các module cấp dưới không phụ thuộc ngược vào module cấp cao. `main.py` là điểm điều phối duy nhất.
-- **Leak-free Data Pipeline**: Khởi tạo 2 đối tượng `CIFAR10(root, train=True)` riêng biệt gắn với `train_transform` và `eval_transform`. Sử dụng danh sách chỉ số hoán vị ngẫu nhiên cố định (`torch.randperm` seed=42) chia tập Train và Validation thông qua `torch.utils.data.Subset`. Nhờ đó, tập Validation hoàn toàn không bị rò rỉ Data Augmentation.
-- **Dynamic Head & Weight Freezing**: Tự động nhận diện thuộc tính classification head tương ứng từng họ (`.fc`, `.classifier[6]`, `.classifier`) và lọc chỉ truyền tham số có `requires_grad=True` vào Optimizer.
-- **Automatic Mixed Precision (AMP)**: Tích hợp `torch.amp.autocast('cuda')` và `GradScaler` giúp tăng tốc độ tính toán và tiết kiệm 40% VRAM trên GPU.
-
-Chi tiết thiết kế hệ thống xem tại: [docs/project_design.md](docs/project_design.md).
-
----
-
-## 4. Folder Structure
-
-Cấu trúc phân cấp chuẩn của thư mục `lab2/`:
+## 3. Pipeline
 
 ```mermaid
 flowchart LR
-    ROOT["lab2/"]
-
-    ROOT --> D_SRC["src/"]
-    D_SRC --> F_CFG["config.py"]
-    D_SRC --> F_DATA["dataset.py"]
-    D_SRC --> F_MOD["model_factory.py"]
-    D_SRC --> F_TRN["trainer.py"]
-    D_SRC --> F_EVL["evaluate.py"]
-
-    ROOT --> D_TEST["tests/ (14 Unit Tests)"]
-    ROOT --> D_DOCS["docs/ (4 Tài liệu Đặc tả)"]
-    ROOT --> D_DATA["data/ (cifar-10-batches-py/)"]
-    ROOT --> D_CKPT["checkpoints/ (*.pth)"]
-    ROOT --> D_RUNS["runs/ (TensorBoard)"]
-    ROOT --> D_OUT["outputs/ (figures & reports)"]
-
-    ROOT --> F_MAIN["main.py (CLI)"]
-    ROOT --> F_README["README.md"]
-    ROOT --> F_REQ["requirements.txt"]
-
-    classDef rootStyle fill:#263238,stroke:#37474f,stroke-width:2px,color:#ffffff;
-    classDef dirStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1;
-    classDef srcStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px,color:#1b5e20;
-    classDef outStyle fill:#fbe9e7,stroke:#d84315,stroke-width:1px,color:#bf360c;
-
-    class ROOT rootStyle;
-    class D_SRC,D_TEST,D_DOCS dirStyle;
-    class F_CFG,F_DATA,F_MOD,F_TRN,F_EVL,F_MAIN srcStyle;
-    class D_DATA,D_CKPT,D_RUNS,D_OUT outStyle;
+    A["CIFAR-10"] --> B["Chia Train / Validation / Test"]
+    B --> C["Transform ảnh"]
+    C --> D["CNN pretrained"]
+    D --> E["Thay head thành 10 lớp"]
+    E --> F["Train và Validation"]
+    F --> G["Checkpoint có Validation Accuracy cao nhất"]
+    G --> H["Đánh giá Test"]
+    H --> I["Report, CSV, biểu đồ và Grad-CAM"]
 ```
 
----
+Train dùng Resize 256, RandomCrop 224, RandomHorizontalFlip, ToTensor và chuẩn hóa ImageNet. Validation và Test dùng Resize 224, ToTensor và cùng phép chuẩn hóa, không có augmentation ngẫu nhiên.
 
-## 5. Environment Setup & Installation
+Mỗi epoch gồm một lượt Train và một lượt Validation. Trainer lưu checkpoint khi Validation Accuracy lập mức cao mới. Sau epoch cuối, `main.py` nạp checkpoint tốt nhất và chỉ khi đó mới đánh giá Test.
 
-### 5.1. Yêu cầu Hệ thống
-- Hệ điều hành: Ubuntu Linux (hoặc macOS, Windows WSL2).
-- Python: Phiên bản 3.10 trở lên.
-- Thiết bị: Tự động tương thích GPU CUDA (khuyến nghị NVIDIA VRAM >= 4GB) hoặc CPU Fallback.
-  - Thông số phần cứng kiểm thử thực tế: NVIDIA GeForce RTX 3050 Laptop GPU (6GB VRAM), CPU Intel Core i7-13620H (16 threads), 16GB RAM.
+## 4. Cấu trúc thư mục
 
-### 5.2. Các bước Cài đặt trên Ubuntu/Linux
-
-```bash
-# 1. Di chuyển vào thư mục của bài Lab 2
-cd /home/linhtd3993/workspace/projects/LAB/LAB_DEEP_LEARNING/lab2
-
-# 2. Khởi tạo môi trường ảo Python
-python3 -m venv .venv
-
-# 3. Kích hoạt môi trường ảo
-source .venv/bin/activate
-
-# 4. Nâng cấp pip lên phiên bản mới nhất
-pip install --upgrade pip
-
-# 5. Cài đặt các thư viện cần thiết từ requirements.txt
-pip install -r requirements.txt
+```text
+lab2/
+├── main.py                         # Entry point cho một thực nghiệm
+├── requirements.txt               # Toàn bộ dependency, gồm CUDA 12.1 và notebook
+├── src/
+│   ├── config.py                  # Hằng số, đường dẫn và phát hiện thiết bị
+│   ├── dataset.py                 # Split và transform CIFAR-10
+│   ├── model_factory.py           # Tạo model, thay head, freeze/unfreeze
+│   ├── trainer.py                 # Train, Validation, TensorBoard, checkpoint
+│   ├── evaluate.py                # Test metrics, predictions và biểu đồ
+│   └── model_analysis.py          # Checkpoint, nhóm dự đoán và Grad-CAM
+├── scripts/
+│   └── run_experiments.py         # Chạy tuần tự tám cấu hình
+├── notebooks/
+│   ├── 01_cifar10_eda.ipynb
+│   └── 02_model_evaluation.ipynb
+├── tests/
+├── docs/
+├── data/                           # CIFAR-10 tải cục bộ
+└── outputs/
+    ├── experiments/<run_id>/       # Artifact của từng thực nghiệm
+    ├── eda/                        # Hình từ notebook EDA
+    ├── model_analysis/             # Hình và CSV phân tích checkpoint thật
+    ├── verification/               # Log hồi quy và fixture kiểm tra
+    └── experiment_summary.csv      # Mục lục tám thực nghiệm
 ```
 
----
+Mỗi thư mục `outputs/experiments/<run_id>/` chứa `report.json`, `summary.csv`, `predictions.csv`, ba biểu đồ, checkpoint và TensorBoard log.
 
-## 6. Usage & Experiment Commands (CLI Guide)
+## 5. Cài đặt môi trường
 
-### 6.1. Bảng Tham số Dòng lệnh (`main.py`)
+Môi trường đã được xác minh trên Windows, Python 3.12, RTX 3050 Laptop 6 GB, PyTorch 2.5.1 và CUDA 12.1.
 
-| Tham số | Kiểu dữ liệu | Mặc định | Mô tả chức năng |
-| :--- | :--- | :--- | :--- |
-| `--model` | str | `resnet18` | Kiến trúc mô hình (`resnet18`, `resnet50`, `vgg16_bn`, `densenet121`). |
-| `--strategy` | str | `freeze_all` | Chiến lược học chuyển giao: `freeze_all` hoặc `unfreeze_last_block`. |
-| `--lr` | float | `1e-3` | Tốc độ học ban đầu của Optimizer. |
-| `--batch-size` | int | `64` | Kích thước mini-batch (tối ưu cho GPU 6GB VRAM). |
-| `--epochs` | int | `15` | Số chu kỳ huấn luyện. |
-| `--optimizer` | str | `adamw` | Thuật toán tối ưu: `adamw` hoặc `sgd`. |
-| `--weight-decay` | float | `1e-4` | Hệ số điều hòa L2 regularization. |
-| `--subset-ratio` | float | `1.0` | Tỷ lệ dữ liệu sử dụng (0.0 < ratio <= 1.0) để kiểm thử nhanh. |
-| `--dry-run` | flag | `False` | Bật chế độ kiểm thử nhanh: chạy 1 batch/epoch để xác thực pipeline. |
-| `--inspect-only` | flag | `False` | Chỉ in cấu trúc mô hình và thống kê tham số rồi thoát, không huấn luyện. |
-| `--seed` | int | `42` | Hạt giống ngẫu nhiên cố định đảm bảo tính tái lập kết quả. |
+Dự án chỉ dùng một file dependency là `requirements.txt`. File này chứa runtime, thư viện đánh giá, trực quan hóa và Jupyter. Không cần cài thêm file requirements phụ.
 
----
-
-### 6.2. Các Câu lệnh Mẫu theo Kịch bản Thực hành
-
-#### Kịch bản 1: Khám phá Cấu trúc Mạng và Thống kê Tham số (Model Inspection)
-Kiểm tra cấu trúc trước và sau khi thay thế classification head cho các họ mô hình mà không chạy huấn luyện:
-
-```bash
-# Inspect ResNet-18 dưới chiến lược freeze_all
-python3 main.py --model resnet18 --strategy freeze_all --inspect-only
-
-# Inspect ResNet-18 dưới chiến lược unfreeze_last_block
-python3 main.py --model resnet18 --strategy unfreeze_last_block --inspect-only
-
-# Inspect VGG-16 BatchNorm
-python3 main.py --model vgg16_bn --strategy freeze_all --inspect-only
-
-# Inspect DenseNet-121
-python3 main.py --model densenet121 --strategy unfreeze_last_block --inspect-only
+```powershell
+uv venv .venv --python 3.12 --seed
+uv pip install --python .venv\Scripts\python.exe -r requirements.txt
+.\.venv\Scripts\python.exe -m ipykernel install --sys-prefix --name lab2 --display-name "Python (Lab 2)"
 ```
 
-#### Kịch bản 2: Smoke Run / Dry Run (Kiểm thử nhanh Pipeline)
-Chạy thử nghiệm 1 epoch với tập dữ liệu siêu nhỏ để xác nhận toàn bộ luồng code, lưu checkpoint và TensorBoard hoạt động trơn tru:
+Kiểm tra môi trường:
 
-```bash
-python3 main.py --model resnet18 --dry-run
+```powershell
+.\.venv\Scripts\python.exe -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
+.\.venv\Scripts\python.exe main.py --help
 ```
 
-#### Kịch bản 3: So sánh giữa các Kiến trúc với Chiến lược Đóng băng Backbone (`freeze_all`)
-Thực nghiệm cố định chiến lược `freeze_all` trên 3 họ kiến trúc khác nhau:
+`scikit-learn==1.7.2` được khóa vì bản mới hơn từng bị Windows Application Control chặn DLL trên máy đã xác minh.
 
-```bash
-# Thực nghiệm 1: ResNet-18 Feature Extraction
-python3 main.py --model resnet18 --strategy freeze_all --lr 1e-3 --epochs 15
+## 6. Chạy dự án
 
-# Thực nghiệm 2: VGG-16 (with BN) Feature Extraction
-python3 main.py --model vgg16_bn --strategy freeze_all --lr 1e-3 --epochs 15
+Xem cấu trúc model mà không huấn luyện:
 
-# Thực nghiệm 3: DenseNet-121 Feature Extraction
-python3 main.py --model densenet121 --strategy freeze_all --lr 1e-3 --epochs 15
+```powershell
+.\.venv\Scripts\python.exe main.py --model resnet18 --strategy freeze_all --inspect-only
 ```
 
-#### Kịch bản 4: Thực nghiệm Tinh chỉnh Sâu (`unfreeze_last_block`)
-Mở khóa khối tích chập cuối cùng với tốc độ học nhỏ hơn (`1e-4`) để giữ ổn định trọng số pre-trained:
+Chạy demo chính thức trên toàn bộ CIFAR-10:
 
-```bash
-# Fine-tuning ResNet-18 với lr giảm xuống 1e-4
-python3 main.py --model resnet18 --strategy unfreeze_last_block --lr 1e-4 --epochs 15
-
-# Fine-tuning DenseNet-121
-python3 main.py --model densenet121 --strategy unfreeze_last_block --lr 1e-4 --epochs 15
+```powershell
+.\.venv\Scripts\python.exe main.py --model resnet18 --strategy freeze_all --epochs 15
 ```
 
-#### Kịch bản 5: Khảo sát Ảnh hưởng của Siêu tham số (Hyperparameter Tuning)
-Điều chỉnh tốc độ học và kích thước mini-batch để đánh giá tốc độ hội tụ và độ chính xác:
+Chạy fine-tuning ResNet-18:
 
-```bash
-# So sánh với Learning Rate cao hơn: lr = 1e-2 dùng optimizer SGD
-python3 main.py --model resnet18 --strategy freeze_all --optimizer sgd --lr 1e-2 --epochs 15
-
-# Khảo sát với Batch Size nhỏ hơn: batch_size = 32
-python3 main.py --model resnet18 --strategy freeze_all --batch-size 32 --lr 1e-3 --epochs 15
+```powershell
+.\.venv\Scripts\python.exe main.py --model resnet18 --strategy unfreeze_last_block --lr 0.0001 --epochs 15
 ```
 
----
+Chạy tuần tự tám cấu hình đã định nghĩa và bỏ qua run có artifact hợp lệ:
 
-## 7. Monitoring with TensorBoard
-
-Hệ thống tự động ghi nhật ký scalar sau mỗi epoch vào thư mục `runs/<experiment_id>/`.
-
-### 7.1. Khởi chạy TensorBoard Server
-Mở một terminal mới, kích hoạt virtual environment và chạy lệnh:
-
-```bash
-tensorboard --logdir=runs --port=6006
+```powershell
+.\.venv\Scripts\python.exe scripts\run_experiments.py
 ```
 
-### 7.2. Truy cập Giao diện Giám sát
-Mở trình duyệt và truy cập: `http://localhost:6006`
-Giao diện TensorBoard cung cấp các đồ thị trực quan thời gian thực:
-- `Loss/train` vs. `Loss/val`: Đánh giá hiện tượng Overfitting / Underfitting qua từng chu kỳ.
-- `Accuracy/train` vs. `Accuracy/val`: Theo dõi tốc độ hội tụ độ chính xác.
-- `Learning_Rate`: Theo dõi tốc độ học thực tế của optimizer.
+Các tham số chính:
 
----
+| Tham số | Mặc định | Ý nghĩa |
+|---|---:|---|
+| `--model` | `resnet18` | `resnet18`, `resnet50`, `vgg16_bn`, `densenet121` |
+| `--strategy` | `freeze_all` | `freeze_all` hoặc `unfreeze_last_block` |
+| `--epochs` | 15 | Số epoch |
+| `--batch-size` | 64 khi có CUDA | Kích thước batch |
+| `--lr` | 0,001 | Learning rate |
+| `--optimizer` | `adamw` | `adamw` hoặc `sgd` |
+| `--seed` | 42 | Seed cho split và tính tái lập |
+| `--output-dir` | `outputs/experiments` | Thư mục gốc của artifact |
 
-## 8. Evaluation Outputs & Visualizations
+Dùng `main.py --help` để xem toàn bộ tham số.
 
-Sau khi kết thúc quá trình huấn luyện, checkpoint tốt nhất (`checkpoints/best_<experiment_id>.pth`) được nạp để thực hiện đánh giá một lần duy nhất trên 10,000 mẫu của tập Test độc lập.
+## 7. Notebook
 
-### 8.1. Thống kê Per-class trên Terminal
-Console in trực tiếp bảng chỉ số chi tiết gồm các cột: `Class Name`, `Accuracy (%)`, `Precision (%)`, `Recall (%)`, `F1-Score` cho cả 10 lớp đối tượng và dòng tổng kết `Overall Test Accuracy`.
+### EDA dữ liệu
 
-### 8.2. Bộ 3 Biểu đồ Đánh giá Xuất bản (300 DPI)
-Hệ thống tự động xuất 3 biểu đồ chất lượng cao tại `outputs/figures/`:
-1. `training_history.png`: Biểu đồ 2 cột thể hiện đường cong Loss và Accuracy giữa Train và Val qua các epoch.
-2. `class_accuracy.png`: Biểu đồ cột so sánh độ chính xác phân loại giữa 10 lớp của CIFAR-10, có đường tham chiếu độ chính xác trung bình.
-3. `confusion_matrix.png`: Heatmap ma trận nhầm lẫn được chuẩn hóa thể hiện xác suất dự đoán và chỉ rõ các lớp thường xuyên bị nhầm lẫn.
+[notebooks/01_cifar10_eda.ipynb](notebooks/01_cifar10_eda.ipynb) kiểm tra split 40.000/10.000/10.000, phân bố lớp, mẫu ảnh, shape, dtype, miền pixel, thống kê RGB và ảnh trước/sau transform.
 
----
+```powershell
+.\.venv\Scripts\python.exe -m nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=600 --ExecutePreprocessor.kernel_name=lab2 notebooks\01_cifar10_eda.ipynb
+```
 
-## 9. Experimental Results & Benchmark Table
+### Đánh giá model
 
-Bảng tổng hợp kết quả thực nghiệm được thiết lập dưới dạng khung chờ (placeholder), sẵn sàng được cập nhật sau khi thực hiện các lần chạy trên hệ thống:
+[notebooks/02_model_evaluation.ipynb](notebooks/02_model_evaluation.ipynb) đang cấu hình cho checkpoint EXP_02. Notebook tính loss, accuracy, precision, recall, F1, confusion matrix, các cặp lớp bị nhầm, bốn nhóm dự đoán theo đúng/sai và confidence, cùng Grad-CAM.
 
-| Exp ID | Model Architecture | Strategy | Batch Size | Learning Rate | Total Params | Trainable Params | Best Val Acc (%) | Test Acc (%) | Avg Time/Epoch (s) |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| EXP_01 | ResNet-18 | `freeze_all` | 64 | 1e-3 | TBD | TBD | TBD | TBD | TBD |
-| EXP_02 | ResNet-18 | `unfreeze_last_block` | 64 | 1e-4 | TBD | TBD | TBD | TBD | TBD |
-| EXP_03 | ResNet-50 | `freeze_all` | 64 | 1e-3 | TBD | TBD | TBD | TBD | TBD |
-| EXP_04 | VGG-16 (BN) | `freeze_all` | 64 | 1e-3 | TBD | TBD | TBD | TBD | TBD |
-| EXP_05 | DenseNet-121 | `freeze_all` | 64 | 1e-3 | TBD | TBD | TBD | TBD | TBD |
-| EXP_06 | DenseNet-121 | `unfreeze_last_block` | 64 | 1e-4 | TBD | TBD | TBD | TBD | TBD |
+```powershell
+.\.venv\Scripts\python.exe -m nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=600 --ExecutePreprocessor.kernel_name=lab2 notebooks\02_model_evaluation.ipynb
+```
 
----
+## 8. Đầu ra đánh giá
 
-## 10. Documentation & Workflow Links
+- `report.json` lưu cấu hình, môi trường, lịch sử huấn luyện, metrics, confusion matrix và đường dẫn artifact.
+- `summary.csv` lưu một dòng tổng hợp cho mỗi run.
+- `predictions.csv` lưu `sample_index`, nhãn thật, nhãn dự đoán, đúng/sai, confidence, Top-3 và xác suất 10 lớp.
+- `training_history.png` so sánh Train và Validation qua các epoch.
+- `class_accuracy.png` trình bày accuracy theo lớp.
+- `confusion_matrix.png` trình bày các lớp bị nhầm.
+- `outputs/model_analysis/` chứa phân tích sâu và Grad-CAM của checkpoint được chọn.
 
-Tài liệu chi tiết và các báo cáo kỹ thuật bổ trợ trong thư mục `docs/`:
-- **Đặc tả Yêu cầu và Bài toán**: [docs/project_description.md](docs/project_description.md)
-- **Thiết kế Kiến trúc Hệ thống**: [docs/project_design.md](docs/project_design.md)
-- **Quy trình Phát triển 7 Bước**: [docs/development_workflow.md](docs/development_workflow.md)
-- **Báo cáo Sử dụng AI**: [docs/AI_usage.md](docs/AI_usage.md)
+## 9. Kiểm tra
+
+Chạy toàn bộ unit test:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+Log nghiệm thu trước đây nằm trong `outputs/verification/`. Báo cáo nghiệm thu ghi nhận 26/26 test đã qua tại thời điểm hoàn thành Lab 2.
+
+## 10. Tài liệu
+
+- [Model và luồng xử lý ảnh](docs/model.md)
+- [Dàn bài thuyết trình và demo](docs/presentation_outline.md)
+- [Báo cáo nghiệm thu và phân tích lỗi](docs/final_acceptance.md)
+- [Mô tả bài toán](docs/project_description.md)
+- [Thiết kế hệ thống](docs/project_design.md)
+- [Quy trình phát triển](docs/development_workflow.md)
+- [Báo cáo sử dụng AI](docs/AI_usage.md)
